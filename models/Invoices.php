@@ -460,7 +460,7 @@ class Invoices extends \base_core\models\Base {
 Invoices::applyFilter('save', function($self, $params, $chain) {
 	$entity = $params['entity'];
 	$data = $params['data'];
-	$user = $entity->user();
+	$user = $entity->user($data);
 
 	if (!$entity->exists()) {
 		$terms = Settings::read('billing.paymentTerms');

@@ -1,6 +1,6 @@
 <?php
 /**
- * Billing Core
+ * Billing Invoice
  *
  * Copyright (c) 2014 Atelier Disko - All rights reserved.
  *
@@ -10,11 +10,11 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-namespace billing_core\models;
+namespace billing_invoice\models;
 
 use Exception;
 use AD\Finance\Price;
-use billing_core\models\Invoices;
+use billing_invoice\models\Invoices;
 use billing_core\models\TaxTypes;
 use ecommerce_core\models\Products;
 
@@ -37,7 +37,7 @@ class InvoicePositions extends \base_core\models\Base {
 
 	public $belongsTo = [
 		'Invoice' => [
-			'to' => 'billing_core\models\Invoices',
+			'to' => 'billing_invoice\models\Invoices',
 			'key' => 'billing_invoice_id'
 		]
 	];

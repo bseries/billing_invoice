@@ -1,6 +1,6 @@
 <?php
 /**
- * Billing Core
+ * Billing Invoice
  *
  * Copyright (c) 2014 Atelier Disko - All rights reserved.
  *
@@ -10,16 +10,16 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-namespace billing_core\config;
+namespace billing_invoice\config;
 
 use DateTime;
-use base_core\extensions\cms\Settings;
 use base_core\extensions\cms\Jobs;
+use base_core\extensions\cms\Settings;
 use base_core\models\Users;
-use billing_core\models\Invoices;
+use billing_invoice\models\Invoices;
 
 // Generates invoices from pending invoice positions.
-Jobs::recur('billing_core:auto_invoice', function() {
+Jobs::recur('billing_invoice:auto_invoice', function() {
 	Invoices::pdo()->beginTransaction();
 
 	// FIXME Make this work for virtual users, too?
@@ -45,8 +45,8 @@ Jobs::recur('billing_core:auto_invoice', function() {
 ]);
 
 // This will auto send any invoice that is plain created but not sent.
-Jobs::recur('billing_core:auto_send_invoices', function() {
-	if (!Settings::read('invoce.autoSend')) {
+Jobs::recur('billing_invoice:auto_send_invoices', function() {
+	if (!Settings::read('invoice.autoSend')) {
 		return true;
 	}
 	$invoices = Invoices::find('all', [
@@ -63,7 +63,7 @@ Jobs::recur('billing_core:auto_send_invoices', function() {
 	}
 }, [
 	'frequency' => Jobs::FREQUENCY_LOW,
-	'depends' => ['billing_core:auto_invoice']
+	'depends' => ['billing_invoice:auto_invoice']
 ]);
 
 ?>

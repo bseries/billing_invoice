@@ -3,7 +3,7 @@
 use lithium\g11n\Message;
 
 $t = function($message, array $options = []) {
-	return Message::translate($message, $options + ['scope' => 'billing_core', 'default' => $message]);
+	return Message::translate($message, $options + ['scope' => 'billing_invoice', 'default' => $message]);
 };
 
 $this->set([
@@ -26,7 +26,7 @@ $this->set([
 >
 
 	<div class="top-actions">
-		<?= $this->html->link($t('invoice'), ['action' => 'add', 'library' => 'billing_core'], ['class' => 'button add']) ?>
+		<?= $this->html->link($t('invoice'), ['action' => 'add', 'library' => 'billing_invoice'], ['class' => 'button add']) ?>
 	</div>
 
 	<?php if ($data->count()): ?>
@@ -81,8 +81,8 @@ $this->set([
 						<?php if (!$item->isPaidInFull()): ?>
 							<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button']) ?>
 						<?php endif ?>
-						<?= $this->html->link($t('PDF'), ['id' => $item->id, 'action' => 'export_pdf', 'library' => 'billing_core'], ['class' => 'button']) ?>
-						<?= $this->html->link($t('open'), ['id' => $item->id, 'action' => 'edit', 'library' => 'billing_core'], ['class' => 'button']) ?>
+						<?= $this->html->link($t('PDF'), ['id' => $item->id, 'action' => 'export_pdf', 'library' => 'billing_invoice'], ['class' => 'button']) ?>
+						<?= $this->html->link($t('open'), ['id' => $item->id, 'action' => 'edit', 'library' => 'billing_invoice'], ['class' => 'button']) ?>
 				<?php endforeach ?>
 			</tbody>
 		</table>

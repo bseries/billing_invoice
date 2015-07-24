@@ -1,6 +1,6 @@
 <?php
 /**
- * Billing Core
+ * Billing Invoice
  *
  * Copyright (c) 2014 Atelier Disko - All rights reserved.
  *
@@ -10,11 +10,11 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-namespace billing_core\controllers;
+namespace billing_invoice\controllers;
 
 use base_core\models\VirtualUsers;
 use base_core\models\Users;
-use billing_core\models\Invoices;
+use billing_invoice\models\Invoices;
 use billing_core\models\TaxTypes;
 use lithium\g11n\Message;
 use billing_core\models\Currencies;
@@ -61,12 +61,12 @@ class InvoicesController extends \base_core\controllers\BaseController {
 
 		if ($result) {
 			$model::pdo()->commit();
-			FlashMessage::write($t('Successfully paid invoice in full.', ['scope' => 'billing_core']), [
+			FlashMessage::write($t('Successfully paid invoice in full.', ['scope' => 'billing_invoice']), [
 				'level' => 'success'
 			]);
 		} else {
 			$model::pdo()->rollback();
-			FlashMessage::write($t('Failed to pay invoice in full.', ['scope' => 'billing_core']), [
+			FlashMessage::write($t('Failed to pay invoice in full.', ['scope' => 'billing_invoice']), [
 				'level' => 'error'
 			]);
 		}
@@ -77,15 +77,15 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		extract(Message::aliases());
 
 		$statuses = Invoices::enum('status', [
-			'created' => $t('created', ['scope' => 'billing_core']), // open
-			'sent' => $t('sent', ['scope' => 'billing_core']), // open
-			'paid' => $t('paid', ['scope' => 'billing_core']),  // paid
-			'cancelled' => $t('cancelled', ['scope' => 'billing_core']), // storno
+			'created' => $t('created', ['scope' => 'billing_invoice']), // open
+			'sent' => $t('sent', ['scope' => 'billing_invoice']), // open
+			'paid' => $t('paid', ['scope' => 'billing_invoice']),  // paid
+			'cancelled' => $t('cancelled', ['scope' => 'billing_invoice']), // storno
 
-			'awaiting-payment' => $t('awaiting payment', ['scope' => 'billing_core']),
-			'payment-accepted' => $t('payment accepted', ['scope' => 'billing_core']),
-			'payment-remotely-accepted' => $t('payment remotely accepted', ['scope' => 'billing_core']),
-			'payment-error' => $t('payment error', ['scope' => 'billing_core']),
+			'awaiting-payment' => $t('awaiting payment', ['scope' => 'billing_invoice']),
+			'payment-accepted' => $t('payment accepted', ['scope' => 'billing_invoice']),
+			'payment-remotely-accepted' => $t('payment remotely accepted', ['scope' => 'billing_invoice']),
+			'payment-error' => $t('payment error', ['scope' => 'billing_invoice']),
 		]);
 		$currencies = Currencies::find('list');
 		$virtualUsers = [null => '-'] + VirtualUsers::find('list', ['order' => 'name']);

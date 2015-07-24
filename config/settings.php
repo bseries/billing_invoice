@@ -1,6 +1,6 @@
 <?php
 /**
- * Billing Core
+ * Billing Invoice
  *
  * Copyright (c) 2014 Atelier Disko - All rights reserved.
  *
@@ -10,7 +10,7 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-namespace billing_core\config;
+namespace billing_invoice\config;
 
 use base_core\extensions\cms\Settings;
 use lithium\g11n\Message;

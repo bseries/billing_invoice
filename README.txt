@@ -1,4 +1,4 @@
-Billing Core
+Billing Invoice
 -- Core functionality for Billing.
 
 Synopsis

@@ -1,6 +1,6 @@
 <?php
 /**
- * Billing Core
+ * Billing Invoice
  *
  * Copyright (c) 2014 Atelier Disko - All rights reserved.
  *
@@ -10,7 +10,7 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-namespace billing_core\models;
+namespace billing_invoice\models;
 
 use DateTime;
 use DateInterval;
@@ -25,8 +25,8 @@ use li3_mailer\action\Mailer;
 use base_core\extensions\cms\Settings;
 use base_address\models\Contacts;
 use base_address\models\Addresses;
-use billing_core\models\Payments;
-use billing_core\models\InvoicePositions;
+use billing_payment\models\Payments;
+use billing_invoice\models\InvoicePositions;
 
 // Given our business resides in Germany DE and we're selling services
 // which fall und § 3 a Abs. 4 UStG (Katalogleistung).
@@ -77,11 +77,11 @@ class Invoices extends \base_core\models\Base {
 
 	public $hasMany = [
 		'Positions' => [
-			'to' => 'billing_core\models\InvoicePositions',
+			'to' => 'billing_invoice\models\InvoicePositions',
 			'key' => 'billing_invoice_id'
 		],
 		'Payments' => [
-			'to' => 'billing_core\models\Payments',
+			'to' => 'billing_payment\models\Payments',
 			'key' => 'billing_invoice_id'
 		],
 	];
@@ -251,12 +251,12 @@ class Invoices extends \base_core\models\Base {
 					return true;
 				}
 				return Mailer::deliver('invoice_paid', [
-					'library' => 'billing_core',
+					'library' => 'billing_invoice',
 					'to' => $user->email,
 					'bcc' => $contact['email'],
 					'subject' => $t('Invoice #{:number} paid.', [
 						'locale' => $user->locale,
-						'scope' => 'billing_core',
+						'scope' => 'billing_invoice',
 						'number' => $entity->number
 					]),
 					'data' => [
@@ -293,7 +293,7 @@ class Invoices extends \base_core\models\Base {
 
 		$document
 			->type($t('Invoice', [
-				'scope' => 'billing_core',
+				'scope' => 'billing_invoice',
 				'locale' => $user->locale
 			]))
 			->entity($entity)
@@ -302,7 +302,7 @@ class Invoices extends \base_core\models\Base {
 			->subject($t('Invoice #{:number}', [
 				'number' => $entity->number,
 				'locale' => $user->locale,
-				'scope' => 'billing_core'
+				'scope' => 'billing_invoice'
 			]))
 			->vatRegNo(Settings::read('billing.vatRegNo'));
 
@@ -429,12 +429,12 @@ class Invoices extends \base_core\models\Base {
 		]);
 
 		return $result && Mailer::deliver('invoice_sent', [
-			'library' => 'billing_core',
+			'library' => 'billing_invoice',
 			'to' => $user->email,
 			'bcc' => $contact['email'],
 			'subject' => $t('Your invoice #{:number}.', [
 				'locale' => $user->locale,
-				'scope' => 'billing_core',
+				'scope' => 'billing_invoice',
 				'number' => $invoice->number
 			]),
 			'data' => [

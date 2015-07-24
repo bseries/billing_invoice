@@ -1,6 +1,6 @@
 <?php
 /**
- * Billing Core
+ * Billing Invoice
  *
  * Copyright (c) 2014 Atelier Disko - All rights reserved.
  *
@@ -10,7 +10,7 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-namespace billing_core\config;
+namespace billing_invoice\config;
 
 use base_core\extensions\cms\Panes;
 use lithium\g11n\Message;
@@ -18,9 +18,9 @@ use lithium\g11n\Message;
 extract(Message::aliases());
 
 Panes::register('billing.invoices', [
-	'title' => $t('Invoices', ['scope' => 'billing_core']),
+	'title' => $t('Invoices', ['scope' => 'billing_invoice']),
 	'url' => [
-		'library' => 'billing_core',
+		'library' => 'billing_invoice',
 		'controller' => 'Invoices', 'action' => 'index',
 		'admin' => true
 	],

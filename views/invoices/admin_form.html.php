@@ -4,7 +4,7 @@ use base_core\extensions\cms\Settings;
 use lithium\g11n\Message;
 
 $t = function($message, array $options = []) {
-	return Message::translate($message, $options + ['scope' => 'billing_core', 'default' => $message]);
+	return Message::translate($message, $options + ['scope' => 'billing_invoice', 'default' => $message]);
 };
 
 $this->set([
@@ -376,14 +376,14 @@ $this->set([
 				<?= $this->html->link($t('PDF'), [
 					'controller' => 'Invoices',
 					'id' => $item->id, 'action' => 'export_pdf',
-					'library' => 'billing_core'
+					'library' => 'billing_invoice'
 				], ['class' => 'button large']) ?>
 
 				<?php if (!$item->isPaidInFull()): ?>
 					<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button large']) ?>
 				<?php endif ?>
 
-				<?= $this->html->link($item->is_locked ? $t('unlock') : $t('lock'), ['id' => $item->id, 'action' => $item->is_locked ? 'unlock': 'lock', 'library' => 'billing_core'], ['class' => 'button large']) ?>
+				<?= $this->html->link($item->is_locked ? $t('unlock') : $t('lock'), ['id' => $item->id, 'action' => $item->is_locked ? 'unlock': 'lock', 'library' => 'billing_invoice'], ['class' => 'button large']) ?>
 			<?php endif ?>
 
 			<?= $this->form->button($t('save'), ['type' => 'submit', 'class' => 'save large']) ?>

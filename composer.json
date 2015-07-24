@@ -1,0 +1,36 @@
+{
+    "name": "atelierdisko/billing_invoice",
+    "description": "Invoice functionality for Billing.",
+    "homepage": "http://atelierdisko.de",
+    "type": "lithium-library",
+    "license": "proprietary",
+    "authors": [
+        {
+          "name": "Atelier Disko",
+          "homepage": "http://atelierdisko.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "composer/installers": "1.*@stable",
+        "atelierdisko/li3_flash_message": "1.0.*@beta",
+        "atelierdisko/finance": "2.0.*",
+        "unionofrad/lithium": "1.0.*@dev",
+        "atelierdisko/base_core": "1.4.*",
+        "atelierdisko/base_address": "1.4.*",
+        "atelierdisko/base_document": "1.4.*",
+        "atelierdisko/billing_core": "1.4.*",
+        "atelierdisko/billing_payment": "1.4.*"
+    },
+    "suggest": {
+      "atelierdisko/ecommerce_core": "Enables product binding for invoice positions."
+    },
+    "repositories": [
+      { "type": "vcs", "url": "git@code.atelierdisko:finance" },
+      { "type": "vcs", "url": "git@code.atelierdisko:base_core" },
+      { "type": "vcs", "url": "git@code.atelierdisko:base_address" },
+      { "type": "vcs", "url": "git@code.atelierdisko:base_document" },
+      { "type": "vcs", "url": "git@code.atelierdisko:billing_core" },
+      { "type": "vcs", "url": "git@code.atelierdisko:billing_payment" }
+    ]
+}

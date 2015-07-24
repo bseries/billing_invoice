@@ -10,4 +10,7 @@
 
 ### Changed
 
+- Invoices can not further be locked. This added too much
+  complexity.
+
 ### Backwards Incompatible Changes

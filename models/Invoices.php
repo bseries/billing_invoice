@@ -234,15 +234,6 @@ class Invoices extends \base_core\models\Base {
 		extract(Message::aliases());
 
 		switch ($to) {
-			// Lock invoice when its got sent.
-			case 'sent':
-				if ($entity->is_locked) {
-					return true;
-				}
-				return $entity->save(['is_locked' => true], [
-					'whitelist' => ['is_locked'],
-					'validate' => false
-				]);
 			case 'paid':
 				$user = $entity->user();
 				$contact = Settings::read('contact.billing');
@@ -424,8 +415,7 @@ class Invoices extends \base_core\models\Base {
 
 		$result = $entity->save(['status' => 'sent'], [
 			'whitelist' => ['status'],
-			'validate' => false,
-			'lockWriteThrough' => true
+			'validate' => false
 		]);
 
 		return $result && Mailer::deliver('invoice_sent', [
@@ -468,59 +458,45 @@ class Invoices extends \base_core\models\Base {
 }
 
 Invoices::applyFilter('save', function($self, $params, $chain) {
-	$params['options'] += [
-		'lockWriteThrough' => false
-	];
 	$entity = $params['entity'];
 	$data = $params['data'];
 	$user = $entity->user();
 
-	if ($entity->exists()) {
-		$isLocked = Invoices::find('first', [
-			'conditions' => ['id' => $entity->id],
-			'fields' => ['is_locked']
-		])->is_locked;
-	} else { // We're creating a brandnew invoice.
-
+	// if (!$entity->exists()) {
 		// Set when we last billed the user, once.
 		// $user->save(['invoiced' => date('Y-m-d')], ['whitelist' => ['invoiced', 'modified']]);
+	// }
 
-		// Initial invoices are not locked.
-		$isLocked = false;
-	}
+	// Always allow to set status.
+	$params['options']['whitelist'] = (array) $params['options']['whitelist'] + ['status'];
 
-	if (!$params['options']['lockWriteThrough'] && $isLocked) {
-		$params['options']['whitelist'] = (array) $params['options']['whitelist'] + ['status'];
-	}
 	if (!$result = $chain->next($self, $params, $chain)) {
 		return false;
 	}
 
 	// Save nested positions.
-	if (!empty($params['options']['lockWriteThrough']) || !$isLocked) {
-		$new = isset($data['positions']) ? $data['positions'] : [];
-		foreach ($new as $key => $value) {
-			if ($key === 'new') {
+	$new = isset($data['positions']) ? $data['positions'] : [];
+	foreach ($new as $key => $value) {
+		if ($key === 'new') {
+			continue;
+		}
+		if (isset($value['id'])) {
+			$item = InvoicePositions::find('first', ['conditions' => ['id' => $value['id']]]);
+
+			if ($value['_delete']) {
+				if (!$item->delete()) {
+					return false;
+				}
 				continue;
 			}
-			if (isset($value['id'])) {
-				$item = InvoicePositions::find('first', ['conditions' => ['id' => $value['id']]]);
-
-				if ($value['_delete']) {
-					if (!$item->delete()) {
-						return false;
-					}
-					continue;
-				}
-			} else {
-				$item = InvoicePositions::create($value + [
-					'billing_invoice_id' => $entity->id,
-					$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id
-				]);
-			}
-			if (!$item->save($value)) {
-				return false;
-			}
+		} else {
+			$item = InvoicePositions::create($value + [
+				'billing_invoice_id' => $entity->id,
+				$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id
+			]);
+		}
+		if (!$item->save($value)) {
+			return false;
 		}
 	}
 

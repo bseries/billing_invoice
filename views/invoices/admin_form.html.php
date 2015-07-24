@@ -111,19 +111,19 @@ $this->set([
 				<table>
 					<thead>
 						<tr>
-							<td class="title--f"><?= $t('Description') ?>
-							<td class="finance--f"><?= $t('Quantity') ?>
-							<td class="finance--f"><?= $t('Currency') ?>
-							<td class="finance--f"><?= $t('Type') ?>
-							<td class="finance--f"><?= $t('Unit price') ?>
-							<td class="finance--f"><?= $t('Tax rate (%)') ?>
-							<td class="finance--f"><?= $t('Line total (net)') ?>
+							<td class="position-description--f"><?= $t('Description') ?>
+							<td class="quantity--f"><?= $t('Quantity') ?>
+							<td class="currency--f"><?= $t('Currency') ?>
+							<td class="price-type--f"><?= $t('Type') ?>
+							<td class="price-amount--f"><?= $t('Unit price') ?>
+							<td class="price-rate--f"><?= $t('Tax rate (%)') ?>
+							<td class="position-total--f"><?= $t('Line total (net)') ?>
 							<td class="actions">
 					</thead>
 					<tbody>
 					<?php foreach ($item->positions() as $key => $child): ?>
 						<tr class="nested-item">
-							<td>
+							<td class="position-description--f">
 								<?= $this->form->field("positions.{$key}.id", [
 									'type' => 'hidden',
 									'value' => $child->id
@@ -136,39 +136,39 @@ $this->set([
 									'label' => false,
 									'value' => $child->description
 								]) ?>
-							<td>
+							<td class="quantity--f">
 								<?= $this->form->field("positions.{$key}.quantity", [
 									'type' => 'text',
 									'label' => false,
 									'value' => $this->number->format($child->quantity, 'decimal')
 								]) ?>
-							<td>
+							<td class="currency--f">
 								<?= $this->form->field("positions.{$key}.amount_currency", [
 									'type' => 'select',
 									'label' => false,
 									'list' => $currencies,
 									'value' => $child->amount_currency
 								]) ?>
-							<td>
+							<td class="price-type--f">
 								<?= $this->form->field("positions.{$key}.amount_type", [
 									'type' => 'select',
 									'label' => false,
 									'value' => $child->amount_type,
 									'list' => ['net' => $t('net'), 'gross' => $t('gross')]
 								]) ?>
-							<td>
+							<td class="price-amount--f">
 								<?= $this->form->field("positions.{$key}.amount", [
 									'type' => 'text',
 									'label' => false,
 									'value' => $this->money->format($child->amount, ['currency' => false])
 								]) ?>
-							<td>
+							<td class="price-rate--f">
 								<?= $this->form->field("positions.{$key}.amount_rate", [
 									'type' => 'text',
 									'label' => false,
 									'value' => $child->amount_rate
 								]) ?>
-							<td>
+							<td class="position-total--f">
 								<?= $this->form->field("positions.{$key}.total_net", [
 									'type' => 'text',
 									'label' => false,
@@ -179,40 +179,40 @@ $this->set([
 							<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
 					<?php endforeach ?>
 					<tr class="nested-add nested-item">
-						<td>
+						<td class="position-description--f">
 							<?= $this->form->field('positions.new.description', [
 								'type' => 'text',
 								'label' => false
 							]) ?>
-						<td>
+						<td class="quantity--f">
 							<?= $this->form->field('positions.new.quantity', [
 								'type' => 'text',
 								'value' => 1,
 								'label' => false
 							]) ?>
-						<td>
+						<td class="currency--f">
 							<?= $this->form->field("positions.new.amount_currency", [
 								'type' => 'select',
 								'label' => false,
 								'list' => $currencies
 							]) ?>
-						<td>
+						<td class="price-type--f">
 							<?= $this->form->field("positions.new.amount_type", [
 								'type' => 'select',
 								'label' => false,
 								'list' => ['net' => $t('net'), 'gross' => $t('gross')]
 							]) ?>
-						<td>
+						<td class="price-amount--f">
 							<?= $this->form->field('positions.new.amount', [
 								'type' => 'text',
 								'label' => false
 							]) ?>
-						<td>
+						<td class="price-rate--f">
 							<?= $this->form->field("positions.new.amount_rate", [
 								'type' => 'text',
 								'label' => false
 							]) ?>
-						<td>
+						<td class="position-total--f">
 						<td class="actions">
 							<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
 					</tbody>

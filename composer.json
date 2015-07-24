@@ -1,6 +1,6 @@
 {
     "name": "atelierdisko/billing_invoice",
-    "description": "Invoice functionality for Billing.",
+    "description": "Invoice functionality for Banque.",
     "homepage": "http://atelierdisko.de",
     "type": "lithium-library",
     "license": "proprietary",

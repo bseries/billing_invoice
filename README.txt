@@ -1,5 +1,5 @@
 Billing Invoice
--- Invoice functionality for Billing.
+-- Invoice functionality for Banque.
 
 Synopsis
 --------

@@ -54,6 +54,8 @@ $this->set([
 			</div>
 		</div>
 		<div class="grid-row">
+			<h1 class="h-gamma"><?= $t('Recipient') ?></h1>
+
 			<div class="grid-column-left">
 				<?= $this->form->field('address', [
 					'type' => 'textarea',
@@ -89,6 +91,145 @@ $this->set([
 		</div>
 
 		<div class="grid-row">
+			<h1 class="h-gamma"><?= $t('Positions') ?></h1>
+			<section class="use-nested">
+				<table>
+					<thead>
+						<tr>
+							<td class="position-description--f"><?= $t('Description') ?>
+							<td class="numeric--f quantity--f"><?= $t('Quantity') ?>
+							<td class="currency--f"><?= $t('Currency') ?>
+							<td class="price-type--f"><?= $t('Type') ?>
+							<td class="money--f price-amount--f"><?= $t('Unit price') ?>
+							<td class="numeric--f price-rate--f"><?= $t('Tax rate (%)') ?>
+							<td class="money--f position-total--f"><?= $t('Total (net)') ?>
+							<td class="actions">
+					</thead>
+					<tbody>
+					<?php foreach ($item->positions() as $key => $child): ?>
+						<tr class="nested-item">
+							<td class="position-description--f">
+								<?= $this->form->field("positions.{$key}.id", [
+									'type' => 'hidden',
+									'value' => $child->id
+								]) ?>
+								<?= $this->form->field("positions.{$key}._delete", [
+									'type' => 'hidden'
+								]) ?>
+								<?= $this->form->field("positions.{$key}.description", [
+									'type' => 'text',
+									'label' => false,
+									'value' => $child->description,
+									'list' => $positionDescriptions
+								]) ?>
+							<td class="numeric--f quantity--f">
+								<?= $this->form->field("positions.{$key}.quantity", [
+									'type' => 'text',
+									'label' => false,
+									'value' => $this->number->format($child->quantity, 'decimal'),
+									'class' => 'input--numeric'
+								]) ?>
+							<td class="currency--f">
+								<?= $this->form->field("positions.{$key}.amount_currency", [
+									'type' => 'select',
+									'label' => false,
+									'list' => $currencies,
+									'value' => $child->amount_currency
+								]) ?>
+							<td class="price-type--f">
+								<?= $this->form->field("positions.{$key}.amount_type", [
+									'type' => 'select',
+									'label' => false,
+									'value' => $child->amount_type,
+									'list' => ['net' => $t('net'), 'gross' => $t('gross')]
+								]) ?>
+							<td class="money--f price-amount--f">
+								<?= $this->form->field("positions.{$key}.amount", [
+									'type' => 'text',
+									'label' => false,
+									'value' => $this->money->format($child->amount, ['currency' => false]),
+									'class' => 'input--money'
+								]) ?>
+							<td class="numeric--f price-rate--f">
+								<?= $this->form->field("positions.{$key}.amount_rate", [
+									'type' => 'text',
+									'label' => false,
+									'value' => $child->amount_rate,
+									'class' => 'input--numeric'
+								]) ?>
+							<td class="money--f position-total--f">
+								<?= $this->money->format($child->total()->getNet()) ?>
+							<td class="actions">
+								<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
+					<?php endforeach ?>
+					<tr class="nested-add nested-item">
+						<td class="position-description--f">
+							<?= $this->form->field('positions.new.description', [
+								'type' => 'text',
+								'label' => false,
+								'list' => $positionDescriptions
+							]) ?>
+						<td class="numeric--f quantity--f">
+							<?= $this->form->field('positions.new.quantity', [
+								'type' => 'text',
+								'value' => 1,
+								'label' => false,
+								'class' => 'input--numeric'
+							]) ?>
+						<td class="currency--f">
+							<?= $this->form->field("positions.new.amount_currency", [
+								'type' => 'select',
+								'label' => false,
+								'value' => $item->exists() ? $item->clientGroup()->amountCurrency : 'EUR',
+								'list' => $currencies
+							]) ?>
+						<td class="price-type--f">
+							<?= $this->form->field("positions.new.amount_type", [
+								'type' => 'select',
+								'label' => false,
+								'value' => $item->exists() ? $item->clientGroup()->amountType : 'net',
+								'list' => ['net' => $t('net'), 'gross' => $t('gross')]
+							]) ?>
+						<td class="money--f price-amount--f">
+							<?= $this->form->field('positions.new.amount', [
+								'type' => 'text',
+								'label' => false,
+								'class' => 'input--money'
+							]) ?>
+						<td class="numeric--f price-rate--f">
+							<?= $this->form->field("positions.new.amount_rate", [
+								'type' => 'text',
+								'value' => $item->exists() ? $item->taxType()->rate : '19',
+								'label' => false,
+								'class' => 'input--numeric'
+							]) ?>
+						<td class="position-total--f">
+						<td class="actions">
+							<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="9" class="nested-add-action">
+								<?= $this->form->button($t('add position'), ['type' => 'button', 'class' => 'button add-nested']) ?>
+						<tr class="totals">
+							<td colspan="6"><?= $t('Total (net)') ?>
+							<td><?= $this->money->format($item->totals()->getNet()) ?>
+
+						<?php foreach ($item->taxes() as $rate => $tax): ?>
+						<tr class="totals">
+							<td colspan="6"><?= $t('Tax ({:rate}%)', ['rate' => $rate]) ?>
+							<td><?= $this->money->format($tax) ?>
+						<?php endforeach ?>
+
+						<tr class="totals">
+							<td colspan="6"><?= $t('Total (gross)') ?>
+							<td><?= $this->money->format($item->totals()->getGross()) ?>
+					</tfoot>
+				</table>
+			</section>
+		</div>
+
+		<div class="grid-row">
 			<section class="grid-column-left">
 				<?= $this->form->field('terms', [
 					'type' => 'textarea',
@@ -106,147 +247,16 @@ $this->set([
 		</div>
 
 		<div class="grid-row">
-			<h1 class="h-gamma"><?= $t('Positions') ?></h1>
-			<section class="use-nested">
-				<table>
-					<thead>
-						<tr>
-							<td class="position-description--f"><?= $t('Description') ?>
-							<td class="quantity--f"><?= $t('Quantity') ?>
-							<td class="currency--f"><?= $t('Currency') ?>
-							<td class="price-type--f"><?= $t('Type') ?>
-							<td class="price-amount--f"><?= $t('Unit price') ?>
-							<td class="price-rate--f"><?= $t('Tax rate (%)') ?>
-							<td class="position-total--f"><?= $t('Line total (net)') ?>
-							<td class="actions">
-					</thead>
-					<tbody>
-					<?php foreach ($item->positions() as $key => $child): ?>
-						<tr class="nested-item">
-							<td class="position-description--f">
-								<?= $this->form->field("positions.{$key}.id", [
-									'type' => 'hidden',
-									'value' => $child->id
-								]) ?>
-								<?= $this->form->field("positions.{$key}._delete", [
-									'type' => 'hidden'
-								]) ?>
-								<?= $this->form->field("positions.{$key}.description", [
-									'type' => 'text',
-									'label' => false,
-									'value' => $child->description
-								]) ?>
-							<td class="quantity--f">
-								<?= $this->form->field("positions.{$key}.quantity", [
-									'type' => 'text',
-									'label' => false,
-									'value' => $this->number->format($child->quantity, 'decimal')
-								]) ?>
-							<td class="currency--f">
-								<?= $this->form->field("positions.{$key}.amount_currency", [
-									'type' => 'select',
-									'label' => false,
-									'list' => $currencies,
-									'value' => $child->amount_currency
-								]) ?>
-							<td class="price-type--f">
-								<?= $this->form->field("positions.{$key}.amount_type", [
-									'type' => 'select',
-									'label' => false,
-									'value' => $child->amount_type,
-									'list' => ['net' => $t('net'), 'gross' => $t('gross')]
-								]) ?>
-							<td class="price-amount--f">
-								<?= $this->form->field("positions.{$key}.amount", [
-									'type' => 'text',
-									'label' => false,
-									'value' => $this->money->format($child->amount, ['currency' => false])
-								]) ?>
-							<td class="price-rate--f">
-								<?= $this->form->field("positions.{$key}.amount_rate", [
-									'type' => 'text',
-									'label' => false,
-									'value' => $child->amount_rate
-								]) ?>
-							<td class="position-total--f">
-								<?= $this->form->field("positions.{$key}.total_net", [
-									'type' => 'text',
-									'label' => false,
-									'value' => $this->money->format($child->total()->getNet(), ['currency' => false]),
-									'disabled' => true
-								]) ?>
-							<td class="actions">
-							<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
-					<?php endforeach ?>
-					<tr class="nested-add nested-item">
-						<td class="position-description--f">
-							<?= $this->form->field('positions.new.description', [
-								'type' => 'text',
-								'label' => false
-							]) ?>
-						<td class="quantity--f">
-							<?= $this->form->field('positions.new.quantity', [
-								'type' => 'text',
-								'value' => 1,
-								'label' => false
-							]) ?>
-						<td class="currency--f">
-							<?= $this->form->field("positions.new.amount_currency", [
-								'type' => 'select',
-								'label' => false,
-								'list' => $currencies
-							]) ?>
-						<td class="price-type--f">
-							<?= $this->form->field("positions.new.amount_type", [
-								'type' => 'select',
-								'label' => false,
-								'list' => ['net' => $t('net'), 'gross' => $t('gross')]
-							]) ?>
-						<td class="price-amount--f">
-							<?= $this->form->field('positions.new.amount', [
-								'type' => 'text',
-								'label' => false
-							]) ?>
-						<td class="price-rate--f">
-							<?= $this->form->field("positions.new.amount_rate", [
-								'type' => 'text',
-								'label' => false
-							]) ?>
-						<td class="position-total--f">
-						<td class="actions">
-							<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="9" class="nested-add-action">
-								<?= $this->form->button($t('add position'), ['type' => 'button', 'class' => 'button add-nested']) ?>
-						<tr>
-							<td colspan="7"><?= $t('Total (net)') ?>
-							<td><?= $this->money->format($item->totals()->getNet()) ?>
-
-						<?php foreach ($item->taxes() as $rate => $tax): ?>
-						<tr>
-							<td colspan="7"><?= $t('Tax ({:rate}%)', ['rate' => $rate]) ?>
-							<td><?= $this->money->format($tax) ?>
-
-						<?php endforeach ?>
-
-						<tr>
-							<td colspan="7"><?= $t('Total (gross)') ?>
-							<td><?= $this->money->format($item->totals()->getGross()) ?>
-						<tr>
-							<td colspan="7"><?= $t('Balance') ?>
-							<td><?= $this->money->format($item->balance()) ?>
-					</tfoot>
-				</table>
-			</section>
-		</div>
-		<div class="grid-row">
 			<h1 class="h-gamma"><?= $t('Tax') ?></h1>
 
 			<section class="grid-column-right">
+				<?= $this->form->field('tax_type', [
+					'type' => 'select',
+					'list' => $taxTypes,
+					'disabled' => true
+				]) ?>
 				<?= $this->form->field('tax_note', [
-					'type' => 'textarea',
+					'type' => 'text',
 					'label' => $t('Tax note'),
 					'value' => $item->tax_note,
 					'disabled' => true
@@ -255,13 +265,9 @@ $this->set([
 					<?= $t('Visible to recipient.') ?>
 					<?= $t('Automatically generated.') ?>
 				</div>
-				<?= $this->form->field('tax_type', [
-					'type' => 'select',
-					'list' => $taxTypes,
-					'disabled' => true
-				]) ?>
 			</section>
 		</div>
+
 		<div class="grid-row">
 			<h1 class="h-gamma"><?= $t('Payments') ?></h1>
 			<section class="use-nested">
@@ -271,7 +277,7 @@ $this->set([
 							<td><?= $t('Date') ?>
 							<td><?= $t('Method') ?>
 							<td><?= $t('Currency') ?>
-							<td><?= $t('Amount') ?>
+							<td class="money--f"><?= $t('Amount') ?>
 							<td>
 					</thead>
 					<tbody>
@@ -303,11 +309,12 @@ $this->set([
 									'list' => $currencies,
 									'value' => $child->amount_currency
 								]) ?>
-							<td>
+							<td class="money--f">
 								<?= $this->form->field("payments.{$key}.amount", [
 									'type' => 'text',
 									'label' => false,
 									'value' => $this->money->format($child->amount(), ['currency' => false]),
+									'class' => 'input--money'
 								]) ?>
 							<td class="actions">
 								<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
@@ -330,10 +337,11 @@ $this->set([
 									'label' => false,
 									'list' => $currencies
 								]) ?>
-							<td>
+							<td class="money--f">
 								<?= $this->form->field("payments.new.amount", [
 									'type' => 'text',
-									'label' => false
+									'label' => false,
+									'class' => 'input--money'
 								]) ?>
 							<td class="actions">
 								<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
@@ -342,6 +350,12 @@ $this->set([
 						<tr class="nested-add-action">
 							<td colspan="5">
 								<?= $this->form->button($t('add payment'), ['type' => 'button', 'class' => 'button add-nested']) ?>
+						<tr class="totals">
+							<td colspan="3"><?= $t('Total') ?>
+							<td><?= $this->money->format($item->paid()) ?>
+						<tr class="totals">
+							<td colspan="3"><?= $t('Balance') ?>
+							<td><?= $this->money->format($item->balance()) ?>
 					</tfoot>
 				</table>
 			</section>
@@ -349,6 +363,12 @@ $this->set([
 
 		<div class="bottom-actions">
 			<?php if ($item->exists()): ?>
+				<?= $this->html->link($t('delete'), [
+					'action' => 'delete',
+					'id' => $item->id,
+				], [
+					'class' => 'button delete large'
+				]) ?>
 
 				<?= $this->html->link($t('PDF'), [
 					'controller' => 'Invoices',

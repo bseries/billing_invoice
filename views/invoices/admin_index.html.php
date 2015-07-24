@@ -76,6 +76,12 @@ $this->set([
 							<?= $this->date->format($item->modified, 'date') ?>
 						</time>
 					<td class="actions">
+						<?= $this->html->link($t('delete'), [
+							'action' => 'delete',
+							'id' => $item->id,
+						], [
+							'class' => 'button delete'
+						]) ?>
 						<?php if (!$item->isPaidInFull()): ?>
 							<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button']) ?>
 						<?php endif ?>

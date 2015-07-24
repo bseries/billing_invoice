@@ -21,6 +21,7 @@ use Exception;
 use base_address\models\Addresses;
 use base_address\models\Contacts;
 use base_core\extensions\cms\Settings;
+use billing_core\models\TaxTypes;
 use billing_core\models\ClientGroups;
 use billing_invoice\models\InvoicePositions;
 use billing_payment\models\Payments;
@@ -178,6 +179,16 @@ class Invoices extends \base_core\models\Base {
 		return $result;
 	}
 
+	// Returns Monies.
+	public function paid($entity) {
+		$result = new Monies();
+
+		foreach ($entity->payments() as $payment) {
+			$result = $result->add($payment->amount());
+		}
+		return $result;
+	}
+
 	public function pay($entity, $payment) {
 		if ($entity->isPaidInFull()) {
 			throw new Exception("Invoice is already paid in full.");
@@ -309,6 +320,14 @@ class Invoices extends \base_core\models\Base {
 
 		rewind($stream);
 		return $stream;
+	}
+
+	public function taxType($entity) {
+		return TaxTypes::find('first', ['conditions' => ['id' => $entity->tax_type]]);
+	}
+
+	public function clientGroup($entity) {
+		return ClientGroups::find('first', ['conditions' => ['user' => $entity->user()]]);
 	}
 
 	/* Auto invoicing */

@@ -459,7 +459,7 @@ class Invoices extends \base_core\models\Base {
 
 Invoices::applyFilter('save', function($self, $params, $chain) {
 	$entity = $params['entity'];
-	$data = $params['data'];
+	$data =& $params['data'];
 	$user = $entity->user($data);
 
 	if (!$entity->exists()) {
@@ -471,8 +471,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 		if (!$group) {
 			return false;
 		}
-
-		$data += [
+		$data = array_filter($data) + [
 			$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id,
 			'user_vat_reg_no' => $user->vat_reg_no,
 			'tax_type' => $group->taxType,

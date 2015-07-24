@@ -32,12 +32,4 @@ Settings::register('invoice.sendPaidMail', false);
 // Enable/disable auto mailing invoices to recipients once one becomes availablet.
 Settings::register('invoice.autoSend', false);
 
-Settings::register('invoice.paymentTerms', function($user) use ($t) {
-	return null;
-});
-
-
-
-
-
 ?>

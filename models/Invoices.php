@@ -12,21 +12,21 @@
 
 namespace billing_invoice\models;
 
-use DateTime;
-use DateInterval;
-use Exception;
+use AD\Finance\Money\Monies;
 use AD\Finance\Price;
 use AD\Finance\Price\Prices;
-use AD\Finance\Money\Monies;
-use lithium\g11n\Message;
-use lithium\core\Libraries;
-use li3_mailer\action\Mailer;
-
-use base_core\extensions\cms\Settings;
-use base_address\models\Contacts;
+use DateInterval;
+use DateTime;
+use Exception;
 use base_address\models\Addresses;
-use billing_payment\models\Payments;
+use base_address\models\Contacts;
+use base_core\extensions\cms\Settings;
+use billing_core\models\ClientGroups;
 use billing_invoice\models\InvoicePositions;
+use billing_payment\models\Payments;
+use li3_mailer\action\Mailer;
+use lithium\core\Libraries;
+use lithium\g11n\Message;
 
 // Given our business resides in Germany DE and we're selling services
 // which fall und § 3 a Abs. 4 UStG (Katalogleistung).
@@ -460,13 +460,34 @@ class Invoices extends \base_core\models\Base {
 Invoices::applyFilter('save', function($self, $params, $chain) {
 	$entity = $params['entity'];
 	$data = $params['data'];
+	$user = $entity->user();
+
+	if (!$entity->exists()) {
+		$terms = Settings::read('billing.paymentTerms');
+
+		$group = ClientGroups::find('first', [
+			'conditions' => compact('user')
+		]);
+		if (!$group) {
+			return false;
+		}
+
+		$data += [
+			$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id,
+			'user_vat_reg_no' => $user->vat_reg_no,
+			'tax_type' => $group->taxType,
+			'tax_note' => $group->taxType()->note,
+			'date' => date('Y-m-d'),
+			'status' => 'awaiting-payment',
+			'note' => $t('Order No.', ['scope' => 'ecommerce_core']) . ': ' . $entity->number,
+			'terms' => is_callable($terms) ? $terms($user) : $terms
+		];
+		$data = $user->address('billing')->copy($data, 'address_');
+	}
 
 	if (!$result = $chain->next($self, $params, $chain)) {
 		return false;
 	}
-	// User is only securely available after save as we could be handling an new invoice.
-	$user = $entity->user();
-
 	// Set when we last billed the user, once.
 	// $user->save(['invoiced' => date('Y-m-d')], ['whitelist' => ['invoiced', 'modified']]);
 

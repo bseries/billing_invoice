@@ -33,7 +33,6 @@ $this->set([
 		<table>
 			<thead>
 				<tr>
-					<td data-sort="is-locked" class="flag table-sort is-locked "><?= $t('locked?') ?>
 					<td data-sort="date" class="date table-sort"><?= $t('Date') ?>
 					<td data-sort="number" class="emphasize number id table-sort"><?= $t('Number') ?>
 					<td data-sort="status" class="status table-sort"><?= $t('Status') ?>
@@ -54,7 +53,6 @@ $this->set([
 				<?php foreach ($data as $item): ?>
 					<?php $user = $item->user() ?>
 				<tr data-id="<?= $item->id ?>">
-					<td class="flag"><i class="material-icons"><?= ($item->is_locked ? 'lock ' : '') ?></i>
 					<td class="date">
 						<time datetime="<?= $this->date->format($item->date, 'w3c') ?>">
 							<?= $this->date->format($item->date, 'date') ?>

@@ -460,19 +460,15 @@ class Invoices extends \base_core\models\Base {
 Invoices::applyFilter('save', function($self, $params, $chain) {
 	$entity = $params['entity'];
 	$data = $params['data'];
-	$user = $entity->user();
-
-	// if (!$entity->exists()) {
-		// Set when we last billed the user, once.
-		// $user->save(['invoiced' => date('Y-m-d')], ['whitelist' => ['invoiced', 'modified']]);
-	// }
-
-	// Always allow to set status.
-	$params['options']['whitelist'] = (array) $params['options']['whitelist'] + ['status'];
 
 	if (!$result = $chain->next($self, $params, $chain)) {
 		return false;
 	}
+	// User is only securely available after save as we could be handling an new invoice.
+	$user = $entity->user();
+
+	// Set when we last billed the user, once.
+	// $user->save(['invoiced' => date('Y-m-d')], ['whitelist' => ['invoiced', 'modified']]);
 
 	// Save nested positions.
 	$new = isset($data['positions']) ? $data['positions'] : [];
@@ -481,7 +477,9 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 			continue;
 		}
 		if (isset($value['id'])) {
-			$item = InvoicePositions::find('first', ['conditions' => ['id' => $value['id']]]);
+			$item = InvoicePositions::find('first', [
+				'conditions' => ['id' => $value['id']]
+			]);
 
 			if ($value['_delete']) {
 				if (!$item->delete()) {
@@ -495,12 +493,13 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 				$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id
 			]);
 		}
+
 		if (!$item->save($value)) {
 			return false;
 		}
 	}
 
-	// Save nested payments; alwas allow writing these.
+	// Save nested payments.
 	$new = isset($data['payments']) ? $data['payments'] : [];
 	foreach ($new as $key => $value) {
 		if ($key === 'new') {

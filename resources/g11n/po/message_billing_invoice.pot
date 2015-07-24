@@ -1,0 +1,310 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Atelier Disko
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: billing_invoice 1.0\n"
+"Report-Msgid-Bugs-To: info@atelierdisko.de\n"
+"POT-Creation-Date: 2015-07-24 16:24+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: config/panes.php:21
+msgid "Invoices"
+msgstr ""
+
+#: config/widgets.php:46
+msgid "invoiced"
+msgstr ""
+
+#: controllers/InvoicesController.php:64
+msgid "Successfully paid invoice in full."
+msgstr ""
+
+#: controllers/InvoicesController.php:69
+msgid "Failed to pay invoice in full."
+msgstr ""
+
+#: controllers/InvoicesController.php:80
+msgid "created"
+msgstr ""
+
+#: controllers/InvoicesController.php:81
+msgid "sent"
+msgstr ""
+
+#: controllers/InvoicesController.php:82
+msgid "paid"
+msgstr ""
+
+#: controllers/InvoicesController.php:83
+msgid "cancelled"
+msgstr ""
+
+#: controllers/InvoicesController.php:85
+msgid "awaiting payment"
+msgstr ""
+
+#: controllers/InvoicesController.php:86
+msgid "payment accepted"
+msgstr ""
+
+#: controllers/InvoicesController.php:87
+msgid "payment remotely accepted"
+msgstr ""
+
+#: controllers/InvoicesController.php:88
+msgid "payment error"
+msgstr ""
+
+#: models/Invoices.php:257
+msgid "Invoice #{:number} paid."
+msgstr ""
+
+#: models/Invoices.php:295
+msgid "Invoice"
+msgstr ""
+
+#: models/Invoices.php:302
+msgid "Invoice #{:number}"
+msgstr ""
+
+#: models/Invoices.php:435
+msgid "Your invoice #{:number}."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:15
+#: views/invoices/admin_index.html.php:29
+msgid "invoice"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:18
+msgid "locked"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:18
+msgid "unlocked"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:27
+msgid ""
+"When the invoice is locked it cannot be changed anymore with the exception "
+"of the outstanding amount."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:28
+msgid "The invoice is automatically locked once sent to the user."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:38
+#: views/invoices/admin_index.html.php:38
+msgid "Number"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:41
+msgid "Leave empty to autogenerate number."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:46
+#: views/invoices/admin_index.html.php:39
+msgid "Status"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:51
+msgid ""
+"The user will be notified by e-mail when the status is changed to `paid`."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:56
+#: views/invoices/admin_form.html.php:294
+#: views/invoices/admin_index.html.php:37
+msgid "Date"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:60
+msgid "Invoice date."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:67
+msgid "Address"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:79
+msgid "User"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:91
+msgid "real user"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:102
+msgid "Terms"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:105
+#: views/invoices/admin_form.html.php:113
+#: views/invoices/admin_form.html.php:278
+msgid "Visible to recipient."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:110
+msgid "Note"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:118
+msgid "Positions"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:123
+msgid "Description"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:124
+msgid "Quantity"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:125
+#: views/invoices/admin_form.html.php:296
+msgid "Currency"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:126
+msgid "Type"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:127
+msgid "Unit price"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:128
+msgid "Tax rate (%)"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:129
+msgid "Line total (net)"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:171
+#: views/invoices/admin_form.html.php:223
+msgid "gross"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:171
+#: views/invoices/admin_form.html.php:223
+msgid "net"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:197
+#: views/invoices/admin_form.html.php:237
+#: views/invoices/admin_form.html.php:336
+#: views/invoices/admin_form.html.php:362
+msgid "delete"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:244
+msgid "add position"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:247
+msgid "Total (net)"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:252
+msgid "Tax ({:rate}%)"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:258
+#: views/invoices/admin_index.html.php:41
+msgid "Total (gross)"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:261
+#: views/invoices/admin_index.html.php:42
+msgid "Balance"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:268
+msgid "Tax"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:273
+msgid "Tax note"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:279
+msgid "Automatically generated."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:289
+msgid "Payments"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:295
+msgid "Method"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:297
+msgid "Amount"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:367
+msgid "add payment"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:376
+#: views/invoices/admin_index.html.php:84
+msgid "PDF"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:383
+#: views/invoices/admin_index.html.php:82
+msgid "pay in full"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:386
+msgid "lock"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:386
+msgid "unlock"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:389
+msgid "save"
+msgstr ""
+
+#: views/invoices/admin_index.html.php:12
+msgid "invoices"
+msgstr ""
+
+#: views/invoices/admin_index.html.php:36
+msgid "locked?"
+msgstr ""
+
+#: views/invoices/admin_index.html.php:40
+msgid "Recipient"
+msgstr ""
+
+#: views/invoices/admin_index.html.php:43
+msgid "Modified"
+msgstr ""
+
+#: views/invoices/admin_index.html.php:48
+msgid "Filter"
+msgstr ""
+
+#: views/invoices/admin_index.html.php:85
+msgid "open"
+msgstr ""
+
+#: views/invoices/admin_index.html.php:90
+msgid "No items available, yet."
+msgstr ""

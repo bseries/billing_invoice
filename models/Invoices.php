@@ -479,7 +479,6 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 			'tax_note' => $group->taxType()->note,
 			'date' => date('Y-m-d'),
 			'status' => 'awaiting-payment',
-			'note' => $t('Order No.', ['scope' => 'ecommerce_core']) . ': ' . $entity->number,
 			'terms' => is_callable($terms) ? $terms($user) : $terms
 		];
 		$data = $user->address('billing')->copy($data, 'address_');

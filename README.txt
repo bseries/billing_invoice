@@ -1,5 +1,5 @@
 Billing Invoice
--- Core functionality for Billing.
+-- Invoice functionality for Billing.
 
 Synopsis
 --------

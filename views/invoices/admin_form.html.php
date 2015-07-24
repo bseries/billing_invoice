@@ -21,7 +21,7 @@ $this->set([
 ]);
 
 ?>
-<article class="view-<?= $this->_config['controller'] . '-' . $this->_config['template'] ?>">
+<article>
 
 	<div class="help">
 		<?= $t('When the invoice is locked it cannot be changed anymore with the exception of the outstanding amount.') ?>

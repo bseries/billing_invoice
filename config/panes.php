@@ -24,7 +24,7 @@ Panes::register('billing.invoices', [
 		'controller' => 'Invoices', 'action' => 'index',
 		'admin' => true
 	],
-	'weight' => 50
+	'weight' => 40
 ]);
 
 ?>

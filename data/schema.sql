@@ -39,7 +39,7 @@ CREATE TABLE `billing_invoices` (
   `terms` text,
   `note` text,
   `tax_type` varchar(20) NOT NULL DEFAULT '',
-  `is_locked` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `tax_note` varchar(250) NOT NULL DEFAULT '',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),

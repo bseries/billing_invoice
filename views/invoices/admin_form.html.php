@@ -362,26 +362,26 @@ $this->set([
 		</div>
 
 		<div class="bottom-actions">
-			<?php if ($item->exists()): ?>
-				<?= $this->html->link($t('delete'), [
-					'action' => 'delete',
-					'id' => $item->id,
-				], [
-					'class' => 'button delete large'
-				]) ?>
-
-				<?= $this->html->link($t('PDF'), [
-					'controller' => 'Invoices',
-					'id' => $item->id, 'action' => 'export_pdf',
-					'library' => 'billing_invoice'
-				], ['class' => 'button large']) ?>
-
+			<div class="bottom-actions__left">
+				<?php if ($item->exists()): ?>
+					<?= $this->html->link($t('delete'), [
+						'action' => 'delete', 'id' => $item->id
+					], ['class' => 'button large delete']) ?>
+				<?php endif ?>
+			</div>
+			<div class="bottom-actions__right">
+				<?php if ($item->exists()): ?>
+					<?= $this->html->link($t('PDF'), [
+						'controller' => 'Invoices',
+						'id' => $item->id, 'action' => 'export_pdf',
+						'library' => 'billing_invoice'
+					], ['class' => 'button large']) ?>
+				<?php endif ?>
 				<?php if (!$item->isPaidInFull()): ?>
 					<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button large']) ?>
 				<?php endif ?>
-			<?php endif ?>
-
-			<?= $this->form->button($t('save'), ['type' => 'submit', 'class' => 'save large']) ?>
+				<?= $this->form->button($t('save'), ['type' => 'submit', 'class' => 'button large save']) ?>
+			</div>
 		</div>
 
 	<?=$this->form->end() ?>

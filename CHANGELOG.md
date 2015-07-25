@@ -6,7 +6,11 @@
 
 ### Improved
 
+- Bigger invoice position descriptions
+
 ### Added
+
+- Taggable invoice positions
 
 ### Changed
 

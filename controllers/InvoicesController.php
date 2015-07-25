@@ -17,7 +17,6 @@ use base_core\models\VirtualUsers;
 use billing_core\models\Currencies;
 use billing_core\models\TaxTypes;
 use billing_invoice\models\Invoices;
-use billing_invoice\models\InvoicePositions;
 use li3_flash_message\extensions\storage\FlashMessage;
 use lithium\g11n\Message;
 
@@ -93,21 +92,7 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		if ($item) {
 			$taxTypes = TaxTypes::find('list');
 		}
-
-		$positionDescriptions = [];
-		$positions = InvoicePositions::find('all', [
-			'fields' => ['description'],
-			'order' => ['description' => 'ASC']
-		]);
-		foreach ($positions as $position) {
-			$positionDescriptions[] = $position->description;
-		}
-		return compact(
-			'currencies', 'statuses',
-			'users', 'virtualUsers',
-			'taxTypes',
-			'positionDescriptions'
-		);
+		return compact('currencies', 'statuses', 'users', 'virtualUsers', 'taxTypes');
 	}
 }
 

@@ -32,7 +32,12 @@ class InvoicePositions extends \base_core\models\Base {
 				'amount' => 'money',
 				'quantity' => 'decimal'
 			]
-		]
+		],
+		'li3_taggable\extensions\data\behavior\Taggable' => [
+			'field' => 'tags',
+			'tagsModel' => 'base_tag\models\Tags',
+			'filters' => ['strtolower']
+		],
 	];
 
 	public $belongsTo = [

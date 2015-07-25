@@ -96,7 +96,7 @@ $this->set([
 				<table>
 					<thead>
 						<tr>
-							<td class="position-description--f"><?= $t('Description') ?>
+							<td class="position-description--f">
 							<td class="numeric--f quantity--f"><?= $t('Quantity') ?>
 							<td class="currency--f"><?= $t('Currency') ?>
 							<td class="price-type--f"><?= $t('Type') ?>
@@ -117,10 +117,17 @@ $this->set([
 									'type' => 'hidden'
 								]) ?>
 								<?= $this->form->field("positions.{$key}.description", [
-									'type' => 'text',
+									'type' => 'textarea',
 									'label' => false,
 									'value' => $child->description,
-									'list' => $positionDescriptions
+									'placeholder' => $t('Description')
+								]) ?>
+								<?= $this->form->field("positions.{$key}.tags", [
+									'type' => 'text',
+									'label' => false,
+									'value' => $child->tags(),
+									'placeholder' => $t('Tags'),
+									'class' => 'input--tags'
 								]) ?>
 							<td class="numeric--f quantity--f">
 								<?= $this->form->field("positions.{$key}.quantity", [
@@ -165,9 +172,15 @@ $this->set([
 					<tr class="nested-add nested-item">
 						<td class="position-description--f">
 							<?= $this->form->field('positions.new.description', [
+								'type' => 'textarea',
+								'label' => false,
+								'placeholder' => $t('Description')
+							]) ?>
+							<?= $this->form->field("positions.new.tags", [
 								'type' => 'text',
 								'label' => false,
-								'list' => $positionDescriptions
+								'placeholder' => $t('Tags'),
+								'class' => 'input--tags'
 							]) ?>
 						<td class="numeric--f quantity--f">
 							<?= $this->form->field('positions.new.quantity', [

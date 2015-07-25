@@ -65,28 +65,11 @@ $this->set([
 				]) ?>
 			</div>
 			<div class="grid-column-right">
-				<div class="compound-users">
-					<?php
-						$user = $item->exists() ? $item->user() : false;
-					?>
-					<?= $this->form->field('user_id', [
-						'type' => 'select',
-						'label' => $t('User'),
-						'list' => $users,
-						'class' => !$user || !$user->isVirtual() ? null : 'hide'
-					]) ?>
-					<?= $this->form->field('virtual_user_id', [
-						'type' => 'select',
-						'label' => false,
-						'list' => $virtualUsers,
-						'class' => $user && $user->isVirtual() ? null : 'hide'
-					]) ?>
-					<?= $this->form->field('user.is_real', [
-						'type' => 'checkbox',
-						'label' => $t('real user'),
-						'checked' => $user ? !$user->isVirtual() : true
-					]) ?>
-				</div>
+				<?= $this->form->field('user_id', [
+					'type' => 'select',
+					'label' => $t('User'),
+					'list' => $users
+				]) ?>
 			</div>
 		</div>
 

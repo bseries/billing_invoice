@@ -2,9 +2,9 @@
 CREATE TABLE `billing_invoice_positions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `billing_invoice_id` int(11) unsigned DEFAULT NULL COMMENT 'NULL until assigned to invoice',
-  `user_id` int(11) unsigned DEFAULT NULL,
-  `virtual_user_id` int(11) unsigned DEFAULT NULL,
+  `user_id` int(11) unsigned NOT NULL,
   `description` varchar(250) NOT NULL,
+  `tags` varchar(250) DEFAULT NULL,
   `quantity` decimal(10,2) unsigned NOT NULL DEFAULT '1.00',
   `amount` int(10) NOT NULL,
   `amount_currency` char(3) NOT NULL DEFAULT 'EUR',
@@ -19,8 +19,7 @@ CREATE TABLE `billing_invoice_positions` (
 -- Create syntax for TABLE 'billing_invoices'
 CREATE TABLE `billing_invoices` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned DEFAULT NULL,
-  `virtual_user_id` int(11) unsigned DEFAULT NULL,
+  `user_id` int(11) unsigned NOT NULL,
   `number` varchar(100) NOT NULL DEFAULT '',
   `date` date NOT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'created',
@@ -44,16 +43,12 @@ CREATE TABLE `billing_invoices` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `number` (`number`),
-  KEY `user` (`user_id`),
-  KEY `virtual_user_id` (`virtual_user_id`)
-) ENGINE=InnoDB CHARSET=utf8;
+  KEY `user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Augment other tables
 ALTER TABLE `users` ADD `is_auto_invoiced` TINYINT(1)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT 'billing' AFTER `is_notified`;
 ALTER TABLE `users` ADD `auto_invoiced` DATETIME  NULL  COMMENT 'billing' AFTER `is_auto_invoiced`;
 ALTER TABLE `users` ADD `auto_invoice_frequency` VARCHAR(20)  NOT NULL  DEFAULT 'monthly'  COMMENT 'billing'  AFTER `auto_invoiced`;
 
-ALTER TABLE `virtual_users` ADD `is_auto_invoiced` TINYINT(1)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT 'billing' AFTER `is_notified`;
-ALTER TABLE `virtual_users` ADD `auto_invoiced` DATETIME  NULL  COMMENT 'billing' AFTER `is_auto_invoiced`;
-ALTER TABLE `virtual_users` ADD `auto_invoice_frequency` VARCHAR(20)  NOT NULL  DEFAULT 'monthly'  COMMENT 'billing'  AFTER `auto_invoiced`;
 

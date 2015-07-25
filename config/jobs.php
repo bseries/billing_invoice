@@ -22,7 +22,6 @@ use billing_invoice\models\Invoices;
 Jobs::recur('billing_invoice:auto_invoice', function() {
 	Invoices::pdo()->beginTransaction();
 
-	// FIXME Make this work for virtual users, too?
 	$users = Users::find('all', [
 		'conditions' => [
 			'is_auto_invoiced' => true

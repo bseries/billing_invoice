@@ -51,7 +51,6 @@ $this->set([
 			</thead>
 			<tbody>
 				<?php foreach ($data as $item): ?>
-					<?php $user = $item->user() ?>
 				<tr data-id="<?= $item->id ?>">
 					<td class="date">
 						<time datetime="<?= $this->date->format($item->date, 'w3c') ?>">
@@ -60,15 +59,7 @@ $this->set([
 					<td class="emphasize number"><?= $item->number ?: '–' ?>
 					<td class="status"><?= $statuses[$item->status] ?>
 					<td class="user">
-						<?php if ($user): ?>
-							<?= $this->html->link($user->number, [
-								'controller' => $user->isVirtual() ? 'VirtualUsers' : 'Users',
-								'action' => 'edit', 'id' => $user->id,
-								'library' => 'base_core'
-							]) ?>
-						<?php else: ?>
-							-
-						<?php endif ?>
+						<?= $this->user->link($item->user()) ?>
 					<td class="money"><?= $this->price->format($item->totals(), 'gross') ?>
 					<td class="money"><?= $this->money->format($item->balance()) ?>
 					<td class="date modified">

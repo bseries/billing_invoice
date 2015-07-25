@@ -47,7 +47,6 @@ class Invoices extends \base_core\models\Base {
 	];
 
 	protected $_actsAs = [
-		'base_core\extensions\data\behavior\User',
 		'base_core\extensions\data\behavior\RelationsPlus',
 		'base_core\extensions\data\behavior\Timestamp',
 		'base_core\extensions\data\behavior\ReferenceNumber',
@@ -59,8 +58,7 @@ class Invoices extends \base_core\models\Base {
 				'date',
 				'address_recipient',
 				'address_organization',
-				'User.number',
-				'VirtualUser.number'
+				'User.number'
 			]
 		]
 	];
@@ -69,10 +67,6 @@ class Invoices extends \base_core\models\Base {
 		'User' => [
 			'to' => 'base_core\models\Users',
 			'key' => 'user_id'
-		],
-		'VirtualUser' => [
-			'to' => 'base_core\models\VirtualUsers',
-			'key' => 'virtual_user_id'
 		]
 	];
 
@@ -197,7 +191,7 @@ class Invoices extends \base_core\models\Base {
 
 		$payment->set([
 			'billing_invoice_id' => $entity->id,
-			$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id,
+			'user_id' => $user->id
 		]);
 		return $payment->save(null, [
 			'localize' => false
@@ -340,7 +334,7 @@ class Invoices extends \base_core\models\Base {
 			return true;
 		}
 		$invoice = static::create($data + [
-			$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id,
+			'user_id' => $user->id,
 			'user_vat_reg_no' => $user->vat_reg_no,
 			'date' => date('Y-m-d'),
 			'status' => 'created',
@@ -491,7 +485,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 			return false;
 		}
 		$data = array_filter($data) + [
-			$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id,
+			'user_id' => $user->id,
 			'user_vat_reg_no' => $user->vat_reg_no,
 			'tax_type' => $group->taxType,
 			'tax_note' => $group->taxType()->note,
@@ -528,7 +522,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 		} else {
 			$item = InvoicePositions::create($value + [
 				'billing_invoice_id' => $entity->id,
-				$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id
+				'user_id' => $user->id
 			]);
 		}
 
@@ -555,7 +549,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 		} else {
 			$item = Payments::create([
 				'billing_invoice_id' => $entity->id,
-				$user->isVirtual() ? 'virtual_user_id' : 'user_id' => $user->id
+				'user_id' => $user->id
 			]);
 		}
 		if (!$item->save($value)) {

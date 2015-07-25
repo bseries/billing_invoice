@@ -26,7 +26,6 @@ class InvoicePositions extends \base_core\models\Base {
 	];
 
 	protected $_actsAs = [
-		'base_core\extensions\data\behavior\User',
 		'base_core\extensions\data\behavior\RelationsPlus',
 		'base_core\extensions\data\behavior\Timestamp',
 		'base_core\extensions\data\behavior\Localizable' => [
@@ -46,10 +45,6 @@ class InvoicePositions extends \base_core\models\Base {
 		'User' => [
 			'to' => 'base_core\models\Users',
 			'key' => 'user_id'
-		],
-		'VirtualUser' => [
-			'to' => 'base_core\models\VirtualUsers',
-			'key' => 'virtual_user_id'
 		],
 		'Invoice' => [
 			'to' => 'billing_invoice\models\Invoices',

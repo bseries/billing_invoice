@@ -13,7 +13,6 @@
 namespace billing_invoice\controllers;
 
 use base_core\models\Users;
-use base_core\models\VirtualUsers;
 use billing_core\models\Currencies;
 use billing_core\models\TaxTypes;
 use billing_invoice\models\Invoices;
@@ -86,13 +85,12 @@ class InvoicesController extends \base_core\controllers\BaseController {
 			'payment-error' => $t('payment error', ['scope' => 'billing_invoice']),
 		]);
 		$currencies = Currencies::find('list');
-		$virtualUsers = [null => '-'] + VirtualUsers::find('list', ['order' => 'name']);
 		$users = [null => '-'] + Users::find('list', ['order' => 'name']);
 
 		if ($item) {
 			$taxTypes = TaxTypes::find('list');
 		}
-		return compact('currencies', 'statuses', 'users', 'virtualUsers', 'taxTypes');
+		return compact('currencies', 'statuses', 'users', 'taxTypes');
 	}
 }
 

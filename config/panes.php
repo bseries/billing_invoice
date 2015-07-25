@@ -26,5 +26,14 @@ Panes::register('billing.invoices', [
 	],
 	'weight' => 40
 ]);
+Panes::register('billing.invoicePositions', [
+	'title' => $t('Pending', ['scope' => 'billing_invoice']),
+	'url' => [
+		'library' => 'billing_invoice',
+		'controller' => 'InvoicePositions', 'action' => 'index',
+		'admin' => true
+	],
+	'weight' => 41
+]);
 
 ?>

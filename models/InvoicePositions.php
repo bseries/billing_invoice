@@ -26,6 +26,8 @@ class InvoicePositions extends \base_core\models\Base {
 	];
 
 	protected $_actsAs = [
+		'base_core\extensions\data\behavior\User',
+		'base_core\extensions\data\behavior\RelationsPlus',
 		'base_core\extensions\data\behavior\Timestamp',
 		'base_core\extensions\data\behavior\Localizable' => [
 			'fields' => [
@@ -41,19 +43,19 @@ class InvoicePositions extends \base_core\models\Base {
 	];
 
 	public $belongsTo = [
+		'User' => [
+			'to' => 'base_core\models\Users',
+			'key' => 'user_id'
+		],
+		'VirtualUser' => [
+			'to' => 'base_core\models\VirtualUsers',
+			'key' => 'virtual_user_id'
+		],
 		'Invoice' => [
 			'to' => 'billing_invoice\models\Invoices',
 			'key' => 'billing_invoice_id'
 		]
 	];
-
-	public function invoice($entity) {
-		return $entity->invoice ?: Invoices::find('first', [
-			'conditions' => [
-				'id' => $entity->billing_invoice_id
-			]
-		]);
-	}
 
 	public static function pending($user) {
 		return static::find('all', [

@@ -155,6 +155,7 @@ $this->set([
 									'type' => 'text',
 									'label' => false,
 									'value' => $this->money->format($child->amount, ['currency' => false]),
+									'placeholder' => $this->money->format(0, ['currency' => false]),
 									'class' => 'input--money'
 								]) ?>
 							<td class="numeric--f price-rate--f">
@@ -207,6 +208,7 @@ $this->set([
 							<?= $this->form->field('positions.new.amount', [
 								'type' => 'text',
 								'label' => false,
+								'placeholder' => $this->money->format(0, ['currency' => false]),
 								'class' => 'input--money'
 							]) ?>
 						<td class="numeric--f price-rate--f">
@@ -327,6 +329,7 @@ $this->set([
 									'type' => 'text',
 									'label' => false,
 									'value' => $this->money->format($child->amount(), ['currency' => false]),
+									'placeholder' => $this->money->format(0, ['currency' => false]),
 									'class' => 'input--money'
 								]) ?>
 							<td class="actions">
@@ -354,6 +357,7 @@ $this->set([
 								<?= $this->form->field("payments.new.amount", [
 									'type' => 'text',
 									'label' => false,
+									'placeholder' => $this->money->format(0, ['currency' => false]),
 									'class' => 'input--money'
 								]) ?>
 							<td class="actions">

@@ -281,11 +281,10 @@ class Invoices extends \base_core\models\Base {
 		$stream = fopen('php://temp', 'w+');
 
 		$user = $entity->user();
+		$sender = Contacts::create(Settings::read('contact.billing'));
 
 		$document = Libraries::locate('document', 'Invoice');
 		$document = new $document();
-
-		$sender = Contacts::create(Settings::read('contact.billing'));
 
 		$document
 			->type($t('Invoice', [

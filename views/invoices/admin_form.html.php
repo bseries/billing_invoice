@@ -25,6 +25,21 @@ $this->set([
 	<?=$this->form->create($item) ?>
 		<?= $this->form->field('id', ['type' => 'hidden']) ?>
 
+		<?php if ($useOwner): ?>
+			<div class="grid-row">
+				<h1><?= $t('Access') ?></h1>
+
+				<div class="grid-column-left"></div>
+				<div class="grid-column-right">
+					<?= $this->form->field('owner_id', [
+						'type' => 'select',
+						'label' => $t('Owner'),
+						'list' => $users
+					]) ?>
+				</div>
+			</div>
+		<?php endif ?>
+
 		<div class="grid-row">
 			<div class="grid-column-left">
 				<?= $this->form->field('number', [

@@ -40,6 +40,9 @@ $this->set([
 					<td class="money"><?= $t('Total (gross)') ?>
 					<td class="money"><?= $t('Balance') ?>
 					<td data-sort="modified" class="date modified table-sort desc"><?= $t('Modified') ?>
+					<?php if ($useOwner): ?>
+						<td class="user"><?= $t('Owner') ?>
+					<?php endif ?>
 					<td class="actions">
 						<?= $this->form->field('search', [
 							'type' => 'search',
@@ -66,6 +69,10 @@ $this->set([
 						<time datetime="<?= $this->date->format($item->modified, 'w3c') ?>">
 							<?= $this->date->format($item->modified, 'date') ?>
 						</time>
+					<?php if ($useOwner): ?>
+						<td class="user">
+							<?= $this->user->link($item->owner()) ?>
+					<?php endif ?>
 					<td class="actions">
 						<?php if (!$item->isPaidInFull()): ?>
 							<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button']) ?>

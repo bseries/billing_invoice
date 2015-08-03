@@ -299,8 +299,7 @@ class Invoices extends \base_core\models\Base {
 				'number' => $entity->number,
 				'locale' => $user->locale,
 				'scope' => 'billing_invoice'
-			]))
-			->vatRegNo(Settings::read('billing.vatRegNo'));
+			]));
 
 		if (($settings = Settings::read('service.bank.default')) && isset($settings['holder']))  {
 			$document->bank($settings);

@@ -126,12 +126,11 @@ class Invoices extends \base_core\models\Base {
 	}
 
 	public function isOverdue($entity) {
-		$date = DateTime::createFromFormat('Y-m-d H:i:s', $entity->date);
-		$overdue = Settings::read('invoice.overdueAfter');
-
-		if (!$overdue) {
+		if (!$overdue = Settings::read('invoice.overdueAfter')) {
 			return false;
 		}
+		$date = DateTime::createFromFormat('Y-m-d H:i:s', $entity->date);
+
 		return $entity->total_gross_outstanding && $date->getTimestamp() > strtotime($overdue);
 	}
 
@@ -329,18 +328,12 @@ class Invoices extends \base_core\models\Base {
 
 	public static function generateFromPending($user, array $data = []) {
 		$positions = InvoicePositions::pending($user);
-		$terms = Settings::read('billing.paymentTerms');
 
 		if (!$positions->count()) {
 			return true;
 		}
 		$invoice = static::create($data + [
-			'user_id' => $user->id,
-			'user_vat_reg_no' => $user->vat_reg_no,
-			'date' => date('Y-m-d'),
-			'status' => 'created',
-			// 'note' => $t('Order No.') . ': ' . $entity->number,
-			'terms' => $terms($user)
+			'user_id' => $user->id
 		]);
 		$invoice = $user->address('billing')->copy($invoice, 'address_');
 
@@ -421,11 +414,11 @@ class Invoices extends \base_core\models\Base {
 
 	public function send($entity) {
 		$user = $entity->user();
-		$contact = Settings::read('contact.billing');
 
 		if (!$user->is_notified) {
 			return;
 		}
+		$contact = Settings::read('contact.billing');
 
 		$result = $entity->save(['status' => 'sent'], [
 			'whitelist' => ['status'],
@@ -477,21 +470,21 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 	$user = $entity->user($data);
 
 	if (!$entity->exists()) {
-		$terms = Settings::read('billing.paymentTerms');
-
 		$group = ClientGroups::find('first', [
 			'conditions' => compact('user')
 		]);
 		if (!$group) {
 			return false;
 		}
+		$terms = Settings::read('billing.paymentTerms');
+
 		$data = array_filter($data) + [
 			'user_id' => $user->id,
 			'user_vat_reg_no' => $user->vat_reg_no,
 			'tax_type' => $group->taxType,
 			'tax_note' => $group->taxType()->note,
 			'date' => date('Y-m-d'),
-			'status' => 'awaiting-payment',
+			'status' => 'created',
 			'terms' => is_callable($terms) ? $terms($user) : $terms
 		];
 		$data = $user->address('billing')->copy($data, 'address_');

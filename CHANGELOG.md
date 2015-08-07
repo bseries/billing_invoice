@@ -18,3 +18,5 @@
   complexity.
 
 ### Backwards Incompatible Changes
+
+- Invoice PDFs don't get bank and paypal settings autoset anymore.

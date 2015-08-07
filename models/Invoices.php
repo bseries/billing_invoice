@@ -300,13 +300,6 @@ class Invoices extends \base_core\models\Base {
 				'scope' => 'billing_invoice'
 			]));
 
-		if (($settings = Settings::read('service.bank.default')) && isset($settings['holder']))  {
-			$document->bank($settings);
-		}
-		if (($settings = Settings::read('service.paypal.default')) && isset($settings['email']))  {
-			$document->paypal($settings);
-		}
-
 		$document->compile();
 		$document->render($stream);
 

@@ -458,9 +458,10 @@ class Invoices extends \base_core\models\Base {
 Invoices::applyFilter('save', function($self, $params, $chain) {
 	$entity = $params['entity'];
 	$data =& $params['data'];
-	$user = $entity->user($data);
 
 	if (!$entity->exists()) {
+		$user = $entity->user(['conditions' => ['id' => $data['user_id']]]);
+
 		$group = ClientGroups::find('first', [
 			'conditions' => compact('user')
 		]);
@@ -479,6 +480,8 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 			'terms' => is_callable($terms) ? $terms($user) : $terms
 		];
 		$data = $user->address('billing')->copy($data, 'address_');
+	} else {
+		$user = $entity->user();
 	}
 
 	if (!$result = $chain->next($self, $params, $chain)) {

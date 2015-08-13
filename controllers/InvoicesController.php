@@ -76,19 +76,7 @@ class InvoicesController extends \base_core\controllers\BaseController {
 	}
 
 	protected function _selects($item = null) {
-		extract(Message::aliases());
-
-		$statuses = Invoices::enum('status', [
-			'created' => $t('created', ['scope' => 'billing_invoice']), // open
-			'sent' => $t('sent', ['scope' => 'billing_invoice']), // open
-			'paid' => $t('paid', ['scope' => 'billing_invoice']),  // paid
-			'cancelled' => $t('cancelled', ['scope' => 'billing_invoice']), // storno
-
-			'awaiting-payment' => $t('awaiting payment', ['scope' => 'billing_invoice']),
-			'payment-accepted' => $t('payment accepted', ['scope' => 'billing_invoice']),
-			'payment-remotely-accepted' => $t('payment remotely accepted', ['scope' => 'billing_invoice']),
-			'payment-error' => $t('payment error', ['scope' => 'billing_invoice']),
-		]);
+		$statuses = Invoices::enum('status');
 		$currencies = Currencies::find('list');
 		$users = [null => '-'] + Users::find('list', ['order' => 'name']);
 

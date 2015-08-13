@@ -60,7 +60,7 @@ $this->set([
 							<?= $this->date->format($item->date, 'date') ?>
 						</time>
 					<td class="emphasize number"><?= $item->number ?: '–' ?>
-					<td class="status"><?= $statuses[$item->status] ?>
+					<td class="status"><?= $item->status ?>
 					<td class="user">
 						<?= $this->user->link($item->user()) ?>
 					<td class="money"><?= $this->price->format($item->totals(), 'gross') ?>

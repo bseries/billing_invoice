@@ -395,7 +395,10 @@ $this->set([
 				<?php if (!$item->isPaidInFull()): ?>
 					<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button large']) ?>
 				<?php endif ?>
-				<?= $this->form->button($t('save'), ['type' => 'submit', 'class' => 'button large save']) ?>
+				<?= $this->form->button($t('save'), [
+					'type' => 'submit',
+					'class' => 'button large save'
+				]) ?>
 			</div>
 		</div>
 

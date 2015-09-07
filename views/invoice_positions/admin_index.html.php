@@ -57,12 +57,6 @@ $this->set([
 							<?= $this->date->format($item->modified, 'date') ?>
 						</time>
 					<td class="actions">
-						<?= $this->html->link($t('delete'), [
-							'action' => 'delete',
-							'id' => $item->id,
-						], [
-							'class' => 'button delete'
-						]) ?>
 						<?= $this->html->link($t('open'), ['id' => $item->id, 'action' => 'edit', 'library' => 'billing_invoice'], ['class' => 'button']) ?>
 				<?php endforeach ?>
 			</tbody>

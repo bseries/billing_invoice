@@ -26,8 +26,9 @@ use Exception;
 use base_address\models\Addresses;
 use base_address\models\Contacts;
 use base_core\extensions\cms\Settings;
-use billing_core\models\TaxTypes;
+use base_tag\models\Tags;
 use billing_core\models\ClientGroups;
+use billing_core\models\TaxTypes;
 use billing_invoice\models\InvoicePositions;
 use billing_payment\models\Payments;
 use li3_mailer\action\Mailer;
@@ -111,6 +112,36 @@ class Invoices extends \base_core\models\Base {
 		static::behavior('base_core\extensions\data\behavior\ReferenceNumber')->config(
 			Settings::read('invoice.number')
 		);
+	}
+
+	public function positionsGroupedByTags($entity) {
+		$positions = $entity->positions();
+
+		$seen = [];
+		$groups = [];
+
+		foreach ($positions as $position) {
+			// Search for first dollar prefixed tag and use it
+			// as the main tag.
+			$tags = $position->tags(['serialized' => false, 'entities' => true]);
+			$group = Tags::create();
+
+			foreach ($tags as $tag) {
+				if ($tag->name[0] === '$') {
+					$group = $tag;
+					break;
+				}
+			}
+
+			if (!isset($groups[$group->name])) {
+				$groups[$group->name] = [
+					'positions' => [],
+					'tag' => $group
+				];
+			}
+			$groups[$group->name]['positions'][] = $position;
+		}
+		return $groups;
 	}
 
 	public function title($entity) {

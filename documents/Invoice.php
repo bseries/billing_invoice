@@ -29,7 +29,7 @@ use lithium\g11n\Message;
  */
 class Invoice extends \billing_core\documents\BaseFinancial {
 
-	protected $_layout = 'financial';
+	protected $_layout = 'invoice';
 
 	protected function _preparePage() {
 		extract(Message::aliases());

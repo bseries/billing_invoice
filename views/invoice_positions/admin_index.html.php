@@ -67,4 +67,8 @@ $this->set([
 
 	<?=$this->view()->render(['element' => 'paging'], compact('paginator'), ['library' => 'base_core']) ?>
 
+	<div class="bottom-help">
+		<?= $t('These invoice positions are not yet associated with an invoice.') ?>
+	</div>
+
 </article>

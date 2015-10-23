@@ -29,15 +29,15 @@ use lithium\g11n\Message;
  */
 class Invoice extends \billing_core\documents\BaseFinancial {
 
-	protected $_layout = 'invoice';
+	protected $_layout = 'financial';
 
-	protected function _compileHeaderFooter() {
+	protected function _preparePage() {
 		extract(Message::aliases());
 
 		$backupHeight = $this->_currentHeight;
-		$backup = $this->_borderHorizontal;
+		$backup = $this->_margin;
 
-		$this->_borderHorizontal = [33, 33];
+		$this->_margin = [100, 33, 100, 33];
 		$this->_currentHeight = 800;
 
 		foreach (explode("\n", $this->_sender->address()->format('postal')) as $key => $line) {
@@ -65,7 +65,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 			]);
 		}
 
-		$this->_borderHorizontal = $backup;
+		$this->_margin = $backup;
 		$this->_currentHeight = $backupHeight;
 	}
 
@@ -102,8 +102,8 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 	// 3.
 	protected function _compileType() {
-		$backup = $this->_borderHorizontal;
-		$this->_borderHorizontal = [33, 33];
+		$backup = $this->_margin;
+		$this->_margin = [100, 33, 100, 33];
 		$this->_setFont(24, true);
 
 		$this->_drawText(strtoupper($this->_type), 'right', [
@@ -111,15 +111,15 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 		]);
 
 		$this->_setFont($this->_fontSize);
-		$this->_borderHorizontal = $backup;
+		$this->_margin = $backup;
 	}
 
 	// 4.
 	protected function _compileNumbers() {
 		extract(Message::aliases());
 
-		$backup = $this->_borderHorizontal;
-		$this->_borderHorizontal = [33, 33];
+		$backup = $this->_margin;
+		$this->_margin = [100, 33, 100, 33];
 
 		$this->_drawText($t('{:number} — Client No.', [
 			'scope' => 'base_document',
@@ -146,7 +146,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 			]);
 		}
 
-		$this->_borderHorizontal = $backup;
+		$this->_margin = $backup;
 	}
 
 	// 5.

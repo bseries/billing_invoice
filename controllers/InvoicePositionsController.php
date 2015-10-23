@@ -17,6 +17,9 @@
 
 namespace billing_invoice\controllers;
 
+use base_core\models\Users;
+use billing_core\models\Currencies;
+use billing_core\models\TaxTypes;
 use billing_invoice\models\InvoicePositions;
 
 class InvoicePositionsController extends \base_core\controllers\BaseController {
@@ -29,6 +32,17 @@ class InvoicePositionsController extends \base_core\controllers\BaseController {
 	protected function _all($model, $query) {
 		$query['conditions']['billing_invoice_id'] = null;
 		return $model::find('all', $query);
+	}
+
+	protected function _selects($item = null) {
+		$currencies = Currencies::find('list');
+		$users = [null => '-'] + Users::find('list', ['order' => 'name']);
+
+		if ($item) {
+			$taxTypes = TaxTypes::find('list');
+		}
+
+		return compact('currencies', 'users', 'taxTypes');
 	}
 }
 

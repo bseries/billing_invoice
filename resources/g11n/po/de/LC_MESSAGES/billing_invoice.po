@@ -150,11 +150,11 @@ msgstr "Rechnung #{:number}"
 
 #: models/Invoices.php:423
 msgid "Your invoice #{:number}."
-msgstr "Ihre  Rechnung #{:number}."
+msgstr "Ihre Rechnung #{:number}."
 
 #: views/invoice_positions/admin_index.html.php:12
 msgid "pending invoice positions"
-msgstr "wiederholende Rechnungspositionen"
+msgstr "Unerledigte Rechnungspositionen"
 
 #: views/invoice_positions/admin_index.html.php:29
 msgid "position"

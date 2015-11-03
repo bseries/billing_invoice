@@ -18,7 +18,7 @@
 namespace billing_invoice\config;
 
 use DateTime;
-use base_core\extensions\cms\Jobs;
+use base_core\async\Jobs;
 use base_core\extensions\cms\Settings;
 use base_core\models\Users;
 use billing_invoice\models\Invoices;
@@ -45,7 +45,7 @@ Jobs::recur('billing_invoice:auto_invoice', function() {
 	Invoices::pdo()->commit();
 }, [
 	'frequency' => Jobs::FREQUENCY_LOW,
-	'depends' => ['billing_time:invoice_place_timed' => 'optional']
+	'needs' => ['billing_time:invoice_place_timed' => 'optional']
 ]);
 
 // This will auto send any invoice that is plain created but not sent.
@@ -67,7 +67,7 @@ Jobs::recur('billing_invoice:auto_send_invoices', function() {
 	}
 }, [
 	'frequency' => Jobs::FREQUENCY_LOW,
-	'depends' => ['billing_invoice:auto_invoice']
+	'needs' => ['billing_invoice:auto_invoice']
 ]);
 
 ?>

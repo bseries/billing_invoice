@@ -11,6 +11,7 @@
 ### Added
 
 - Taggable invoice positions
+- Auto Paying
 
 ### Changed
 

@@ -383,7 +383,7 @@ class Invoices extends \base_core\models\Base {
 
 	public static function mustAutoInvoice($user) {
 		if (!$user->auto_invoice_frequency) {
-			trigger_error("User `{$user->id}` has not auto invoice frequency.", E_USER_NOTICE);
+			trigger_error("User `{$user->id}` has no auto invoice frequency.", E_USER_NOTICE);
 			return false;
 		}
 		if (!$user->auto_invoiced) {

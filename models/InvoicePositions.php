@@ -80,7 +80,7 @@ class InvoicePositions extends \base_core\models\Base {
 	}
 
 	public function taxType($entity) {
-		return TaxTypes::find('first', ['conditions' => ['id' => $entity->tax_type]]);
+		return TaxTypes::find('first', ['conditions' => ['name' => $entity->tax_type]]);
 	}
 
 	// Assumes format "Foobar (#12345)".

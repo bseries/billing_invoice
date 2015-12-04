@@ -360,7 +360,8 @@ class Invoices extends \base_core\models\Base {
 			return true;
 		}
 		$invoice = static::create($data + [
-			'user_id' => $user->id
+			'user_id' => $user->id,
+			'tax_type' => $user->tax_type
 		]);
 		$invoice = $user->address('billing')->copy($invoice, 'address_');
 
@@ -429,7 +430,7 @@ class Invoices extends \base_core\models\Base {
 		$invoice = static::generateFromPending($user);
 
 		if ($invoice === null) {
-			continue; // No pending positions, no invoice to send.
+			return true; // No pending positions, no invoice to send.
 		}
 		if ($invoice === false) {
 			return false;

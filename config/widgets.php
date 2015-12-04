@@ -35,6 +35,9 @@ Widgets::register('cashflow', function() use ($t) {
 			'status' => [
 				'!=' => 'cancelled'
 			]
+		],
+		'fields' => [
+			'id'
 		]
 	]);
 

@@ -511,7 +511,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 			'user_id' => $user->id,
 			'user_vat_reg_no' => $user->vat_reg_no,
 			'tax_type' => $group->taxType,
-			'tax_note' => $group->taxType()->note,
+			'tax_note' => $group->taxType()->note(),
 			'date' => date('Y-m-d'),
 			'status' => 'created',
 			'terms' => is_callable($terms) ? $terms($user) : $terms

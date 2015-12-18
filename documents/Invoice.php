@@ -49,6 +49,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 		$this->_currentHeight = 90;
 
 		if ($this->_sender->vat_reg_no) {
+			$this->_useStyle('gamma');
 			$this->_drawText($t('{:number} — VAT Reg. No.', [
 				'scope' => 'base_document',
 				'locale' => $this->_recipient->locale,
@@ -56,6 +57,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 			]), 'right');
 		}
 		if ($this->_sender->tax_no) {
+			$this->_useStyle('gamma');
 			$this->_drawText($t('{:number} — Tax No.', [
 				'scope' => 'base_document',
 				'locale' => $this->_recipient->locale,
@@ -71,6 +73,8 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 	// 1.
 	protected function _compileRecipientAddressField() {
+		$this->_useStyle('gamma');
+
 		foreach (explode("\n", $this->_recipient->address('billing')->format('postal')) as $key => $line) {
 			$this->_drawText($line, 'left', [
 				'offsetY' => $key ? $this->_skipLines() : 685
@@ -80,6 +84,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 	// 2.
 	protected function _compileDateAndCity() {
+		$this->_useStyle('gamma');
 		extract(Message::aliases());
 
 		$formatter = new IntlDateFormatter(
@@ -102,20 +107,22 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 	// 3.
 	protected function _compileType() {
+		$this->_useStyle('beta--bold');
+
 		$backup = $this->_margin;
 		$this->_margin = [100, 33, 100, 33];
-		$this->_setFont(24, true);
 
 		$this->_drawText(strtoupper($this->_type), 'right', [
 			'offsetY' => 680
 		]);
 
-		$this->_setFont($this->_fontSize);
 		$this->_margin = $backup;
 	}
 
 	// 4.
 	protected function _compileNumbers() {
+		$this->_useStyle('gamma');
+
 		extract(Message::aliases());
 
 		$backup = $this->_margin;
@@ -151,16 +158,16 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 	// 5.
 	protected function _compileSubject() {
-		$this->_setFont($this->_fontSize, true);
+		$this->_useStyle('gamma--bold');
 
 		$this->_drawText($this->_subject, 'left', [
 			'offsetY' => 540
 		]);
-		$this->_setFont($this->_fontSize);
 	}
 
 	// 6.
 	protected function _compileHello() {
+		$this->_useStyle('gamma');
 		extract(Message::aliases());
 
 		$this->_drawText($t('Dear {:name},', [
@@ -174,6 +181,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 	//  7.
 	protected function _compileIntro() {
+		$this->_useStyle('gamma');
 		$this->_drawText($this->_intro, 'left', [
 			'offsetY' => $this->_skipLines(2)
 		]);
@@ -181,12 +189,11 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 	// 8.
 	protected function _compileTableHeader() {
+		$this->_useStyle('gamma--bold');
 		extract(Message::aliases());
 
 		$showNet = in_array($this->_recipient->role, ['merchant', 'admin']);
 		$this->_currentHeight = 435;
-
-		$this->_setFont(11, true);
 
 		$this->_drawText($t('Description', [
 			'scope' => 'base_document',
@@ -218,13 +225,12 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 		]);
 
 		$this->_currentHeight = $this->_skipLines();
-
-		$this->_setFont($this->_fontSize, false);
 		$this->_drawHorizontalLine();
 	}
 
 	// 9.
 	protected function _compileTablePosition($position) {
+		$this->_useStyle('gamma');
 		extract(Message::aliases());
 
 		$showNet = in_array($this->_recipient->role, ['merchant', 'admin']);
@@ -266,7 +272,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 
 		$moniesFormatter = new MoniesFormatter($this->_recipient->locale);
 
-		$this->_setFont($this->_fontSize, true);
+		$this->_useStyle('gamma--bold');
 
 		$this->_currentHeight = $this->_skipLines(3);
 		$this->_drawHorizontalLine();
@@ -301,8 +307,6 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 			);
 		}
 
-		$this->_setFont(11, true);
-
 		$this->_currentHeight = $this->_skipLines(1.5);
 		$this->_drawHorizontalLine();
 		$this->_currentHeight = $this->_skipLines();
@@ -317,7 +321,7 @@ class Invoice extends \billing_core\documents\BaseFinancial {
 			['offsetX' => 500, 'width' => 100]
 		);
 
-		$this->_setFont($this->_fontSize);
+		$this->_useStyle('gamma');
 
 		$this->_currentHeight = $this->_skipLines(2.5);
 		$this->_drawText($this->_entity->terms);

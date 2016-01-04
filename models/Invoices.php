@@ -114,11 +114,15 @@ class Invoices extends \base_core\models\Base {
 		);
 	}
 
-	public function positionsGroupedByTags($entity) {
+	public function positionsGroupedByTags($entity, array $customTagsOrder = []) {
 		$positions = $entity->positions();
 
 		$seen = [];
 		$groups = [];
+
+		if ($customTagsOrder) {
+			$groups = array_fill_keys($customTagsOrder, null);
+		}
 
 		foreach ($positions as $position) {
 			// Search for first dollar prefixed tag and use it

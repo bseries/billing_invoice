@@ -145,7 +145,7 @@ class Invoices extends \base_core\models\Base {
 			}
 			$groups[$group->name]['positions'][] = $position;
 		}
-		return $groups;
+		return array_filter($groups);
 	}
 
 	public function title($entity) {

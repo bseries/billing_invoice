@@ -242,6 +242,18 @@ $this->set([
 			</section>
 		</div>
 
+		<?php if (Settings::read('invoice.letter')): ?>
+			<div class="grid-row">
+				<section class="grid-column-right">
+					<?= $this->form->field('letter', [
+						'type' => 'textarea',
+						'label' => $t('Letter')
+					]) ?>
+					<div class="help"><?= $t('Visible to recipient.') ?></div>
+				</section>
+			</div>
+		<?php endif ?>
+
 		<div class="grid-row">
 			<section class="grid-column-left">
 				<?= $this->form->field('terms', [

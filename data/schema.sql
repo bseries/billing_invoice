@@ -1,3 +1,4 @@
+
 -- Create syntax for TABLE 'billing_invoice_positions'
 CREATE TABLE `billing_invoice_positions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -19,8 +20,9 @@ CREATE TABLE `billing_invoice_positions` (
 -- Create syntax for TABLE 'billing_invoices'
 CREATE TABLE `billing_invoices` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) unsigned NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
-  `number` varchar(100) NOT NULL DEFAULT '',
+`number` varchar(100) NOT NULL DEFAULT '',
   `date` date NOT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'created',
   `user_vat_reg_no` varchar(250) DEFAULT '',
@@ -35,6 +37,7 @@ CREATE TABLE `billing_invoices` (
   `address_country` char(2) DEFAULT 'DE',
   `address_administrative_area` varchar(200) DEFAULT NULL,
   `address_phone` varchar(200) DEFAULT NULL,
+  `letter` text,
   `terms` text,
   `note` text,
   `tax_type` varchar(20) NOT NULL DEFAULT '',

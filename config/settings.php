@@ -49,4 +49,7 @@ Settings::register('invoice.autoSend', false);
 // a per user basis.
 Settings::register('invoice.autoPay', false);
 
+// Use letter feature.
+Settings::register('invoice.letter', false);
+
 ?>

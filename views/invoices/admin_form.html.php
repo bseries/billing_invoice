@@ -244,13 +244,12 @@ $this->set([
 
 		<?php if (Settings::read('invoice.letter')): ?>
 			<div class="grid-row">
-				<section class="grid-column-right">
-					<?= $this->form->field('letter', [
-						'type' => 'textarea',
-						'label' => $t('Letter')
-					]) ?>
-					<div class="help"><?= $t('Visible to recipient.') ?></div>
-				</section>
+				<?= $this->form->field('letter', [
+					'type' => 'textarea',
+					'label' => $t('Letter'),
+					'class' => 'textarea-size--gamma'
+				]) ?>
+				<div class="help"><?= $t('Visible to recipient.') ?></div>
 			</div>
 		<?php endif ?>
 

@@ -52,7 +52,6 @@ CREATE TABLE `billing_invoices` (
 -- Augment other tables
 ALTER TABLE `users` ADD `is_auto_invoiced` TINYINT(1)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT 'billing' AFTER `is_notified`;
 ALTER TABLE `users` ADD `is_auto_paying` TINYINT(1)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT 'billing' AFTER `is_auto_invoiced`;
-ALTER TABLE `users` ADD `payment_method` VARCHAR(100)  NULL  DEFAULT NULL  AFTER `tax_no`;
 ALTER TABLE `users` ADD `auto_invoiced` DATETIME  NULL  COMMENT 'billing' AFTER `is_auto_invoiced`;
 ALTER TABLE `users` ADD `auto_invoice_frequency` VARCHAR(20)  NOT NULL  DEFAULT 'monthly'  COMMENT 'billing'  AFTER `auto_invoiced`;
 

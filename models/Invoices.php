@@ -28,7 +28,7 @@ use base_address\models\Contacts;
 use base_core\extensions\cms\Settings;
 use base_tag\models\Tags;
 use billing_core\models\ClientGroups;
-use billing_core\models\TaxTypes;
+use billing_core\billing\TaxType;
 use billing_invoice\models\InvoicePositions;
 use billing_payment\models\Payments;
 use li3_mailer\action\Mailer;
@@ -369,7 +369,7 @@ class Invoices extends \base_core\models\Base {
 	}
 
 	public function taxType($entity) {
-		return TaxTypes::find('first', ['conditions' => ['name' => $entity->tax_type]]);
+		return TaxType::config($entity->tax_type);
 	}
 
 	public function clientGroup($entity) {

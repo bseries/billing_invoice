@@ -52,4 +52,12 @@ Settings::register('invoice.autoPay', false);
 // Use letter feature.
 Settings::register('invoice.letter', false);
 
+// The default terms to use. Can either be `false` to provide none, or
+// a text string with the terms or a callable which must return the terms text.
+//
+// ```
+// Settings::register('invoice.terms', function($user) { return 'foo'; }));
+// ```
+Settings::register('invoice.terms', false);
+
 ?>

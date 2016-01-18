@@ -510,7 +510,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 		if (!$group) {
 			return false;
 		}
-		$terms = Settings::read('billing.paymentTerms');
+		$terms = Settings::read('invoice.terms');
 
 		$data = array_filter($data) + [
 			'user_id' => $user->id,

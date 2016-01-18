@@ -511,6 +511,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 			return false;
 		}
 		$terms = Settings::read('invoice.terms');
+		$letter = Settings::read('invoice.letter');
 
 		$data = array_filter($data) + [
 			'user_id' => $user->id,
@@ -519,7 +520,8 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 			'tax_note' => $group->taxType()->note(),
 			'date' => date('Y-m-d'),
 			'status' => 'created',
-			'terms' => is_callable($terms) ? $terms($user) : $terms
+			'letter' => !is_bool($letter) ? (is_callable($letter) ? $letter($user) : $letter) : null,
+			'terms' => !is_bool($terms) ? (is_callable($terms) ? $terms($user) : $terms) : null
 		];
 		$data = $user->address('billing')->copy($data, 'address_');
 	} else {

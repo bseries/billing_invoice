@@ -49,14 +49,25 @@ Settings::register('invoice.autoSend', false);
 // a per user basis.
 Settings::register('invoice.autoPay', false);
 
-// Use letter feature.
-Settings::register('invoice.letter', false);
-
-// The default terms to use. Can either be `false` to provide none, or
-// a text string with the terms or a callable which must return the terms text.
+// The default letter to use. Can either be `false` to disable feature, `true` to enable
+// it. Provide a text string with the text or a callable which must return the text to
+// enable and provide a default text.
 //
 // ```
-// Settings::register('invoice.terms', function($user) { return 'foo'; }));
+// Settings::register('...', true);
+// Settings::register('...', 'foo');
+// Settings::register('...', function($user) { return 'foo'; }));
+// ```
+Settings::register('invoice.letter', false);
+
+// The default terms to use. Can either be `false` to disable feature, `true` to enable
+// it. Provide a text string with the text or a callable which must return the text to
+// enable and provide a default text.
+//
+// ```
+// Settings::register('...', true);
+// Settings::register('...', 'foo');
+// Settings::register('...', function($user) { return 'foo'; }));
 // ```
 Settings::register('invoice.terms', false);
 

@@ -259,7 +259,12 @@ $this->set([
 					'type' => 'textarea',
 					'label' => $t('Terms')
 				]) ?>
-				<div class="help"><?= $t('Visible to recipient.') ?></div>
+				<div class="help">
+					<?php if (Settings::read('estimate.terms')): ?>
+						<?= $t('Leave empty to use default terms.') ?>
+					<?php endif ?>
+					<?= $t('Visible to recipient.') ?>
+				</div>
 			</section>
 			<section class="grid-column-right">
 				<?= $this->form->field('note', [

@@ -152,15 +152,6 @@ class Invoices extends \base_core\models\Base {
 		return '#' . $entity->number;
 	}
 
-	public function quantity($entity) {
-		$result = preg_match('/^([0-9])\sx\s/', $entity->title, $matches);
-
-		if (!$result) {
-			return 1;
-		}
-		return (integer) $matches[1];
-	}
-
 	public function date($entity) {
 		return DateTime::createFromFormat('Y-m-d', $entity->date);
 	}
@@ -493,6 +484,16 @@ class Invoices extends \base_core\models\Base {
 
 	public function totalTax($entity) {
 		throw new Exception('Replaced by totals().');
+	}
+
+	public function quantity($entity) {
+		trigger_error('quantity() is deprecated.', E_USER_DEPRECATED);
+		$result = preg_match('/^([0-9])\sx\s/', $entity->title, $matches);
+
+		if (!$result) {
+			return 1;
+		}
+		return (integer) $matches[1];
 	}
 }
 

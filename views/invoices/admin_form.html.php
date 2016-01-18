@@ -249,19 +249,23 @@ $this->set([
 					'label' => $t('Letter'),
 					'class' => 'textarea-size--gamma'
 				]) ?>
-				<div class="help"><?= $t('Visible to recipient.') ?></div>
+			<?php if (Settings::read('invoice.letter') !== true): ?>
+				<div class="help">
+					<?= $t('Leave empty to use default letter.') ?>
+				</div>
+			<?php endif ?>
 			</div>
 		<?php endif ?>
 
 		<div class="grid-row">
 			<section class="grid-column-left">
-				<?php if (Settings::read('estimate.terms') !== false): ?>
+				<?php if (Settings::read('invoice.terms') !== false): ?>
 					<?= $this->form->field('terms', [
 						'type' => 'textarea',
 						'label' => $t('Terms')
 					]) ?>
 					<div class="help">
-						<?php if (Settings::read('estimate.terms') !== true): ?>
+						<?php if (Settings::read('invoice.terms') !== true): ?>
 							<?= $t('Leave empty to use default terms.') ?>
 						<?php endif ?>
 						<?= $t('Visible to recipient.') ?>

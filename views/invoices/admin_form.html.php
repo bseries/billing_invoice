@@ -225,19 +225,21 @@ $this->set([
 						<tr>
 							<td colspan="9" class="nested-add-action">
 								<?= $this->form->button($t('add position'), ['type' => 'button', 'class' => 'button add-nested']) ?>
-						<tr class="totals">
-							<td colspan="6"><?= $t('Total (net)') ?>
-							<td><?= $this->money->format($item->totals()->getNet()) ?>
+						<?php if ($item->positions()->count()): ?>
+							<tr class="totals">
+								<td colspan="6"><?= $t('Total (net)') ?>
+								<td><?= $this->money->format($item->totals()->getNet()) ?>
 
-						<?php foreach ($item->taxes() as $rate => $tax): ?>
-						<tr class="totals">
-							<td colspan="6"><?= $t('Tax ({:rate}%)', ['rate' => $rate]) ?>
-							<td><?= $this->money->format($tax) ?>
-						<?php endforeach ?>
+							<?php foreach ($item->taxes() as $rate => $tax): ?>
+							<tr class="totals">
+								<td colspan="6"><?= $t('Tax ({:rate}%)', ['rate' => $rate]) ?>
+								<td><?= $this->money->format($tax) ?>
+							<?php endforeach ?>
 
-						<tr class="totals">
-							<td colspan="6"><?= $t('Total (gross)') ?>
-							<td><?= $this->money->format($item->totals()->getGross()) ?>
+							<tr class="totals">
+								<td colspan="6"><?= $t('Total (gross)') ?>
+								<td><?= $this->money->format($item->totals()->getGross()) ?>
+						<?php endif ?>
 					</tfoot>
 				</table>
 			</section>
@@ -376,12 +378,14 @@ $this->set([
 						<tr class="nested-add-action">
 							<td colspan="5">
 								<?= $this->form->button($t('add payment'), ['type' => 'button', 'class' => 'button add-nested']) ?>
-						<tr class="totals">
-							<td colspan="3"><?= $t('Total') ?>
-							<td><?= $this->money->format($item->paid()) ?>
-						<tr class="totals">
-							<td colspan="3"><?= $t('Balance') ?>
-							<td><?= $this->money->format($item->balance()) ?>
+						<?php if ($item->payments()->count()): ?>
+							<tr class="totals">
+								<td colspan="3"><?= $t('Total') ?>
+								<td><?= $this->money->format($item->paid()) ?>
+							<tr class="totals">
+								<td colspan="3"><?= $t('Balance') ?>
+								<td><?= $this->money->format($item->balance()) ?>
+						<?php endif ?>
 					</tfoot>
 				</table>
 			</section>

@@ -123,7 +123,7 @@ class InvoicePositions extends \base_core\models\Base {
 	}
 }
 
-InvoicesPositions::applyFilter('save', function($self, $params, $chain) {
+InvoicePositions::applyFilter('save', function($self, $params, $chain) {
 	$data =& $params['data'];
 
 	// Ensure billing_invoice_id is never 0, but NULL

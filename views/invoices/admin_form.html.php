@@ -105,6 +105,7 @@ $this->set([
 							<td class="actions">
 					</thead>
 					<tbody>
+				<?php if ($item->exists()): ?>
 					<?php foreach ($item->positions() as $key => $child): ?>
 						<tr class="nested-item">
 							<td class="position-description--f">
@@ -169,6 +170,7 @@ $this->set([
 							<td class="actions">
 								<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
 					<?php endforeach ?>
+				<?php endif ?>
 					<tr class="nested-add nested-item">
 						<td class="position-description--f">
 							<?= $this->form->field('positions.new.description', [

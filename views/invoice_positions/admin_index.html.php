@@ -34,6 +34,7 @@ $this->set([
 			<thead>
 				<tr>
 					<td data-sort="User.number" class="user table-sort"><?= $t('Recipient') ?>
+					<td data-sort="description" class="description table-sort"><?= $t('Description') ?>
 					<td class="money"><?= $t('Total (net)') ?>
 					<td data-sort="modified" class="date modified table-sort desc"><?= $t('Modified') ?>
 					<td class="actions">
@@ -51,6 +52,7 @@ $this->set([
 				<tr data-id="<?= $item->id ?>">
 					<td class="user">
 						<?= $this->user->link($item->user()) ?>
+					<td class="description"><?= $item->description ?>
 					<td class="money"><?= $this->price->format($item->total(), 'net') ?>
 					<td class="date modified">
 						<time datetime="<?= $this->date->format($item->modified, 'w3c') ?>">

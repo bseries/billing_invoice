@@ -37,7 +37,7 @@ $this->set([
 					<td data-sort="number" class="emphasize number id table-sort"><?= $t('Number') ?>
 					<td data-sort="status" class="status table-sort"><?= $t('Status') ?>
 					<td data-sort="User.number" class="user table-sort"><?= $t('Recipient') ?>
-					<td class="money"><?= $t('Total (gross)') ?>
+					<td class="money"><?= $t('Total (net)') ?>
 					<td class="money"><?= $t('Balance') ?>
 					<td data-sort="modified" class="date modified table-sort desc"><?= $t('Modified') ?>
 					<?php if ($useOwner): ?>
@@ -63,7 +63,7 @@ $this->set([
 					<td class="status"><?= $item->status ?>
 					<td class="user">
 						<?= $this->user->link($item->user()) ?>
-					<td class="money"><?= $this->price->format($item->totals(), 'gross') ?>
+					<td class="money"><?= $this->price->format($item->totals(), 'net') ?>
 					<td class="money"><?= $this->money->format($item->balance()) ?>
 					<td class="date modified">
 						<time datetime="<?= $this->date->format($item->modified, 'w3c') ?>">

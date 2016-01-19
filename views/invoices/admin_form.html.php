@@ -45,9 +45,9 @@ $this->set([
 				<?= $this->form->field('number', [
 					'type' => 'text',
 					'label' => $t('Number'),
-					'class' => 'use-for-title'
+					'class' => 'use-for-title',
+					'placeholder' => $t('Leave empty to autogenerate number.')
 				]) ?>
-				<div class="help"><?= $t('Leave empty to autogenerate number.') ?></div>
 			</div>
 			<div class="grid-column-right">
 				<?= $this->form->field('status', [
@@ -65,7 +65,6 @@ $this->set([
 					'label' => $t('Date'),
 					'value' => $item->date ?: date('Y-m-d')
 				]) ?>
-				<div class="help"><?= $t('Invoice date.') ?></div>
 			</div>
 		</div>
 		<div class="grid-row">
@@ -76,14 +75,16 @@ $this->set([
 					'type' => 'textarea',
 					'label' => $t('Address'),
 					'disabled' => true,
-					'value' => $item->address()->format('postal', $locale)
+					'value' => $item->address()->format('postal', $locale),
+					'placeholder' => $t('Automatically uses address assigned to user.')
 				]) ?>
 			</div>
 			<div class="grid-column-right">
 				<?= $this->form->field('user_id', [
 					'type' => 'select',
 					'label' => $t('User'),
-					'list' => $users
+					'list' => $users,
+					'disabled' => $item->exists()
 				]) ?>
 			</div>
 		</div>
@@ -247,13 +248,9 @@ $this->set([
 				<?= $this->form->field('letter', [
 					'type' => 'textarea',
 					'label' => $t('Letter'),
-					'class' => 'textarea-size--gamma'
+					'class' => 'textarea-size--gamma',
+					'placeholder' => Settings::read('invoice.letter') !== true ? $t('Leave empty to use default letter.') : null
 				]) ?>
-			<?php if (Settings::read('invoice.letter') !== true): ?>
-				<div class="help">
-					<?= $t('Leave empty to use default letter.') ?>
-				</div>
-			<?php endif ?>
 			</div>
 		<?php endif ?>
 
@@ -262,14 +259,9 @@ $this->set([
 				<?php if (Settings::read('invoice.terms') !== false): ?>
 					<?= $this->form->field('terms', [
 						'type' => 'textarea',
-						'label' => $t('Terms')
+						'label' => $t('Terms'),
+						'placeholder' => Settings::read('invoice.terms') !== true ? $t('Leave empty to use default terms.') : null
 					]) ?>
-					<div class="help">
-						<?php if (Settings::read('invoice.terms') !== true): ?>
-							<?= $t('Leave empty to use default terms.') ?>
-						<?php endif ?>
-						<?= $t('Visible to recipient.') ?>
-					</div>
 				<?php endif ?>
 			</section>
 			<section class="grid-column-right">
@@ -294,12 +286,9 @@ $this->set([
 					'type' => 'text',
 					'label' => $t('Tax note'),
 					'value' => $item->tax_note,
-					'disabled' => true
+					'disabled' => true,
+					'placeholder' => $t('Automatically detected.')
 				]) ?>
-				<div class="help">
-					<?= $t('Visible to recipient.') ?>
-					<?= $t('Automatically generated.') ?>
-				</div>
 			</section>
 		</div>
 

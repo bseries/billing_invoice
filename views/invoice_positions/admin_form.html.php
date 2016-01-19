@@ -28,7 +28,13 @@ $this->set([
 		<div class="grid-row">
 			<h1 class="h-gamma"><?= $t('Recipient') ?></h1>
 
-			<div class="grid-column-left"></div>
+			<div class="grid-column-left">
+				<?= $this->form->field('billing_invoice_id', [
+					'type' => 'select',
+					'label' => $t('Invoice'),
+					'list' => [null => '-- ' . $t('not assigned to invoice') . ' --'] + $invoices
+				]) ?>
+			</div>
 			<div class="grid-column-right">
 				<?= $this->form->field('user_id', [
 					'type' => 'select',

@@ -34,6 +34,7 @@ use billing_payment\models\Payments;
 use li3_mailer\action\Mailer;
 use lithium\core\Libraries;
 use lithium\g11n\Message;
+use lithium\util\Collection;
 
 // Given our business resides in Germany DE and we're selling services
 // which fall und § 3 a Abs. 4 UStG (Katalogleistung).
@@ -146,6 +147,35 @@ class Invoices extends \base_core\models\Base {
 			$groups[$group->name]['positions'][] = $position;
 		}
 		return array_filter($groups);
+	}
+
+	// Overwritten from RelationPlus, as otherwise pending positions
+	// would be added to new invoices. New invoices have an id of NULL
+	// and pending positions also have billing_invoice_id of NULL.
+	//
+	// The implementation fixes the above by adding an additional user contraint.
+	//
+	// Will always return an empty collection if the invoice does not yet exist. This
+	// is to prevent adding positions mistakenly when creating invoices.
+	public function positions($entity, array $query = []) {
+		if (!$entity->exists()) {
+			return new Collection();
+		}
+		$lower = __FUNCTION__;
+		$query += ['force' => false, 'conditions' => []];
+
+		$force = $query['force'];
+		unset($query['force']);
+
+		if (!$query && !$force && $entity->{$lower} && is_object($entity->{$lower})) {
+			return $entity->{$lower};
+		}
+		$query['conditions'] += [
+			'user_id' => $entity->user_id,
+			'billing_invoice_id' => $entity->id
+		];
+
+		return InvoicePositions::find('all', $query);
 	}
 
 	public function title($entity) {

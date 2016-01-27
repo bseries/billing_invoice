@@ -375,8 +375,8 @@ $this->set([
 								<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
 					</tbody>
 					<tfoot>
-						<tr class="nested-add-action">
-							<td colspan="5">
+						<tr>
+							<td colspan="5" class="nested-add-action">
 								<?= $this->form->button($t('add payment'), ['type' => 'button', 'class' => 'button add-nested']) ?>
 						<?php if ($item->payments()->count()): ?>
 							<tr class="totals">

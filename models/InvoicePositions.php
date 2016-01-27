@@ -127,7 +127,7 @@ InvoicePositions::applyFilter('save', function($self, $params, $chain) {
 	$data =& $params['data'];
 
 	// Ensure billing_invoice_id is never 0, but NULL
-	if (empty($data['billing_invoice_id'])) {
+	if (isset($data['billing_invoice_id']) && !empty($data['billing_invoice_id'])) {
 		$data['billing_invoice_id'] = null;
 	}
 	return $chain->next($self, $params, $chain);

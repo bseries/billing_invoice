@@ -20,7 +20,7 @@ namespace billing_invoice\models;
 use Exception;
 use AD\Finance\Price;
 use billing_invoice\models\Invoices;
-use billing_core\billing\TaxType;
+use billing_core\billing\TaxTypes;
 use ecommerce_core\models\Products;
 
 // In the moment of generating an invoice position the price is finalized.
@@ -80,7 +80,7 @@ class InvoicePositions extends \base_core\models\Base {
 	}
 
 	public function taxType($entity) {
-		return TaxType::config($entity->tax_type);
+		return TaxTypes::registry($entity->tax_type);
 	}
 
 	// Assumes format "Foobar (#12345)".

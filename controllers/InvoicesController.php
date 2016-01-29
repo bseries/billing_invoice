@@ -19,7 +19,7 @@ namespace billing_invoice\controllers;
 
 use base_core\models\Users;
 use billing_core\models\Currencies;
-use billing_core\billing\TaxType;
+use billing_core\billing\TaxTypes;
 use billing_invoice\models\Invoices;
 use li3_flash_message\extensions\storage\FlashMessage;
 use lithium\g11n\Message;
@@ -82,7 +82,7 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		$users = [null => '-'] + Users::find('list', ['order' => 'number']);
 
 		if ($item) {
-			$taxTypes = TaxType::enum();
+			$taxTypes = TaxTypes::enum();
 		}
 		return compact('currencies', 'statuses', 'users', 'taxTypes');
 	}

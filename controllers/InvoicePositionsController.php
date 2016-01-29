@@ -19,7 +19,7 @@ namespace billing_invoice\controllers;
 
 use base_core\models\Users;
 use billing_core\models\Currencies;
-use billing_core\models\TaxTypes;
+use billing_core\billing\TaxTypes;
 use billing_invoice\models\Invoices;
 use billing_invoice\models\InvoicePositions;
 
@@ -40,7 +40,7 @@ class InvoicePositionsController extends \base_core\controllers\BaseController {
 		$users = [null => '-'] + Users::find('list', ['order' => 'name']);
 
 		if ($item) {
-			$taxTypes = TaxTypes::find('list');
+			$taxTypes = TaxTypes::enum();
 			$invoices = Invoices::find('list', [
 				'conditions' => ['user_id' => $item->user_id]
 			]);

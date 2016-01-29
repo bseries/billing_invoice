@@ -193,14 +193,14 @@ $this->set([
 							<?= $this->form->field("positions.new.amount_currency", [
 								'type' => 'select',
 								'label' => false,
-								'value' => $item->exists() ? $item->clientGroup()->amountCurrency : 'EUR',
+								'value' => $item->exists() ? $item->clientGroup()->amountCurrency() : 'EUR',
 								'list' => $currencies
 							]) ?>
 						<td class="price-type--f">
 							<?= $this->form->field("positions.new.amount_type", [
 								'type' => 'select',
 								'label' => false,
-								'value' => $item->exists() ? $item->clientGroup()->amountType : 'net',
+								'value' => $item->exists() ? $item->clientGroup()->amountType() : 'net',
 								'list' => ['net' => $t('net'), 'gross' => $t('gross')]
 							]) ?>
 						<td class="money--f price-amount--f">
@@ -213,7 +213,7 @@ $this->set([
 						<td class="numeric--f price-rate--f">
 							<?= $this->form->field("positions.new.amount_rate", [
 								'type' => 'text',
-								'value' => $item->exists() ? $item->taxType()->rate : '19',
+								'value' => $item->exists() ? $item->taxType()->rate() : '19',
 								'label' => false,
 								'class' => 'input--numeric'
 							]) ?>
@@ -375,8 +375,8 @@ $this->set([
 								<?= $this->form->button($t('delete'), ['class' => 'button delete delete-nested']) ?>
 					</tbody>
 					<tfoot>
-						<tr class="nested-add-action">
-							<td colspan="5">
+						<tr>
+							<td colspan="5" class="nested-add-action">
 								<?= $this->form->button($t('add payment'), ['type' => 'button', 'class' => 'button add-nested']) ?>
 						<?php if ($item->payments()->count()): ?>
 							<tr class="totals">

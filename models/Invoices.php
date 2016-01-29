@@ -27,8 +27,8 @@ use base_address\models\Addresses;
 use base_address\models\Contacts;
 use base_core\extensions\cms\Settings;
 use base_tag\models\Tags;
-use billing_core\models\ClientGroups;
-use billing_core\models\TaxTypes;
+use billing_core\billing\ClientGroups;
+use billing_core\billing\TaxTypes;
 use billing_invoice\models\InvoicePositions;
 use billing_payment\models\Payments;
 use li3_mailer\action\Mailer;
@@ -340,11 +340,15 @@ class Invoices extends \base_core\models\Base {
 	}
 
 	public function taxType($entity) {
-		return TaxTypes::find('first', ['conditions' => ['name' => $entity->tax_type]]);
+		return TaxTypes::registry($entity->tax_type);
 	}
 
 	public function clientGroup($entity) {
-		return ClientGroups::find('first', ['conditions' => ['user' => $entity->user()]]);
+		$user = $entity->user();
+
+		return ClientGroups::registry(true)->first(function($item) use ($user) {
+			return $item->conditions($user);
+		});
 	}
 
 	/* Auto invoicing */
@@ -505,9 +509,9 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 	if (!$entity->exists()) {
 		$user = $entity->user(['conditions' => ['id' => $entity->user_id ?: $data['user_id']]]);
 
-		$group = ClientGroups::find('first', [
-			'conditions' => compact('user')
-		]);
+		$group = ClientGroups::registry(true)->first(function($item) use ($user) {
+			return $item->conditions($user);
+		});
 		if (!$group) {
 			return false;
 		}

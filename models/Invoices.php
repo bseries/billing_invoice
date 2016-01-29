@@ -27,7 +27,7 @@ use base_address\models\Addresses;
 use base_address\models\Contacts;
 use base_core\extensions\cms\Settings;
 use base_tag\models\Tags;
-use billing_core\billing\ClientGroup;
+use billing_core\billing\ClientGroups;
 use billing_core\billing\TaxType;
 use billing_invoice\models\InvoicePositions;
 use billing_payment\models\Payments;
@@ -375,7 +375,7 @@ class Invoices extends \base_core\models\Base {
 	public function clientGroup($entity) {
 		$user = $entity->user();
 
-		return ClientGroup::config(true)->first(function($item) use ($user) {
+		return ClientGroups::registry(true)->first(function($item) use ($user) {
 			return $item->conditions($user);
 		});
 	}
@@ -538,7 +538,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 	if (!$entity->exists()) {
 		$user = $entity->user(['conditions' => ['id' => $entity->user_id ?: $data['user_id']]]);
 
-		$group = ClientGroup::config(true)->first(function($item) use ($user) {
+		$group = ClientGroups::registry(true)->first(function($item) use ($user) {
 			return $item->conditions($user);
 		});
 		if (!$group) {

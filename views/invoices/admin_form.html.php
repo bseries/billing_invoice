@@ -401,6 +401,12 @@ $this->set([
 			</div>
 			<div class="bottom-actions__right">
 				<?php if ($item->exists()): ?>
+					<?= $this->html->link($t('duplicate'), [
+						'controller' => 'Invoices',
+						'id' => $item->id, 'action' => 'duplicate',
+						'library' => 'billing_invoice'
+					], ['class' => 'button large']) ?>
+
 					<?= $this->html->link($t('PDF'), [
 						'controller' => 'Invoices',
 						'id' => $item->id, 'action' => 'export_pdf',

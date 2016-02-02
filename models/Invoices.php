@@ -339,6 +339,34 @@ class Invoices extends \base_core\models\Base {
 		return $stream;
 	}
 
+	// Will duplicate invoice and positions, but not the payment positions. A new
+	// number will be auto selected.
+	public function duplicate($entity) {
+		$new = static::create([
+			'id' => null,
+			'number' => null,  // trigger new number generation
+			'created' => null,
+			'modified' => null
+		] + $entity->data());
+
+		if (!$new->save()) {
+			return false;
+		}
+		foreach ($entity->positions() as $position) {
+			$newPosition = InvoicePositions::create([
+				'id' => null,
+				'billing_invoice_id' => $new->id,
+				'created' => null,
+				'modified' => null
+			] + $position->data());
+
+			if (!$newPosition->save(null, ['localize' => false])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public function taxType($entity) {
 		return TaxTypes::registry($entity->tax_type);
 	}

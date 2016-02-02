@@ -76,6 +76,29 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		return $this->redirect($this->request->referer());
 	}
 
+	public function admin_duplicate() {
+		extract(Message::aliases());
+
+		$model = $this->_model;
+		$model::pdo()->beginTransaction();
+
+		$item = $model::first($this->request->id);
+		$result = $item->duplicate();
+
+		if ($result) {
+			$model::pdo()->commit();
+			FlashMessage::write($t('Successfully duplicated.', ['scope' => 'billing_invoice']), [
+				'level' => 'success'
+			]);
+		} else {
+			$model::pdo()->rollback();
+			FlashMessage::write($t('Failed to duplicate.', ['scope' => 'billing_invoice']), [
+				'level' => 'error'
+			]);
+		}
+		return $this->redirect(['action' => 'index']);
+	}
+
 	protected function _selects($item = null) {
 		$statuses = Invoices::enum('status');
 		$currencies = Currencies::find('list');

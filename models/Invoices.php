@@ -346,7 +346,8 @@ class Invoices extends \base_core\models\Base {
 			'id' => null,
 			'number' => null,  // trigger new number generation
 			'created' => null,
-			'modified' => null
+			'modified' => null,
+			'status' => 'created'
 		] + $entity->data());
 
 		if (!$new->save()) {

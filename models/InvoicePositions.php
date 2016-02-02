@@ -44,6 +44,13 @@ class InvoicePositions extends \base_core\models\Base {
 			'tagsModel' => 'base_tag\models\Tags',
 			'filters' => ['strtolower']
 		],
+		'base_core\extensions\data\behavior\Searchable' => [
+			'fields' => [
+				'description',
+				'modified',
+				'User.number'
+			]
+		]
 	];
 
 	public $belongsTo = [

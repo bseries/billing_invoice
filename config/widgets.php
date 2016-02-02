@@ -18,9 +18,11 @@
 namespace billing_invoice\config;
 
 use AD\Finance\Money\Monies;
+use AD\Finance\Money\MoneyIntlFormatter as MoneyFormatter;
 use AD\Finance\Money\MoniesIntlFormatter as MoniesFormatter;
 use base_core\extensions\cms\Widgets;
 use billing_invoice\models\Invoices;
+use billing_invoice\models\InvoicePositions;
 use lithium\core\Environment;
 use lithium\g11n\Message;
 
@@ -56,6 +58,44 @@ Widgets::register('cashflow', function() use ($t) {
 	];
 }, [
 	'type' => Widgets::TYPE_COUNTER,
+	'group' => Widgets::GROUP_DASHBOARD
+]);
+
+Widgets::register('pendingInvoicePositions', function() use ($t) {
+	$formatter = new MoneyFormatter(Environment::get('locale'));
+
+	$data = [];
+	$positions = InvoicePositions::find('all', [
+		'conditions' => [
+			'billing_invoice_id' => null,
+		],
+		'order' => [
+			'User.number'
+		],
+		'with' => ['User']
+	]);
+
+
+	foreach ($positions as $position) {
+		$user = $position->user();
+
+		if (!isset($data[$user->number])) {
+			$data[$user->number] = $position->total();
+		} else {
+			$data[$user->number] = $data[$user->number]->add($position->total());
+		}
+		if (count($data) === 15) {
+			// Cannot display that many positions.
+			$data = [];
+			break;
+		}
+	}
+	return [
+		'title' => $t('Pending invoice positions'),
+		'data' => array_map(function($v) use ($formatter) { return $formatter->format($v->getNet()); }, $data)
+	];
+}, [
+	'type' => Widgets::TYPE_TABLE,
 	'group' => Widgets::GROUP_DASHBOARD
 ]);
 

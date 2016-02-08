@@ -54,6 +54,11 @@ Widgets::register('cashflow', function() use ($t) {
 	return [
 		'data' => [
 			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced),
+		],
+		'url' => [
+			'library' => 'billing_invoice',
+			'controller' => 'Invoices',
+			'action' => 'index'
 		]
 	];
 }, [
@@ -92,7 +97,12 @@ Widgets::register('pendingInvoicePositions', function() use ($t) {
 	}
 	return [
 		'title' => $t('Pending invoice positions'),
-		'data' => array_map(function($v) use ($formatter) { return $formatter->format($v->getNet()); }, $data)
+		'data' => array_map(function($v) use ($formatter) { return $formatter->format($v->getNet()); }, $data),
+		'url' => [
+			'library' => 'billing_invoice',
+			'controller' => 'InvoicePositions',
+			'action' => 'index'
+		]
 	];
 }, [
 	'type' => Widgets::TYPE_TABLE,

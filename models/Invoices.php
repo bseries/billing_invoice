@@ -536,7 +536,8 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 	$data =& $params['data'];
 
 	if (!$entity->exists()) {
-		$user = $entity->user(['conditions' => ['id' => $entity->user_id ?: $data['user_id']]]);
+		$entity->user_id = $entity->user_id ?: $data['user_id'];
+		$user = $entity->user();
 
 		$group = ClientGroups::registry(true)->first(function($item) use ($user) {
 			return $item->conditions($user);

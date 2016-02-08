@@ -92,14 +92,15 @@ class Invoices extends \base_core\models\Base {
 	public static $enum = [
 		'status' => [
 			'created', // open
-			'paid',  // paid
-			'cancelled', // storno
+			'sent',
+			'send-scheduled',
 			'awaiting-payment',
+			'paid',  // paid
 			// 'payment-accepted',
 			'payment-remotely-accepted',
 			'payment-error',
-			'send-scheduled',
-			'sent'
+			'cancelled', // storno
+			'rejected', // storno
 		],
 		'frequency' => [
 			'monthly',

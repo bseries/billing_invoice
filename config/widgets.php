@@ -82,8 +82,9 @@ Widgets::register('pendingInvoicePositions', function() use ($t) {
 
 
 	foreach ($positions as $position) {
-		$user = $position->user();
-
+		if (!$user = $position->user()) {
+			continue;
+		}
 		if (!isset($data[$user->number])) {
 			$data[$user->number] = $position->total();
 		} else {

@@ -35,6 +35,7 @@ use li3_mailer\action\Mailer;
 use lithium\core\Libraries;
 use lithium\g11n\Message;
 use lithium\util\Collection;
+use lithium\analysis\Logger;
 
 // Given our business resides in Germany DE and we're selling services
 // which fall und § 3 a Abs. 4 UStG (Katalogleistung).
@@ -391,7 +392,7 @@ class Invoices extends \base_core\models\Base {
 		$positions = InvoicePositions::pending($user);
 
 		if (!$positions->count()) {
-			return true;
+			return null;
 		}
 		$invoice = static::create($data + [
 			'user_id' => $user->id,
@@ -423,6 +424,10 @@ class Invoices extends \base_core\models\Base {
 		if (!$user->auto_invoiced) {
 			return true;
 		}
+		if (!InvoicePositions::pending($user)->count()) {
+			return false;
+		}
+
 		$last = DateTime::createFromFormat('Y-m-d H:i:s', $user->auto_invoiced);
 		$diff = $last->diff(new DateTime());
 
@@ -469,6 +474,9 @@ class Invoices extends \base_core\models\Base {
 		if ($invoice === false) {
 			return false;
 		}
+		$message = "Auto invoiced user {$user->id} ({$user->name}) created invoice {$invoice->number}.";
+		Logger::debug($message);
+
 		return $user->save([
 			'auto_invoiced' => date('Y-m-d H:i:s')
 		], ['whitelist' => ['auto_invoiced']]);

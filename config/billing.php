@@ -45,10 +45,6 @@ Settings::register('invoice.autoInvoice', false);
 // This will auto send any invoice that is plain created but not sent.
 Settings::register('invoice.autoSend', false);
 
-// Enable/disable auto paying feature. When enabled must also be enabled on
-// a per user basis.
-Settings::register('invoice.autoPay', false);
-
 // The default letter to use. Can either be `false` to disable feature, `true` to enable
 // it. Provide a text string with the text or a callable which must return the text to
 // enable and provide a default text.

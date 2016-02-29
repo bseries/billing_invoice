@@ -67,29 +67,4 @@ if (Settings::read('invoice.autoSend')) {
 	]);
 }
 
-if (Settings::read('invoice.autoPay')) {
-	Jobs::recur('billing_invoice:auto_pay', function() {
-		Invoices::pdo()->beginTransaction();
-
-		$users = Users::find('all', [
-			'conditions' => [
-				'is_auto_paying' => true
-			]
-		]);
-		foreach ($users as $user) {
-			if (!Invoices::mustAutoPay($user)) {
-				continue;
-			}
-			if (!Invoices::autoPay($user)) {
-				Invoices::pdo()->rollback();
-				return false;
-			}
-		}
-		Invoices::pdo()->commit();
-	}, [
-		'frequency' => Jobs::FREQUENCY_LOW,
-		'needs' => ['billing_invoice:auto_invoice' => 'optional']
-	]);
-}
-
 ?>

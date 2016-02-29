@@ -30,9 +30,14 @@ class InvoicePositionsController extends \base_core\controllers\BaseController {
 	use \base_core\controllers\AdminEditTrait;
 	use \base_core\controllers\AdminDeleteTrait;
 
-	protected function _all($model, $query) {
+	protected function _all($model, array $query) {
 		$query['conditions']['billing_invoice_id'] = null;
 		return $model::find('all', $query);
+	}
+
+	protected function _paginate($model, array $query) {
+		$query['conditions']['billing_invoice_id'] = null;
+		return $model::find('count', $query);
 	}
 
 	protected function _selects($item = null) {

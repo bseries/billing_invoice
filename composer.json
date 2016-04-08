@@ -18,7 +18,7 @@
         "atelierdisko/billing_core": "1.4.*",
         "atelierdisko/billing_payment": "1.4.*",
         "atelierdisko/finance": "2.0.*",
-        "atelierdisko/li3_flash_message": "1.0.*@beta",
+        "atelierdisko/li3_flash_message": "1.0.*",
         "composer/installers": "1.*@stable",
         "php": ">=5.5.0",
         "unionofrad/lithium": "1.0.*@dev"

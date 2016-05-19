@@ -115,7 +115,7 @@ Widgets::register('pendingInvoicePositions', function() use ($t) {
 		} else {
 			$data[$user->number] = $data[$user->number]->add($position->total());
 		}
-		if (count($data) === 15) {
+		if (count($data) === 20) {
 			// Cannot display that many positions.
 			$data = [];
 			break;

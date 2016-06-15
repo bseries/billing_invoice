@@ -121,21 +121,23 @@ class Invoices extends \base_core\models\Base {
 		);
 	}
 
-	public function positionsGroupedByTags($entity, array $customTagsOrder = []) {
-		$positions = $entity->positions();
-
+	public function positionsGroupedByTags($entity, array $order = [], array $entitiesOptions = []) {
 		$seen = [];
 		$groups = [];
 
-		if ($customTagsOrder) {
-			$groups = array_fill_keys($customTagsOrder, null);
+		if ($order) {
+			$groups = array_fill_keys($order, null);
 		}
 
-		foreach ($positions as $position) {
+		foreach ($entity->positions() as $position) {
+			$group = Tags::create();
+
 			// Search for first dollar prefixed tag and use it
 			// as the main tag.
-			$tags = $position->tags(['serialized' => false, 'entities' => true]);
-			$group = Tags::create();
+			$tags = $position->tags([
+				'serialized' => false,
+				'entities' => $entitiesOptions ?: true
+			]);
 
 			foreach ($tags as $tag) {
 				if ($tag->name[0] === '$') {

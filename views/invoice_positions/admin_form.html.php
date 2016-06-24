@@ -13,9 +13,6 @@ $this->set([
 		'title' => null,
 		'empty' => false,
 		'object' => $t('scheduled invoice position')
-	],
-	'meta' => [
-		'is_active' => $item->is_active ? $t('active') : $t('inactive'),
 	]
 ]);
 
@@ -103,14 +100,6 @@ $this->set([
 				<?php endif ?>
 			</div>
 			<div class="bottom-actions__right">
-				<?php if ($item->exists()): ?>
-					<?= $this->html->link(
-						$item->is_active ? $t('deactivate') : $t('activate'),
-						['id' => $item->id, 'action' => $item->is_active ? 'deactivate' : 'activate'],
-						['class' => 'button large']
-					) ?>
-				<?php endif ?>
-
 				<?= $this->form->button($t('save'), [
 					'type' => 'submit',
 					'class' => 'button large save'

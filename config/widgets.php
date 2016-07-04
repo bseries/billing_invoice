@@ -41,8 +41,12 @@ Widgets::register('invoices', function() use ($t) {
 				'cancelled'
 			]]
 		],
+		'with' => [
+			'Positions'
+		],
 		'fields' => [
-			'id'
+			'id',
+			'Positions.*'
 		]
 	]);
 	foreach ($invoices as $invoice) {

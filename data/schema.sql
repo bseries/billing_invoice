@@ -14,7 +14,7 @@ CREATE TABLE `billing_invoice_positions` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `billing_invoice_id` (`billing_invoice_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4860 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Create syntax for TABLE 'billing_invoices'
 CREATE TABLE `billing_invoices` (

@@ -25,6 +25,7 @@ use billing_invoice\models\InvoicePositions;
 use billing_invoice\models\Invoices;
 use lithium\core\Environment;
 use lithium\g11n\Message;
+use lithium\util\Set;
 
 extract(Message::aliases());
 
@@ -91,39 +92,47 @@ Widgets::register('invoices', function() use ($t) {
 	'group' => Widgets::GROUP_DASHBOARD
 ]);
 
-Widgets::register('pendingInvoicePositions', function() use ($t) {
+Widgets::register('topUnbilledUsers', function() use ($t) {
 	$formatter = new MoneyFormatter(Environment::get('locale'));
 
 	$data = [];
-	$positions = InvoicePositions::find('all', [
+
+	$grouped = InvoicePositions::find('all', [
+		'group' => ['user_id'],
+		'order' => ['count_positions' => 'DESC'],
+		'fields' => [
+			// FIXME Currently does not calculate value but number
+			// of positions as amount calculation is done app side.
+			'COUNT(*) AS count_positions', 'user_id'
+		],
 		'conditions' => [
 			'billing_invoice_id' => null,
 		],
-		'order' => [
-			'User.number'
+		'limit' => 10
+	]);
+	$positions = InvoicePositions::find('all', [
+		'conditions' => [
+			'billing_invoice_id' => null,
+			'user_id' => Set::extract($grouped->data(), '/user_id')
 		],
 		'with' => ['User']
 	]);
 
-
 	foreach ($positions as $position) {
-		if (!$user = $position->user()) {
-			continue;
-		}
-		if (!isset($data[$user->number])) {
-			$data[$user->number] = $position->total();
+		$name = ($user = $position->user()) ? $user->number : '?';
+
+		if (!isset($data[$name])) {
+			$data[$name] = $position->total();
 		} else {
-			$data[$user->number] = $data[$user->number]->add($position->total());
-		}
-		if (count($data) === 20) {
-			// Cannot display that many positions.
-			$data = [];
-			break;
+			$data[$name] = $data[$name]->add($position->total());
 		}
 	}
+	var_dump($data);die;
 	return [
 		'title' => $t('Pending invoice positions'),
-		'data' => array_map(function($v) use ($formatter) { return $formatter->format($v->getNet()); }, $data),
+		'data' => array_map(function($v) use ($formatter) {
+			return $formatter->format($v->getNet());
+		}, $data),
 		'url' => [
 			'library' => 'billing_invoice',
 			'controller' => 'InvoicePositions',

@@ -1,4 +1,3 @@
-
 -- Create syntax for TABLE 'billing_invoice_positions'
 CREATE TABLE `billing_invoice_positions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -15,14 +14,14 @@ CREATE TABLE `billing_invoice_positions` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `billing_invoice_id` (`billing_invoice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4860 DEFAULT CHARSET=utf8;
 
 -- Create syntax for TABLE 'billing_invoices'
 CREATE TABLE `billing_invoices` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `owner_id` int(11) unsigned NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
-`number` varchar(100) NOT NULL DEFAULT '',
+  `number` varchar(100) NOT NULL DEFAULT '',
   `date` date NOT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'created',
   `user_vat_reg_no` varchar(250) DEFAULT '',
@@ -41,12 +40,12 @@ CREATE TABLE `billing_invoices` (
   `terms` text,
   `note` text,
   `tax_type` varchar(20) NOT NULL DEFAULT '',
-  `tax_note` varchar(250) NOT NULL DEFAULT '',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `number` (`number`),
-  KEY `user` (`user_id`)
+  KEY `user` (`user_id`),
+  KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Augment other tables

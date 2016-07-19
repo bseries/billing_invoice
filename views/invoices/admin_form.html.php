@@ -23,9 +23,7 @@ $this->set([
 <article>
 
 	<?=$this->form->create($item) ?>
-		<?php if ($item->exists()): ?>
-			<?= $this->form->field('id', ['type' => 'hidden']) ?>
-		<?php endif ?>
+		<?= $this->form->field('id', ['type' => 'hidden']) ?>
 
 		<?php if ($useOwner): ?>
 			<div class="grid-row">

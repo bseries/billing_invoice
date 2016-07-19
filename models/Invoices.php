@@ -551,10 +551,6 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 	$data =& $params['data'];
 
 	if (!$entity->exists()) {
-		// Will otherwise confuse the following code and lead to nested not being saved, as
-		// this will be interpreted to be an already existing entity.
-		unset($data['id']);
-
 		$entity->user_id = $entity->user_id ?: $data['user_id'];
 		$user = $entity->user();
 
@@ -594,7 +590,8 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 		if ($key === 'new') {
 			continue;
 		}
-		if (isset($value['id'])) {
+		// On nested forms id is always present, but on create empty.
+		if (!empty($value['id'])) {
 			$item = InvoicePositions::find('first', [
 				'conditions' => ['id' => $value['id']]
 			]);
@@ -611,7 +608,6 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 				'user_id' => $user->id
 			]);
 		}
-
 		if (!$item->save($value)) {
 			return false;
 		}

@@ -17,7 +17,6 @@
 
 namespace billing_invoice\controllers;
 
-use base_core\models\Users;
 use billing_core\models\Currencies;
 use billing_core\billing\TaxTypes;
 use billing_invoice\models\Invoices;
@@ -31,6 +30,7 @@ class InvoicesController extends \base_core\controllers\BaseController {
 	use \base_core\controllers\AdminEditTrait;
 	use \base_core\controllers\AdminDeleteTrait;
 	use \base_core\controllers\DownloadTrait;
+	use \base_core\controllers\UsersTrait;
 
 	public function admin_export_pdf() {
 		extract(Message::aliases());
@@ -102,12 +102,14 @@ class InvoicesController extends \base_core\controllers\BaseController {
 	protected function _selects($item = null) {
 		$statuses = Invoices::enum('status');
 		$currencies = Currencies::find('list');
-		$users = [null => '-'] + Users::find('list', ['order' => 'number']);
 
 		if ($item) {
+			$users = $this->_users($item, ['field' => 'user_id', 'empty' => true]);
 			$taxTypes = TaxTypes::enum();
+
+			return compact('currencies', 'statuses', 'users', 'taxTypes');
 		}
-		return compact('currencies', 'statuses', 'users', 'taxTypes');
+		return compact('currencies', 'statuses');
 	}
 }
 

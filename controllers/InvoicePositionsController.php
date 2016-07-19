@@ -17,7 +17,6 @@
 
 namespace billing_invoice\controllers;
 
-use base_core\models\Users;
 use billing_core\models\Currencies;
 use billing_core\billing\TaxTypes;
 use billing_invoice\models\Invoices;
@@ -29,6 +28,7 @@ class InvoicePositionsController extends \base_core\controllers\BaseController {
 	use \base_core\controllers\AdminAddTrait;
 	use \base_core\controllers\AdminEditTrait;
 	use \base_core\controllers\AdminDeleteTrait;
+	use \base_core\controllers\UsersTrait;
 
 	protected function _all($model, array $query) {
 		$query['conditions']['billing_invoice_id'] = null;
@@ -42,16 +42,16 @@ class InvoicePositionsController extends \base_core\controllers\BaseController {
 
 	protected function _selects($item = null) {
 		$currencies = Currencies::find('list');
-		$users = [null => '-'] + Users::find('list', ['order' => 'name']);
 
 		if ($item) {
+			$users = $this->_users($item, ['field' => 'user_id', 'empty' => true]);
 			$taxTypes = TaxTypes::enum();
 			$invoices = Invoices::find('list', [
 				'conditions' => ['user_id' => $item->user_id]
 			]);
+			return compact('currencies', 'users', 'taxTypes', 'invoices');
 		}
-
-		return compact('currencies', 'users', 'taxTypes', 'invoices');
+		return compact('currencies');
 	}
 }
 

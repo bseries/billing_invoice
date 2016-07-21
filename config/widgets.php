@@ -131,7 +131,6 @@ Widgets::register('topUnbilledUsers', function() use ($t) {
 			$data[$name] = $data[$name]->add($position->total());
 		}
 	}
-	var_dump($data);die;
 	return [
 		'title' => $t('Pending invoice positions'),
 		'data' => array_map(function($v) use ($formatter) {

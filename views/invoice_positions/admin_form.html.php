@@ -20,7 +20,9 @@ $this->set([
 <article>
 
 	<?=$this->form->create($item) ?>
-		<?= $this->form->field('id', ['type' => 'hidden']) ?>
+		<?php if ($item->exists()): ?>
+			<?= $this->form->field('id', ['type' => 'hidden']) ?>
+		<?php endif ?>
 
 		<div class="grid-row">
 			<h1 class="h-gamma"><?= $t('Recipient') ?></h1>

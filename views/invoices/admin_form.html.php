@@ -48,7 +48,8 @@ $this->set([
 					'type' => 'text',
 					'label' => $t('Number'),
 					'class' => 'use-for-title',
-					'placeholder' => $t('Leave empty to autogenerate number.')
+					'placeholder' => $t('Leave empty to autogenerate number.'),
+					'disabled' => $item->exists()
 				]) ?>
 			</div>
 			<div class="grid-column-right">
@@ -69,26 +70,94 @@ $this->set([
 				]) ?>
 			</div>
 		</div>
-		<div class="grid-row">
-			<h1 class="h-gamma"><?= $t('Recipient') ?></h1>
 
+		<div class="grid-row">
+			<h1 class="h-gamma"><?= $t('User') ?></h1>
 			<div class="grid-column-left">
-				<?= $this->form->field('address', [
-					'type' => 'textarea',
-					'label' => $t('Address'),
-					'disabled' => true,
-					'value' => $item->address()->format('postal', $locale),
-					'placeholder' => $t('Automatically uses address assigned to user.')
-				]) ?>
-			</div>
-			<div class="grid-column-right">
 				<?= $this->form->field('user_id', [
 					'type' => 'select',
 					'label' => $t('User'),
 					'list' => $users,
 					'disabled' => $item->exists()
 				]) ?>
+
 			</div>
+			<?php if ($user = $item->user()): ?>
+			<div class="grid-column-right">
+				<?= $this->form->field('user.number', [
+					'label' => $t('Number'),
+					'disabled' => true,
+					'value' => $user->number
+				]) ?>
+				<?= $this->form->field('user.name', [
+					'label' => $t('Name'),
+					'disabled' => true,
+					'value' => $user->name
+				]) ?>
+				<?= $this->form->field('user.email', [
+					'label' => $t('Email'),
+					'disabled' => true,
+					'value' => $user->email
+				]) ?>
+				<?= $this->form->field('user.created', [
+					'label' => $t('Signed up'),
+					'disabled' => true,
+					'value' => $this->date->format($user->created, 'datetime')
+				]) ?>
+			</div>
+			<div class="actions">
+				<?= $this->html->link($t('open user'), [
+					'controller' => 'Users',
+					'action' => 'edit',
+					'id' => $user->id,
+					'library' => 'base_core'
+				], ['class' => 'button']) ?>
+			</div>
+			<?php endif ?>
+		</div>
+
+		<div class="grid-row">
+			<h1 class="h-gamma"><?= $t('Recipient') ?></h1>
+
+			<div class="grid-column-left">
+				<?= $this->form->field('address', [
+					'type' => 'textarea',
+					'label' => $t('Receiving Address'),
+					'disabled' => true,
+					'value' => $item->address()->format('postal', $locale),
+					'placeholder' => $t('Automatically uses address assigned to user.')
+				]) ?>
+			</div>
+		</div>
+
+		<?php if (Settings::read('invoice.letter')): ?>
+			<div class="grid-row">
+				<?= $this->form->field('letter', [
+					'type' => 'textarea',
+					'label' => $t('Letter'),
+					'class' => 'textarea-size--gamma',
+					'placeholder' => Settings::read('invoice.letter') !== true ? $t('Leave empty to use default letter.') : null
+				]) ?>
+			</div>
+		<?php endif ?>
+
+		<div class="grid-row">
+			<section class="grid-column-left">
+				<?php if (Settings::read('invoice.terms') !== false): ?>
+					<?= $this->form->field('terms', [
+						'type' => 'textarea',
+						'label' => $t('Terms'),
+						'placeholder' => Settings::read('invoice.terms') !== true ? $t('Leave empty to use default terms.') : null
+					]) ?>
+				<?php endif ?>
+			</section>
+			<section class="grid-column-right">
+				<?= $this->form->field('note', [
+					'type' => 'textarea',
+					'label' => $t('Note')
+				]) ?>
+				<div class="help"><?= $t('Visible to recipient.') ?></div>
+			</section>
 		</div>
 
 		<div class="grid-row">
@@ -244,55 +313,6 @@ $this->set([
 						<?php endif ?>
 					</tfoot>
 				</table>
-			</section>
-		</div>
-
-		<?php if (Settings::read('invoice.letter')): ?>
-			<div class="grid-row">
-				<?= $this->form->field('letter', [
-					'type' => 'textarea',
-					'label' => $t('Letter'),
-					'class' => 'textarea-size--gamma',
-					'placeholder' => Settings::read('invoice.letter') !== true ? $t('Leave empty to use default letter.') : null
-				]) ?>
-			</div>
-		<?php endif ?>
-
-		<div class="grid-row">
-			<section class="grid-column-left">
-				<?php if (Settings::read('invoice.terms') !== false): ?>
-					<?= $this->form->field('terms', [
-						'type' => 'textarea',
-						'label' => $t('Terms'),
-						'placeholder' => Settings::read('invoice.terms') !== true ? $t('Leave empty to use default terms.') : null
-					]) ?>
-				<?php endif ?>
-			</section>
-			<section class="grid-column-right">
-				<?= $this->form->field('note', [
-					'type' => 'textarea',
-					'label' => $t('Note')
-				]) ?>
-				<div class="help"><?= $t('Visible to recipient.') ?></div>
-			</section>
-		</div>
-
-		<div class="grid-row">
-			<h1 class="h-gamma"><?= $t('Tax') ?></h1>
-
-			<section class="grid-column-right">
-				<?= $this->form->field('tax_type', [
-					'type' => 'select',
-					'list' => $taxTypes,
-					'disabled' => true
-				]) ?>
-				<?= $this->form->field('tax_note', [
-					'type' => 'text',
-					'label' => $t('Tax note'),
-					'value' => $item->tax_note,
-					'disabled' => true,
-					'placeholder' => $t('Automatically detected.')
-				]) ?>
 			</section>
 		</div>
 

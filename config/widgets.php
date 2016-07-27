@@ -149,7 +149,7 @@ Widgets::register('topUnbilledUsers', function() use ($t) {
 		}
 	}
 	return [
-		'title' => $t('Pending invoice positions'),
+		'title' => $t('Top unbilled users'),
 		'data' => array_map(function($v) use ($formatter) {
 			return $formatter->format($v->getNet());
 		}, $data),

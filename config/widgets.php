@@ -103,32 +103,49 @@ Widgets::register('topUnbilledUsers', function() use ($t) {
 
 	$grouped = InvoicePositions::find('all', [
 		'group' => ['user_id'],
-		'order' => ['count_positions' => 'DESC'],
+		'order' => ['count_positions' => 'DESC', 'created' => 'DESC'],
 		'fields' => [
 			// FIXME Currently does not calculate value but number
 			// of positions as amount calculation is done app side.
-			'COUNT(*) AS count_positions', 'user_id'
+			'COUNT(*) AS count_positions', 'user_id', 'User.id'
 		],
 		'conditions' => [
 			'billing_invoice_id' => null,
+			// Ignore all users that have been deleted in the meantime.
+			'User.id' => ['IS NOT' => null]
 		],
+		'with' => ['User'],
 		'limit' => 10
 	]);
-	$positions = InvoicePositions::find('all', [
-		'conditions' => [
-			'billing_invoice_id' => null,
-			'user_id' => Set::extract($grouped->data(), '/user_id')
-		],
-		'with' => ['User']
-	]);
+	$userIds = Set::extract(array_values($grouped->data()), '/user/id');
 
-	foreach ($positions as $position) {
-		$name = ($user = $position->user()) ? $user->number : '?';
+	if ($userIds) {
+		$positions = InvoicePositions::find('all', [
+			'conditions' => [
+				'billing_invoice_id' => null,
+				'user_id' => $userIds
+			],
+			'order' => [
+				'field(user_id, ' . implode(',', $userIds) . ')',
+				'created' => 'DESC'
+			],
+			'fields' => [
+				'id', 'user_id', 'User.number', 'User.id', 'User.name',
+				'quantity',
+				'amount', 'amount_type', 'amount_currency', 'amount_rate'
+			],
+			'with' => ['User']
+		]);
 
-		if (!isset($data[$name])) {
-			$data[$name] = $position->total();
-		} else {
-			$data[$name] = $data[$name]->add($position->total());
+		foreach ($positions as $position) {
+			$user = $position->user();
+			$name = $user->number . ' / ' . $user->name;
+
+			if (!isset($data[$name])) {
+				$data[$name] = $position->total();
+			} else {
+				$data[$name] = $data[$name]->add($position->total());
+			}
 		}
 	}
 	return [

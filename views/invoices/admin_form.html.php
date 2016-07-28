@@ -72,17 +72,26 @@ $this->set([
 		</div>
 
 		<div class="grid-row">
-			<h1 class="h-gamma"><?= $t('User') ?></h1>
+			<h1 class="h-gamma"><?= $t('User') ?> / <?= $t('Recipient') ?></h1>
 			<div class="grid-column-left">
+				<?= $this->form->field('address', [
+					'type' => 'textarea',
+					'label' => $t('Receiving Address'),
+					'disabled' => true,
+					'value' => $item->address()->format('postal', $locale),
+					'placeholder' => $t('Automatically uses address assigned to user.')
+				]) ?>
+			</div>
+			<?php if (!$item->exists()): ?>
+			<div class="grid-column-right">
 				<?= $this->form->field('user_id', [
 					'type' => 'select',
 					'label' => $t('User'),
 					'list' => $users,
 					'disabled' => $item->exists()
 				]) ?>
-
 			</div>
-			<?php if ($user = $item->user()): ?>
+			<?php elseif ($user = $item->user()): ?>
 			<div class="grid-column-right">
 				<?= $this->form->field('user.number', [
 					'label' => $t('Number'),
@@ -93,11 +102,6 @@ $this->set([
 					'label' => $t('Name'),
 					'disabled' => true,
 					'value' => $user->name
-				]) ?>
-				<?= $this->form->field('user.email', [
-					'label' => $t('Email'),
-					'disabled' => true,
-					'value' => $user->email
 				]) ?>
 			</div>
 			<div class="actions">

@@ -75,7 +75,7 @@ $this->set([
 			<h1 class="h-gamma"><?= $t('User') ?></h1>
 			<div class="grid-column-left">
 				<?= $this->form->field('user_id', [
-					'type' => 'select',
+					'type' => $item->exists() ? 'text' : 'select',
 					'label' => $t('User'),
 					'list' => $users,
 					'disabled' => $item->exists()
@@ -83,28 +83,6 @@ $this->set([
 
 			</div>
 			<?php if ($user = $item->user()): ?>
-			<div class="grid-column-right">
-				<?= $this->form->field('user.number', [
-					'label' => $t('Number'),
-					'disabled' => true,
-					'value' => $user->number
-				]) ?>
-				<?= $this->form->field('user.name', [
-					'label' => $t('Name'),
-					'disabled' => true,
-					'value' => $user->name
-				]) ?>
-				<?= $this->form->field('user.email', [
-					'label' => $t('Email'),
-					'disabled' => true,
-					'value' => $user->email
-				]) ?>
-				<?= $this->form->field('user.created', [
-					'label' => $t('Signed up'),
-					'disabled' => true,
-					'value' => $this->date->format($user->created, 'datetime')
-				]) ?>
-			</div>
 			<div class="actions">
 				<?= $this->html->link($t('open user'), [
 					'controller' => 'Users',

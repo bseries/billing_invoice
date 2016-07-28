@@ -82,8 +82,8 @@ $this->set([
 					'placeholder' => $t('Automatically uses address assigned to user.')
 				]) ?>
 			</div>
-			<div class="grid-column-right">
 			<?php if (!$item->exists()): ?>
+			<div class="grid-column-right">
 				<?= $this->form->field('user_id', [
 					'type' => 'select',
 					'label' => $t('User'),

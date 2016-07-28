@@ -82,13 +82,12 @@ $this->set([
 					'placeholder' => $t('Automatically uses address assigned to user.')
 				]) ?>
 			</div>
-			<?php if (!$item->exists()): ?>
 			<div class="grid-column-right">
+			<?php if (!$item->exists()): ?>
 				<?= $this->form->field('user_id', [
 					'type' => 'select',
 					'label' => $t('User'),
 					'list' => $users,
-					'disabled' => $item->exists()
 				]) ?>
 			</div>
 			<?php elseif ($user = $item->user()): ?>
@@ -113,20 +112,6 @@ $this->set([
 				], ['class' => 'button']) ?>
 			</div>
 			<?php endif ?>
-		</div>
-
-		<div class="grid-row">
-			<h1 class="h-gamma"><?= $t('Recipient') ?></h1>
-
-			<div class="grid-column-left">
-				<?= $this->form->field('address', [
-					'type' => 'textarea',
-					'label' => $t('Receiving Address'),
-					'disabled' => true,
-					'value' => $item->address()->format('postal', $locale),
-					'placeholder' => $t('Automatically uses address assigned to user.')
-				]) ?>
-			</div>
 		</div>
 
 		<?php if (Settings::read('invoice.letter')): ?>
@@ -296,19 +281,19 @@ $this->set([
 							<td colspan="9" class="nested-add-action">
 								<?= $this->form->button($t('add position'), ['type' => 'button', 'class' => 'button add-nested']) ?>
 						<?php if ($item->positions()->count()): ?>
-							<tr class="totals">
+							<tr class="totals totals--subtotal">
 								<td colspan="6"><?= $t('Total (net)') ?>
-								<td><?= $this->money->format($item->totals()->getNet()) ?>
+								<td colspan="2"><?= $this->money->format($item->totals()->getNet()) ?>
 
 							<?php foreach ($item->taxes() as $rate => $tax): ?>
 							<tr class="totals">
 								<td colspan="6"><?= $t('Tax ({:rate}%)', ['rate' => $rate]) ?>
-								<td><?= $this->money->format($tax) ?>
+								<td colspan="2"><?= $this->money->format($tax) ?>
 							<?php endforeach ?>
 
-							<tr class="totals">
+							<tr class="totals totals--grandtotal">
 								<td colspan="6"><?= $t('Total (gross)') ?>
-								<td><?= $this->money->format($item->totals()->getGross()) ?>
+								<td colspan="2"><?= $this->money->format($item->totals()->getGross()) ?>
 						<?php endif ?>
 					</tfoot>
 				</table>
@@ -325,7 +310,7 @@ $this->set([
 							<td><?= $t('Method') ?>
 							<td><?= $t('Currency') ?>
 							<td class="money--f"><?= $t('Amount') ?>
-							<td>
+							<td class="actions">
 					</thead>
 					<tbody>
 					<?php foreach ($item->payments() as $key => $child): ?>
@@ -400,12 +385,12 @@ $this->set([
 							<td colspan="5" class="nested-add-action">
 								<?= $this->form->button($t('add payment'), ['type' => 'button', 'class' => 'button add-nested']) ?>
 						<?php if ($item->payments()->count()): ?>
-							<tr class="totals">
+							<tr class="totals totals--subtotal">
 								<td colspan="3"><?= $t('Total') ?>
-								<td><?= $this->money->format($item->paid()) ?>
-							<tr class="totals">
+								<td colspan="2"><?= $this->money->format($item->paid()) ?>
+							<tr class="totals totals--grandtotal">
 								<td colspan="3"><?= $t('Balance') ?>
-								<td><?= $this->money->format($item->balance()) ?>
+								<td colspan="2"><?= $this->money->format($item->balance()) ?>
 						<?php endif ?>
 					</tfoot>
 				</table>

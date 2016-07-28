@@ -99,11 +99,6 @@ $this->set([
 					'disabled' => true,
 					'value' => $user->email
 				]) ?>
-				<?= $this->form->field('user.created', [
-					'label' => $t('Signed up'),
-					'disabled' => true,
-					'value' => $this->date->format($user->created, 'datetime')
-				]) ?>
 			</div>
 			<div class="actions">
 				<?= $this->html->link($t('open user'), [

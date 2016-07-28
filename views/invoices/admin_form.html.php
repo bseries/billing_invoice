@@ -72,24 +72,15 @@ $this->set([
 		</div>
 
 		<div class="grid-row">
-			<h1 class="h-gamma"><?= $t('User') ?> / <?= $t('Recipient')?></h1>
+			<h1 class="h-gamma"><?= $t('User') ?></h1>
 			<div class="grid-column-left">
-				<?= $this->form->field('address', [
-					'type' => 'textarea',
-					'label' => $t('Receiving Address'),
-					'disabled' => true,
-					'value' => $item->address()->format('postal', $locale),
-					'placeholder' => $t('Automatically uses address assigned to user.')
-				]) ?>
-			</div>
-			<div class="grid-column-right">
 				<?= $this->form->field('user_id', [
 					'type' => $item->exists() ? 'text' : 'select',
-					'value' => $item->exists() ? $users[$item->user_id] : $item->user_id,
 					'label' => $t('User'),
 					'list' => $users,
 					'disabled' => $item->exists()
 				]) ?>
+
 			</div>
 			<?php if ($user = $item->user()): ?>
 			<div class="actions">
@@ -101,6 +92,20 @@ $this->set([
 				], ['class' => 'button']) ?>
 			</div>
 			<?php endif ?>
+		</div>
+
+		<div class="grid-row">
+			<h1 class="h-gamma"><?= $t('Recipient') ?></h1>
+
+			<div class="grid-column-left">
+				<?= $this->form->field('address', [
+					'type' => 'textarea',
+					'label' => $t('Receiving Address'),
+					'disabled' => true,
+					'value' => $item->address()->format('postal', $locale),
+					'placeholder' => $t('Automatically uses address assigned to user.')
+				]) ?>
+			</div>
 		</div>
 
 		<?php if (Settings::read('invoice.letter')): ?>

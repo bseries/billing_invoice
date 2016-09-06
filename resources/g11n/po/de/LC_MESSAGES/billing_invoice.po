@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: billing_invoice 1.0\n"
 "Report-Msgid-Bugs-To: info@atelierdisko.de\n"
-"POT-Creation-Date: 2016-07-28 13:43+0200\n"
-"PO-Revision-Date: 2016-07-28 13:43+0200\n"
+"POT-Creation-Date: 2016-09-06 11:38+0200\n"
+"PO-Revision-Date: 2016-09-06 11:39+0200\n"
 "Last-Translator: David Persson <davidpersson@gmx.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -146,8 +146,9 @@ msgid "Your invoice #{:number}."
 msgstr "Ihre Rechnung #{:number}."
 
 #: views/invoice_positions/admin_form.html.php:15
-msgid "scheduled invoice position"
-msgstr "Terminierte Rechnungspositionen"
+#, fuzzy
+msgid "pending invoice position"
+msgstr "Unerledigte Rechnungspositionen"
 
 #: views/invoice_positions/admin_form.html.php:28
 #: views/invoice_positions/admin_index.html.php:36
@@ -389,6 +390,9 @@ msgstr "vollständig bezahlen"
 #: views/invoices/admin_index.html.php:12
 msgid "invoices"
 msgstr "Rechnungen"
+
+#~ msgid "scheduled invoice position"
+#~ msgstr "Terminierte Rechnungspositionen"
 
 #~ msgid "Email"
 #~ msgstr "E-Mail"

@@ -3,7 +3,7 @@
 use lithium\g11n\Message;
 
 $t = function($message, array $options = []) {
-	return Message::translate($message, $options + ['scope' => 'billing_time', 'default' => $message]);
+	return Message::translate($message, $options + ['scope' => 'billing_invoice', 'default' => $message]);
 };
 
 
@@ -12,7 +12,7 @@ $this->set([
 		'type' => 'single',
 		'title' => null,
 		'empty' => false,
-		'object' => $t('scheduled invoice position')
+		'object' => $t('pending invoice position')
 	]
 ]);
 

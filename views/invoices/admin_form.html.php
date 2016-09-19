@@ -102,6 +102,11 @@ $this->set([
 					'disabled' => true,
 					'value' => $user->name
 				]) ?>
+				<?= $this->form->field('user.email', [
+					'label' => $t('Email'),
+					'disabled' => true,
+					'value' => $user->email
+				]) ?>
 			</div>
 			<div class="actions">
 				<?= $this->html->link($t('open user'), [

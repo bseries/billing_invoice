@@ -47,7 +47,8 @@ $this->set([
 			<div class="grid-column-left">
 				<?= $this->form->field('description', [
 					'type' => 'textarea',
-					'label' => $t('Description')
+					'label' => $t('Description'),
+					'maxlength' => 250
 				]) ?>
 			</div>
 			<div class="grid-column-right">

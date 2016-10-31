@@ -326,11 +326,18 @@ class Invoices extends \base_core\models\Base {
 		$document = Libraries::locate('document', 'Invoice');
 		$document = new $document();
 
+		$titleAndSubject = $t('Invoice #{:number}', [
+			'number' => $entity->number,
+			'locale' => $user->locale,
+			'scope' => 'billing_invoice'
+		]);
+
 		$document
 			->type($t('Invoice', [
 				'scope' => 'billing_invoice',
 				'locale' => $user->locale
 			]))
+			->subject($titleAndSubject)
 			->entity($entity)
 			->recipient($user)
 			->sender($sender);
@@ -338,12 +345,8 @@ class Invoices extends \base_core\models\Base {
 		$document->compile();
 
 		$document
-			->author($sender->name)
-			->title($t('Invoice #{:number}', [
-				'number' => $entity->number,
-				'locale' => $user->locale,
-				'scope' => 'billing_invoice'
-			]));
+			->metaAuthor($sender->name)
+			->metaTitle($titleAndSubject);
 
 		$document->render($stream);
 

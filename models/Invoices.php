@@ -333,14 +333,18 @@ class Invoices extends \base_core\models\Base {
 			]))
 			->entity($entity)
 			->recipient($user)
-			->sender($sender)
-			->subject($t('Invoice #{:number}', [
+			->sender($sender);
+
+		$document->compile();
+
+		$document
+			->author($sender->name)
+			->title($t('Invoice #{:number}', [
 				'number' => $entity->number,
 				'locale' => $user->locale,
 				'scope' => 'billing_invoice'
 			]));
 
-		$document->compile();
 		$document->render($stream);
 
 		rewind($stream);

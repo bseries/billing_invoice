@@ -75,8 +75,13 @@ Widgets::register('invoices', function() use ($t) {
 			'status'  => 'paid'
 		]
 	]);
-	$rate = round(($paid * 100) / $invoices->count(), 0);
 
+	// $count may be zero, and we cannot divide by 0.
+	if ($count = $invoices->count()) {
+		$rate = round(($paid * 100) / $count, 0);
+	} else {
+		$rate = 100;
+	}
 
 	return [
 		'title' => $t('Invoices', ['scope' => 'billing_invoice']),

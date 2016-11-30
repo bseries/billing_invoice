@@ -240,7 +240,7 @@ msgstr "öffnen"
 #: views/invoice_positions/admin_index.html.php:67
 #: views/invoices/admin_index.html.php:86
 msgid "No items available, yet."
-msgstr "Es sind noch keine Elemente verfügbar."
+msgstr "Es sind noch keine Einträge verfügbar."
 
 #: views/invoice_positions/admin_index.html.php:73
 msgid "These invoice positions are not yet associated with an invoice."

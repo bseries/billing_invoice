@@ -88,7 +88,7 @@ Widgets::register('invoices', function() use ($t) {
 		'data' => [
 			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced),
 			$t('pending', ['scope' => 'billing_invoice']) => $pending,
-			$t('paid rate', ['scope' => 'billing_estimate']) =>  $rate . '%',
+			$t('paid', ['scope' => 'billing_estimate']) =>  $rate . '%',
 		],
 		'url' => [
 			'library' => 'billing_invoice',

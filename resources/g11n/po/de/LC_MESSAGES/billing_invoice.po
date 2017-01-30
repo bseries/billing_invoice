@@ -255,7 +255,7 @@ msgstr "Zugriff"
 
 #: views/invoices/admin_form.html.php:38 views/invoices/admin_index.html.php:44
 msgid "Owner"
-msgstr "Besitzer"
+msgstr "Eigentümer"
 
 #: views/invoices/admin_form.html.php:49 views/invoices/admin_form.html.php:96
 #: views/invoices/admin_index.html.php:37

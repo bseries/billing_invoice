@@ -62,12 +62,15 @@ class Invoices extends \base_core\models\Base {
 		'base_core\extensions\data\behavior\StatusChange',
 		'base_core\extensions\data\behavior\Searchable' => [
 			'fields' => [
+				'User.name',
+				'User.number',
+				'Owner.name',
+				'Owner.number',
 				'number',
 				'status',
 				'date',
 				'address_recipient',
-				'address_organization',
-				'User.number'
+				'address_organization'
 			]
 		]
 	];

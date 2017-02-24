@@ -41,6 +41,7 @@ if (Settings::read('invoice.autoInvoice')) {
 			}
 		}
 		Invoices::pdo()->commit();
+		return true;
 	}, [
 		'frequency' => Jobs::FREQUENCY_LOW,
 		'needs' => ['billing_time:invoice_place_timed' => 'optional']
@@ -61,6 +62,7 @@ if (Settings::read('invoice.autoSend')) {
 			}
 			Invoices::pdo()->commit();
 		}
+		return true;
 	}, [
 		'frequency' => Jobs::FREQUENCY_LOW,
 		'needs' => ['billing_invoice:auto_invoice' => 'optional']

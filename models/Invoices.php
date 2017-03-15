@@ -205,11 +205,13 @@ class Invoices extends \base_core\models\Base {
 	// May return positive or negative values.
 	// We need to convert to gross here as payments will be gross only.
 	public function balance($entity) {
-		$result = new Monies();
+		$result = new Prices();
 
 		foreach ($entity->positions() as $position) {
-			$result = $result->subtract($position->total()->getGross());
+			$result = $result->subtract($position->total());
 		}
+		$result = $result->getGross();
+
 		foreach ($entity->payments() as $payment) {
 			$result = $result->add($payment->amount());
 		}

@@ -20,6 +20,7 @@
         "atelierdisko/finance": "2.0.*",
         "atelierdisko/li3_mailer": "^1.1@stable || 1.1.0@dev",
         "atelierdisko/li3_flash_message": "1.*",
+        "atelierdisko/li3_taggable": "1.5.*@dev",
         "composer/installers": "1.*@stable",
         "php": ">=5.5.0",
         "unionofrad/lithium": "1.1.*@dev"

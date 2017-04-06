@@ -18,6 +18,7 @@
         "atelierdisko/billing_core": "1.5.*@dev",
         "atelierdisko/billing_payment": "1.5.*@dev",
         "atelierdisko/finance": "2.0.*",
+        "atelierdisko/li3_mailer": "^1.1@stable || 1.1.0@dev",
         "atelierdisko/li3_flash_message": "1.0.*",
         "composer/installers": "1.*@stable",
         "php": ">=5.5.0",

@@ -11,12 +11,12 @@
         }
     ],
     "require": {
-        "atelierdisko/base_address": "1.4.*",
-        "atelierdisko/base_core": "1.4.*",
-        "atelierdisko/base_document": "1.4.*",
-        "atelierdisko/base_tag": "1.4.*",
-        "atelierdisko/billing_core": "1.4.*",
-        "atelierdisko/billing_payment": "1.4.*",
+        "atelierdisko/base_address": "1.5.*",
+        "atelierdisko/base_core": "1.5.*",
+        "atelierdisko/base_document": "1.5.*",
+        "atelierdisko/base_tag": "1.5.*",
+        "atelierdisko/billing_core": "1.5.*",
+        "atelierdisko/billing_payment": "1.5.*",
         "atelierdisko/finance": "2.0.*",
         "atelierdisko/li3_flash_message": "1.0.*",
         "composer/installers": "1.*@stable",

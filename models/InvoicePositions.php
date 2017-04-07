@@ -17,11 +17,12 @@
 
 namespace billing_invoice\models;
 
-use Exception;
 use AD\Finance\Price;
-use billing_invoice\models\Invoices;
+use Exception;
 use billing_core\billing\TaxTypes;
+use billing_invoice\models\Invoices;
 use ecommerce_core\models\Products;
+use lithium\aop\Filters;
 
 // In the moment of generating an invoice position the price is finalized.
 class InvoicePositions extends \base_core\models\Base {
@@ -130,14 +131,14 @@ class InvoicePositions extends \base_core\models\Base {
 	}
 }
 
-InvoicePositions::applyFilter('save', function($self, $params, $chain) {
+Filters::apply(InvoicePositions::class, 'save', function($params, $next) {
 	$data =& $params['data'];
 
 	// Ensure billing_invoice_id is never 0, but NULL
 	if (isset($data['billing_invoice_id']) && empty($data['billing_invoice_id'])) {
 		$data['billing_invoice_id'] = null;
 	}
-	return $chain->next($self, $params, $chain);
+	return $next($params);
 });
 
 ?>

@@ -32,10 +32,11 @@ use billing_core\billing\TaxTypes;
 use billing_invoice\models\InvoicePositions;
 use billing_payment\models\Payments;
 use li3_mailer\action\Mailer;
+use lithium\analysis\Logger;
+use lithium\aop\Filters;
 use lithium\core\Libraries;
 use lithium\g11n\Message;
 use lithium\util\Collection;
-use lithium\analysis\Logger;
 
 // Given our business resides in Germany DE and we're selling services
 // which fall und § 3 a Abs. 4 UStG (Katalogleistung).
@@ -553,7 +554,7 @@ class Invoices extends \base_core\models\Base {
 	}
 }
 
-Invoices::applyFilter('save', function($self, $params, $chain) {
+Filters::apply(Invoices::class, 'save', function($params, $next) {
 	$entity = $params['entity'];
 	$data =& $params['data'];
 
@@ -585,7 +586,7 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 		$user = $entity->user();
 	}
 
-	if (!$result = $chain->next($self, $params, $chain)) {
+	if (!$result = $next($params)) {
 		return false;
 	}
 	// Set when we last billed the user, once.
@@ -647,9 +648,10 @@ Invoices::applyFilter('save', function($self, $params, $chain) {
 	}
 	return true;
 });
-Invoices::applyFilter('delete', function($self, $params, $chain) {
+
+Filters::apply(Invoices::class, 'delete', function($params, $next) {
 	$entity = $params['entity'];
-	$result = $chain->next($self, $params, $chain);
+	$result = $next($params);
 
 	if ($result) {
 		$positions = InvoicePositions::find('all', [

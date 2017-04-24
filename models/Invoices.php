@@ -527,31 +527,6 @@ class Invoices extends \base_core\models\Base {
 			]
 		]);
 	}
-
-	/* deprecated */
-
-	public function totalOutstanding($entity) {
-		trigger_error('totalOutstanding() is deprecated in favor of balance().', E_USER_DEPRECATED);
-		return $entity->balance();
-	}
-
-	public function totalAmount($entity) {
-		throw new Exception('Replaced by totals().');
-	}
-
-	public function totalTax($entity) {
-		throw new Exception('Replaced by totals().');
-	}
-
-	public function quantity($entity) {
-		trigger_error('quantity() is deprecated.', E_USER_DEPRECATED);
-		$result = preg_match('/^([0-9])\sx\s/', $entity->title, $matches);
-
-		if (!$result) {
-			return 1;
-		}
-		return (integer) $matches[1];
-	}
 }
 
 Filters::apply(Invoices::class, 'save', function($params, $next) {

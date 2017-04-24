@@ -72,22 +72,24 @@ $this->set([
 					'type' => 'select',
 					'label' => $t('Amount currency'),
 					'list' => $currencies,
-					'value' => $item->amount_currency
+					'value' => $item->amount_currency ?: 'EUR'
 				]) ?>
 				<?= $this->form->field('amount_type', [
 					'type' => 'select',
 					'label' => $t('Amount type'),
-					'value' => $item->amount_type,
+					'value' => $item->amount_type ?: 'net',
 					'list' => ['net' => $t('net'), 'gross' => $t('gross')]
-				]) ?>
-				<?= $this->form->field('amount_rate', [
-					'type' => 'text',
-					'label' => $t('Tax rate')
 				]) ?>
 				<?= $this->form->field('amount', [
 					'type' => 'text',
 					'label' => $t('Amount'),
+					'placeholder' => $this->money->format(0, ['currency' => false]),
 					'value' => $item->exists() ? $this->money->format($item->amount(), ['currency' => false]) : null
+				]) ?>
+				<?= $this->form->field('amount_rate', [
+					'type' => 'text',
+					'label' => $t('Tax rate (%)'),
+					'value' => $item->amount_rate ?: '19'
 				]) ?>
 			</div>
 			<div class="grid-column-right">

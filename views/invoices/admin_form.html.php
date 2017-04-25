@@ -430,20 +430,20 @@ $this->set([
 				<?= $this->form->field('deposit_currency', [
 					'type' => 'select',
 					'label' => $t('Amount currency'),
-					'value' => $item->exists() ? $item->clientGroup()->amountCurrency() : 'EUR',
+					'value' => $item->exists() && $item->isDeposit() ? $item->deposit_currency : 'EUR',
 					'list' => $currencies
 				]) ?>
 				<?= $this->form->field('deposit_type', [
 					'type' => 'select',
 					'label' => $t('Amount type'),
-					'value' => $item->exists() ? $item->clientGroup()->amountType() : 'net',
+					'value' => $item->exists() && $item->isDeposit() ? $item->deposit_type : 'net',
 					'list' => ['net' => $t('net'), 'gross' => $t('gross')]
 				]) ?>
 				<?= $this->form->field('deposit', [
 					'type' => 'text',
 					'label' => $t('Amount'),
 					'placeholder' => $this->money->format(0, ['currency' => false]),
-					'value' => $item->exists() ? $this->money->format($item->deposit(), ['currency' => false]) : null,
+					'value' => $item->exists() && $item->isDeposit() ? $this->money->format($item->deposit(), ['currency' => false]) : null,
 					'class' => 'input--money'
 				]) ?>
 				<div class="help">
@@ -453,7 +453,7 @@ $this->set([
 				<?= $this->form->field('deposit_rate', [
 					'type' => 'text',
 					'label' => $t('Tax rate (%)'),
-					'value' => $item->exists() ? $item->taxType()->rate() : '19',
+					'value' => $item->exists() && $item->isDeposit() ? $item->deposit_rate : '19',
 					'class' => 'input--numeric'
 				]) ?>
 			</div>

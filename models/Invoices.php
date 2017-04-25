@@ -169,7 +169,7 @@ class Invoices extends \base_core\models\Base {
 	}
 
 	public function title($entity) {
-		return '#' . $entity->number;
+		return $entity->number;
 	}
 
 	public function date($entity) {
@@ -312,7 +312,7 @@ class Invoices extends \base_core\models\Base {
 					'library' => 'billing_invoice',
 					'to' => $user->email,
 					'bcc' => $contact['email'],
-					'subject' => $t('Invoice #{:number} paid.', [
+					'subject' => $t('Invoice {:number} paid.', [
 						'locale' => $user->locale,
 						'scope' => 'billing_invoice',
 						'number' => $entity->number
@@ -348,7 +348,7 @@ class Invoices extends \base_core\models\Base {
 		$document = Libraries::locate('document', 'Invoice');
 		$document = new $document();
 
-		$titleAndSubject = $t('Invoice #{:number}', [
+		$titleAndSubject = $t('Invoice {:number}', [
 			'number' => $entity->number,
 			'locale' => $user->locale,
 			'scope' => 'billing_invoice'
@@ -566,7 +566,7 @@ class Invoices extends \base_core\models\Base {
 			'library' => 'billing_invoice',
 			'to' => $user->email,
 			'bcc' => $contact['email'],
-			'subject' => $t('Your invoice #{:number}.', [
+			'subject' => $t('Your invoice {:number}.', [
 				'locale' => $user->locale,
 				'scope' => 'billing_invoice',
 				'number' => $invoice->number

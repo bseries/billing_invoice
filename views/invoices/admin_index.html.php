@@ -61,7 +61,12 @@ $this->set([
 							<?= $this->date->format($item->date, 'date') ?>
 						</time>
 					<td class="emphasize number"><?= $item->number ?: '–' ?>
-					<td class="flag"><i class="material-icons"><?= ($item->isDeposit() || $item->isFinal() ? 'apps' : '') ?></i>
+					<td class="flag">
+						<?php if ($item->isDeposit()): ?>
+							<i class="material-icons">donut_large</i>
+						<?php elseif ($item->isFinal()): ?>
+							<i class="material-icons">donut_small</i>
+						<?php endif ?>
 					<td class="status"><?= $item->status ?>
 					<td class="user">
 						<?= $this->user->link($item->user()) ?>

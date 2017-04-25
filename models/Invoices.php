@@ -78,7 +78,7 @@ class Invoices extends \base_core\models\Base {
 		],
 		'base_core\extensions\data\behavior\Serializable' => [
 			'fields' => [
-				'finalizes'
+				'finalizes' => ','
 			]
 		]
 	];
@@ -384,10 +384,10 @@ class Invoices extends \base_core\models\Base {
 			'number' => null,  // trigger new number generation
 			'created' => null,
 			'modified' => null,
-			'status' => 'created'
+			'status' => 'created',
 		] + $entity->data());
 
-		if (!$new->save()) {
+		if (!$new->save(null, ['localize' => false])) {
 			return false;
 		}
 		foreach ($entity->positions() as $position) {
@@ -603,7 +603,7 @@ Filters::apply(Invoices::class, 'save', function($params, $next) {
 		$terms = Settings::read('invoice.terms');
 		$letter = Settings::read('invoice.letter');
 
-		$data = array_filter($data) + [
+		$data = array_filter((array) $data) + [
 			'user_id' => $user->id,
 			'user_vat_reg_no' => $user->vat_reg_no,
 			'tax_type' => $group->taxType()->name(),

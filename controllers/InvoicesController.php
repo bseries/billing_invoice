@@ -109,7 +109,8 @@ class InvoicesController extends \base_core\controllers\BaseController {
 			$deposits = Invoices::find('list', [
 				'conditions' => [
 					'user_id' => $item->user_id,
-					'deposit' => ['!=' => 0]
+					'deposit' => ['!=' => 0],
+					'id' => ['!=' => $item->id]
 				]
 			]);
 			return compact('currencies', 'statuses', 'users', 'taxTypes', 'deposits');

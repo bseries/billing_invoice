@@ -106,8 +106,13 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		if ($item) {
 			$users = $this->_users($item, ['field' => 'user_id', 'empty' => true]);
 			$taxTypes = TaxTypes::enum();
-
-			return compact('currencies', 'statuses', 'users', 'taxTypes');
+			$deposits = Invoices::find('list', [
+				'conditions' => [
+					'user_id' => $item->user_id,
+					'deposit' => ['!=' => 0]
+				]
+			]);
+			return compact('currencies', 'statuses', 'users', 'taxTypes', 'deposits');
 		}
 		return compact('currencies', 'statuses');
 	}

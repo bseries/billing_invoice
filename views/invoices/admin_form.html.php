@@ -15,7 +15,9 @@ $this->set([
 		'object' => $t('invoice')
 	],
 	'meta' => [
-		'status' => $statuses[$item->status]
+		'status' => $statuses[$item->status],
+		'deposit' => $item->isDeposit() ? $t('deposit') : null,
+		'final' => $item->isFinal() ? $t('final') : null
 	]
 ]);
 
@@ -402,6 +404,59 @@ $this->set([
 					</tfoot>
 				</table>
 			</section>
+		</div>
+
+		<div class="grid-row">
+			<h1 class="h-gamma"><?= $t('Deposit') ?></h1>
+			<div class="section-help">
+				<?= $t('Deposit invoices allow to split a larger invoice into smaller parts.') ?>
+				<?= $t('To turn this invoice into a deposit invoice, provide a deposit amount on the right side.') ?>
+				<?= $t('If this is the final invoice of previous deposit invoices, select these invoices on the left side.') ?>
+			</div>
+			<div class="grid-column-left">
+				<?= $this->form->field('finalizes', [
+					'type' => 'select',
+					'multiple' => true,
+					'label' => $t('Finalizes these deposit invoices…'),
+					'value' => $item->finalizes(['serialized' => false]),
+					'list' => $deposits
+				]) ?>
+				<div class="help">
+					<?= $t('A selection of deposit invoices which this invoice finalizes.') ?>
+					<?= $t('Only applicable if this invoice is not a deposit invoice by itself.') ?>
+				</div>
+			</div>
+			<div class="grid-column-right">
+				<?= $this->form->field('deposit_currency', [
+					'type' => 'select',
+					'label' => $t('Amount currency'),
+					'value' => $item->exists() ? $item->clientGroup()->amountCurrency() : 'EUR',
+					'list' => $currencies
+				]) ?>
+				<?= $this->form->field('deposit_type', [
+					'type' => 'select',
+					'label' => $t('Amount type'),
+					'value' => $item->exists() ? $item->clientGroup()->amountType() : 'net',
+					'list' => ['net' => $t('net'), 'gross' => $t('gross')]
+				]) ?>
+				<?= $this->form->field('deposit', [
+					'type' => 'text',
+					'label' => $t('Amount'),
+					'placeholder' => $this->money->format(0, ['currency' => false]),
+					'value' => $item->exists() ? $this->money->format($item->deposit(), ['currency' => false]) : null,
+					'class' => 'input--money'
+				]) ?>
+				<div class="help">
+					<?= $t('Provide an amount to turn this invoice into a deposit invoice.') ?>
+					<?= $t('Remove the amount to turn it back into a regular invoice again.') ?>
+				</div>
+				<?= $this->form->field('deposit_rate', [
+					'type' => 'text',
+					'label' => $t('Tax rate (%)'),
+					'value' => $item->exists() ? $item->taxType()->rate() : '19',
+					'class' => 'input--numeric'
+				]) ?>
+			</div>
 		</div>
 
 		<div class="bottom-actions">

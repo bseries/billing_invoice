@@ -50,6 +50,9 @@ Widgets::register('invoices', function() use ($t) {
 		]
 	]);
 	foreach ($invoices as $invoice) {
+		if ($invoice->isDeposit()) {
+			continue;
+		}
 		foreach ($invoice->totals()->sum() as $rate => $currencies) {
 			foreach ($currencies as $currency => $price) {
 				$invoiced = $invoiced->add($price->getNet());
@@ -76,7 +79,6 @@ Widgets::register('invoices', function() use ($t) {
 		]
 	]);
 	$rate = round(($paid * 100) / $invoices->count(), 0);
-
 
 	return [
 		'title' => $t('Invoices', ['scope' => 'billing_invoice']),

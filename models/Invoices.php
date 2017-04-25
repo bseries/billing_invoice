@@ -59,6 +59,11 @@ class Invoices extends \base_core\models\Base {
 		'base_core\extensions\data\behavior\Ownable',
 		'base_core\extensions\data\behavior\RelationsPlus',
 		'base_core\extensions\data\behavior\Timestamp',
+		'base_core\extensions\data\behavior\Localizable' => [
+			'fields' => [
+				'deposit' => 'money'
+			]
+		],
 		'base_core\extensions\data\behavior\ReferenceNumber',
 		'base_core\extensions\data\behavior\StatusChange',
 		'base_core\extensions\data\behavior\Searchable' => [
@@ -69,6 +74,11 @@ class Invoices extends \base_core\models\Base {
 				'address_recipient',
 				'address_organization',
 				'User.number'
+			]
+		],
+		'base_core\extensions\data\behavior\Serializable' => [
+			'fields' => [
+				'finalizes'
 			]
 		]
 	];
@@ -205,8 +215,19 @@ class Invoices extends \base_core\models\Base {
 	public function balance($entity) {
 		$result = new Monies();
 
-		foreach ($entity->positions() as $position) {
-			$result = $result->subtract($position->total()->getGross());
+		if ($entity->isDeposit()) {
+			$result = $result->subtract($entity->deposit()->getGross());
+		} else {
+			foreach ($entity->positions() as $position) {
+				$result = $result->subtract($position->total()->getGross());
+			}
+		}
+		if ($entity->isFinal()) {
+			foreach ($entity->finalizesDeposits() as $deposit) {
+				foreach ($deposit->payments() as $payment) {
+					$result = $result->add($payment->amount());
+				}
+			}
 		}
 		foreach ($entity->payments() as $payment) {
 			$result = $result->add($payment->amount());
@@ -394,6 +415,42 @@ class Invoices extends \base_core\models\Base {
 		return ClientGroups::registry(true)->first(function($item) use ($user) {
 			return $item->conditions($user);
 		});
+	}
+
+	/* Deposit */
+
+	public function isDeposit($entity) {
+		return (integer) $entity->deposit !== 0;
+	}
+
+	public function isFinal($entity) {
+		return (boolean) $entity->finalizes;
+	}
+
+	public function deposit($entity) {
+		return new Price(
+			(integer) $entity->deposit,
+			$entity->deposit_currency,
+			$entity->deposit_type,
+			(integer) $entity->deposit_rate
+		);
+	}
+
+	public function finalizesDeposits($entity) {
+		$results = [];
+
+		foreach ($entity->finalizes(['serialized' => false]) as $id) {
+			$result = Invoices::find('first', [
+				'conditions' =>  [
+					'id' => $id
+				]
+			]);
+			if (!$result) {
+				continue;
+			}
+			$results[] = $result;
+		}
+		return $results;
 	}
 
 	/* Auto invoicing */

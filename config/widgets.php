@@ -18,8 +18,8 @@
 namespace billing_invoice\config;
 
 use AD\Finance\Money\MoneyIntlFormatter as MoneyFormatter;
-use AD\Finance\Money\Monies;
 use AD\Finance\Money\MoniesIntlFormatter as MoniesFormatter;
+use AD\Finance\Price\Prices;
 use base_core\extensions\cms\Widgets;
 use billing_invoice\models\InvoicePositions;
 use billing_invoice\models\Invoices;
@@ -32,7 +32,7 @@ extract(Message::aliases());
 Widgets::register('invoices', function() use ($t) {
 	$formatter = new MoniesFormatter(Environment::get('locale'));
 
-	$invoiced = new Monies();
+	$invoiced = new Prices();
 
 	$invoices = Invoices::find('all', [
 		'conditions' => [
@@ -50,12 +50,9 @@ Widgets::register('invoices', function() use ($t) {
 		]
 	]);
 	foreach ($invoices as $invoice) {
-		if ($invoice->isDeposit()) {
-			continue;
-		}
-		foreach ($invoice->totals()->sum() as $rate => $currencies) {
-			foreach ($currencies as $currency => $price) {
-				$invoiced = $invoiced->add($price->getNet());
+		foreach ($invoice->worth()->sum() as $taxed) {
+			foreach ($taxed as $price) {
+				$invoiced = $invoiced->add($price);
 			}
 		}
 	}
@@ -83,7 +80,7 @@ Widgets::register('invoices', function() use ($t) {
 	return [
 		'title' => $t('Invoices', ['scope' => 'billing_invoice']),
 		'data' => [
-			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced),
+			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced->getNet()),
 			$t('pending', ['scope' => 'billing_invoice']) => $pending,
 			$t('paid rate', ['scope' => 'billing_estimate']) =>  $rate . '%',
 		],

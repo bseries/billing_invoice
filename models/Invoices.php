@@ -235,6 +235,24 @@ class Invoices extends \base_core\models\Base {
 		return $result;
 	}
 
+	// The worth (prices) of the invoice is the total price potentially deduced by
+	// previous linked deposit invoices or if this is a deposit invoice by itself
+	// the deposit value instead of the invoice value.
+	public function worth($entity) {
+		if ($entity->isDeposit()) {
+			return (new Prices())->add($entity->deposit());
+		}
+		if ($entity->isFinal()) {
+			$result = $entity>totals();
+
+			foreach ($entity->finalizesDeposits() as $deposit) {
+				$result = $result->subtract($deposit->deposit());
+			}
+			return $result;
+		}
+		return $entity->totals();
+	}
+
 	// Returns Monies.
 	public function paid($entity) {
 		$result = new Monies();

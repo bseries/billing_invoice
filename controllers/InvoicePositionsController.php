@@ -46,8 +46,19 @@ class InvoicePositionsController extends \base_core\controllers\BaseController {
 		if ($item) {
 			$users = $this->_users($item, ['field' => 'user_id', 'empty' => true]);
 			$taxTypes = TaxTypes::enum();
+
+			// Prevent user from mistakenly assigning positions to an already "closed"
+			// invoice. We still must allow the current invoice (if assigned to) for
+			// display purposes.
 			$invoices = Invoices::find('list', [
-				'conditions' => ['user_id' => $item->user_id]
+				'conditions' => [
+					'user_id' => $item->user_id,
+					'OR' => [
+						'id' => $item->billing_invoice_id,
+						'status' => ['created', 'draft']
+					]
+				],
+				'order' => ['number' => 'DESC']
 			]);
 			return compact('currencies', 'users', 'taxTypes', 'invoices');
 		}

@@ -32,7 +32,7 @@ msgstr "in Rechnung gestellt"
 
 #: config/widgets.php:85
 msgid "pending"
-msgstr "Unerledigt"
+msgstr "unerledigt"
 
 #: config/widgets.php:86
 msgid "paid rate"
@@ -146,9 +146,8 @@ msgid "Your invoice #{:number}."
 msgstr "Ihre Rechnung #{:number}."
 
 #: views/invoice_positions/admin_form.html.php:15
-#, fuzzy
 msgid "pending invoice position"
-msgstr "Unerledigte Rechnungspositionen"
+msgstr "unerledigte Rechnungspositionen"
 
 #: views/invoice_positions/admin_form.html.php:28
 #: views/invoice_positions/admin_index.html.php:36
@@ -216,7 +215,7 @@ msgstr "speichern"
 
 #: views/invoice_positions/admin_index.html.php:12
 msgid "pending invoice positions"
-msgstr "Unerledigte Rechnungspositionen"
+msgstr "unerledigte Rechnungspositionen"
 
 #: views/invoice_positions/admin_index.html.php:29
 msgid "position"
@@ -240,7 +239,7 @@ msgstr "öffnen"
 #: views/invoice_positions/admin_index.html.php:67
 #: views/invoices/admin_index.html.php:86
 msgid "No items available, yet."
-msgstr "Es sind noch keine Elemente verfügbar."
+msgstr "Es sind noch keine Einträge verfügbar."
 
 #: views/invoice_positions/admin_index.html.php:73
 msgid "These invoice positions are not yet associated with an invoice."
@@ -256,7 +255,7 @@ msgstr "Zugriff"
 
 #: views/invoices/admin_form.html.php:38 views/invoices/admin_index.html.php:44
 msgid "Owner"
-msgstr "Besitzer"
+msgstr "Eigentümer"
 
 #: views/invoices/admin_form.html.php:49 views/invoices/admin_form.html.php:96
 #: views/invoices/admin_index.html.php:37

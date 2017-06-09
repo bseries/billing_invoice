@@ -34,7 +34,7 @@ $this->set([
 			<thead>
 				<tr>
 					<td data-sort="date" class="date table-sort"><?= $t('Date') ?>
-					<td data-sort="number" class="emphasize number id table-sort"><?= $t('Number') ?>
+					<td data-sort="number" class="emphasize number table-sort"><?= $t('Number') ?>
 					<td data-sort="status" class="status table-sort"><?= $t('Status') ?>
 					<td data-sort="User.number" class="user table-sort"><?= $t('Recipient') ?>
 					<td class="money"><?= $t('Total (net)') ?>

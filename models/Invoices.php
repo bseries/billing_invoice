@@ -229,6 +229,8 @@ class Invoices extends \base_core\models\Base {
 				$result = $result->subtract($position->total());
 			}
 		}
+		$result = $result->getGross();
+
 		if ($entity->isFinal()) {
 			foreach ($entity->finalizesDeposits() as $deposit) {
 				foreach ($deposit->payments() as $payment) {
@@ -236,7 +238,6 @@ class Invoices extends \base_core\models\Base {
 				}
 			}
 		}
-		$result = $result->getGross();
 
 		foreach ($entity->payments() as $payment) {
 			$result = $result->add($payment->amount());
@@ -252,7 +253,7 @@ class Invoices extends \base_core\models\Base {
 			return (new Prices())->add($entity->deposit());
 		}
 		if ($entity->isFinal()) {
-			$result = $entity>totals();
+			$result = $entity->totals();
 
 			foreach ($entity->finalizesDeposits() as $deposit) {
 				$result = $result->subtract($deposit->deposit());

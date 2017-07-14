@@ -711,14 +711,24 @@ Filters::apply(Invoices::class, 'save', function($params, $next) {
 
 Filters::apply(Invoices::class, 'delete', function($params, $next) {
 	$entity = $params['entity'];
-	$result = $next($params);
 
-	if ($result) {
-		$positions = InvoicePositions::find('all', [
-			'conditions' => ['billing_invoice_id' => $entity->id]
-		]);
-		foreach ($positions as $position) {
-			$position->delete();
+	if (!$result = $next($params)) {
+		return $result;
+	}
+	$positions = InvoicePositions::find('all', [
+		'conditions' => ['billing_invoice_id' => $entity->id]
+	]);
+	foreach ($positions as $position) {
+		if (!$position->delete()) {
+			return false;
+		}
+	}
+	$payments = Payments::find('all', [
+		'conditions' => ['billing_invoice_id' => $entity->id]
+	]);
+	foreach ($payments as $payment) {
+		if (!$payment->delete()) {
+			return false;
 		}
 	}
 	return $result;

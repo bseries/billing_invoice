@@ -647,7 +647,7 @@ Filters::apply(Invoices::class, 'save', function($params, $next) {
 	}
 
 	if (!$result = $next($params)) {
-		return false;
+		return $result;
 	}
 	// Set when we last billed the user, once.
 	// $user->save(['invoiced' => date('Y-m-d')], ['whitelist' => ['invoiced', 'modified']]);

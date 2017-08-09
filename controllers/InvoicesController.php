@@ -33,8 +33,6 @@ class InvoicesController extends \base_core\controllers\BaseController {
 	use \base_core\controllers\UsersTrait;
 
 	public function admin_export_pdf() {
-		extract(Message::aliases());
-
 		$item = Invoices::find('first', [
 			'conditions' => [
 				'id' => $this->request->id

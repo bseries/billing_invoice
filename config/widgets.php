@@ -18,6 +18,7 @@
 namespace billing_invoice\config;
 
 use AD\Finance\Money\MoneyIntlFormatter as MoneyFormatter;
+use AD\Finance\Price;
 use AD\Finance\Money\Monies;
 use AD\Finance\Money\MoniesIntlFormatter as MoniesFormatter;
 use base_core\extensions\cms\Widgets;
@@ -32,31 +33,47 @@ extract(Message::aliases());
 Widgets::register('invoices', function() use ($t) {
 	$formatter = new MoniesFormatter(Environment::get('locale'));
 
-	$invoiced = new Monies();
+	$positions = InvoicePositions::find('all', [
+		'conditions' => [
+			'billing_invoice_id' => ['IS NOT' => null],
+			'Invoice.status' => ['!=' => [
+				'draft',
+				'cancelled'
+			]],
+		],
+		'fields' => [
+			'amount_currency',
+			'amount_type',
+			'amount_rate',
+			'ROUND(SUM(InvoicePositions.amount * InvoicePositions.quantity)) AS total'
+		],
+		'group' => [
+			'amount_currency',
+			'amount_type',
+			'amount_rate'
+		],
+		'with' => ['Invoice']
+	]);
 
-	$invoices = Invoices::find('all', [
+	$invoiced = new Monies();
+	foreach ($positions as $position) {
+		$price = new Price(
+			(integer) $position->total,
+			$position->amount_currency,
+			$position->amount_type,
+			(integer) $position->amount_rate
+		);
+		$invoiced = $invoiced->add($price->getNet());
+	}
+
+	$total = Invoices::find('count', [
 		'conditions' => [
 			'status' => ['!=' => [
 				'draft',
 				'cancelled'
 			]]
-		],
-		'with' => [
-			'Positions'
-		],
-		'fields' => [
-			'id',
-			'Positions.*'
 		]
 	]);
-	foreach ($invoices as $invoice) {
-		foreach ($invoice->totals()->sum() as $rate => $currencies) {
-			foreach ($currencies as $currency => $price) {
-				$invoiced = $invoiced->add($price->getNet());
-			}
-		}
-	}
-
 	$pending = Invoices::find('count', [
 		'conditions' => [
 			'status'  => [
@@ -69,16 +86,15 @@ Widgets::register('invoices', function() use ($t) {
 			]
 		]
 	]);
-
 	$paid = Invoices::find('count', [
 		'conditions' => [
 			'status'  => 'paid'
 		]
 	]);
 
-	// $count may be zero, and we cannot divide by 0.
-	if ($count = $invoices->count()) {
-		$rate = round(($paid * 100) / $count, 0);
+	// Count may be zero, and we cannot divide by 0.
+	if ($total) {
+		$rate = round(($paid * 100) / $total, 0);
 	} else {
 		$rate = 100;
 	}

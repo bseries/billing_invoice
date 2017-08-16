@@ -18,9 +18,8 @@
 namespace billing_invoice\config;
 
 use AD\Finance\Money\MoneyIntlFormatter as MoneyFormatter;
-use AD\Finance\Money\Monies;
 use AD\Finance\Money\MoniesIntlFormatter as MoniesFormatter;
-use AD\Finance\Price;
+use AD\Finance\Price\Prices;
 use base_core\extensions\cms\Widgets;
 use billing_invoice\models\InvoicePositions;
 use billing_invoice\models\Invoices;
@@ -32,6 +31,7 @@ extract(Message::aliases());
 
 Widgets::register('invoices', function() use ($t) {
 	$formatter = new MoniesFormatter(Environment::get('locale'));
+	$invoiced = new Prices();
 
 	$positions = InvoicePositions::find('all', [
 		'conditions' => [
@@ -47,7 +47,7 @@ Widgets::register('invoices', function() use ($t) {
 			'amount_currency',
 			'amount_type',
 			'amount_rate',
-			'ROUND(SUM(InvoicePositions.amount * InvoicePositions.quantity)) AS total'
+			'ROUND(SUM(InvoicePositions.amount * InvoicePositions.quantity)) AS amount'
 		],
 		'group' => [
 			'amount_currency',
@@ -56,16 +56,8 @@ Widgets::register('invoices', function() use ($t) {
 		],
 		'with' => ['Invoice']
 	]);
-
-	$invoiced = new Monies();
 	foreach ($positions as $position) {
-		$price = new Price(
-			(integer) $position->total,
-			$position->amount_currency,
-			$position->amount_type,
-			(integer) $position->amount_rate
-		);
-		$invoiced = $invoiced->add($price->getNet());
+		$invoiced = $invoiced->add($position->amount());
 	}
 
 	// Here we add the invoices back again.
@@ -76,12 +68,17 @@ Widgets::register('invoices', function() use ($t) {
 				'deposit' => ['IS NOT' => null],
 				'finalizes' => ['IS NOT' => null]
 			]
-		]
+		],
+		'with' => [
+			'Positions'
+		],
+		// Ensure we have all invoice fields, esp. deposit fields, otherwise
+		// worth calculation is wrong.
 	]);
 	foreach ($depositInvoices as $invoice) {
 		foreach ($invoice->worth()->sum() as $taxed) {
 			foreach ($taxed as $price) {
-				$invoiced = $invoiced->add($price->getNet());
+				$invoiced = $invoiced->add($price);
 			}
 		}
 	}
@@ -120,7 +117,7 @@ Widgets::register('invoices', function() use ($t) {
 	return [
 		'title' => $t('Invoices', ['scope' => 'billing_invoice']),
 		'data' => [
-			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced),
+			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced->getNet()),
 			$t('pending', ['scope' => 'billing_invoice']) => $pending,
 			$t('paid', ['scope' => 'billing_estimate']) =>  $rate . '%',
 		],

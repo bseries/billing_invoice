@@ -18,8 +18,9 @@
 namespace billing_invoice\config;
 
 use AD\Finance\Money\MoneyIntlFormatter as MoneyFormatter;
+use AD\Finance\Money\Monies;
 use AD\Finance\Money\MoniesIntlFormatter as MoniesFormatter;
-use AD\Finance\Price\Prices;
+use AD\Finance\Price;
 use base_core\extensions\cms\Widgets;
 use billing_invoice\models\InvoicePositions;
 use billing_invoice\models\Invoices;
@@ -32,30 +33,64 @@ extract(Message::aliases());
 Widgets::register('invoices', function() use ($t) {
 	$formatter = new MoniesFormatter(Environment::get('locale'));
 
-	$invoiced = new Prices();
-
-	$invoices = Invoices::find('all', [
+	$positions = InvoicePositions::find('all', [
 		'conditions' => [
-			'status' => ['!=' => [
-				'draft',
-				'cancelled'
-			]]
-		],
-		'with' => [
-			'Positions'
+			'billing_invoice_id' => ['IS NOT' => null],
+			'Invoice.status' => ['!=' => ['draft', 'cancelled']],
+			// We assume that deposit/final are rare. Our application logic to calculate
+			// their worth is more straigtforward than doing the same inside the data
+			// soucre. We exclude these invoices here and add them later.
+			'Invoice.deposit' => null,
+			'Invoice.finalizes' => null
 		],
 		'fields' => [
-			'id',
-			'Positions.*'
+			'amount_currency',
+			'amount_type',
+			'amount_rate',
+			'ROUND(SUM(InvoicePositions.amount * InvoicePositions.quantity)) AS total'
+		],
+		'group' => [
+			'amount_currency',
+			'amount_type',
+			'amount_rate'
+		],
+		'with' => ['Invoice']
+	]);
+
+	$invoiced = new Monies();
+	foreach ($positions as $position) {
+		$price = new Price(
+			(integer) $position->total,
+			$position->amount_currency,
+			$position->amount_type,
+			(integer) $position->amount_rate
+		);
+		$invoiced = $invoiced->add($price->getNet());
+	}
+
+	// Here we add the invoices back again.
+	$depositInvoices = Invoices::find('all', [
+		'conditions' => [
+			'status' => ['!=' => ['draft', 'cancelled']],
+			'OR' => [
+				'deposit' => ['IS NOT' => null],
+				'finalizes' => ['IS NOT' => null]
+			]
 		]
 	]);
-	foreach ($invoices as $invoice) {
+	foreach ($depositInvoices as $invoice) {
 		foreach ($invoice->worth()->sum() as $taxed) {
 			foreach ($taxed as $price) {
-				$invoiced = $invoiced->add($price);
+				$invoiced = $invoiced->add($price->getNet());
 			}
 		}
 	}
+
+	$total = Invoices::find('count', [
+		'conditions' => [
+			'status' => ['!=' => ['draft', 'cancelled']]
+		]
+	]);
 
 	$pending = Invoices::find('count', [
 		'conditions' => [
@@ -69,16 +104,15 @@ Widgets::register('invoices', function() use ($t) {
 			]
 		]
 	]);
-
 	$paid = Invoices::find('count', [
 		'conditions' => [
 			'status'  => 'paid'
 		]
 	]);
 
-	// $count may be zero, and we cannot divide by 0.
-	if ($count = $invoices->count()) {
-		$rate = round(($paid * 100) / $count, 0);
+	// Count may be zero, and we cannot divide by 0.
+	if ($total) {
+		$rate = round(($paid * 100) / $total, 0);
 	} else {
 		$rate = 100;
 	}
@@ -86,7 +120,7 @@ Widgets::register('invoices', function() use ($t) {
 	return [
 		'title' => $t('Invoices', ['scope' => 'billing_invoice']),
 		'data' => [
-			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced->getNet()),
+			$t('invoiced', ['scope' => 'billing_invoice']) => $formatter->format($invoiced),
 			$t('pending', ['scope' => 'billing_invoice']) => $pending,
 			$t('paid', ['scope' => 'billing_estimate']) =>  $rate . '%',
 		],

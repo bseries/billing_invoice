@@ -132,11 +132,28 @@ class Invoices extends \base_core\models\Base {
 	];
 
 	public static function init() {
+		extract(Message::aliases());
 		$model = static::_object();
 
 		static::behavior('base_core\extensions\data\behavior\ReferenceNumber')->config(
 			Settings::read('invoice.number')
 		);
+
+		if (!static::behavior('ReferenceNumber')->config('generate')) {
+			$model->validates['number'] = [
+				'notEmpty' => [
+					'notEmpty',
+					'on' => ['create', 'update'],
+					'last' => true,
+					'message' => $t('This field cannot be empty.', ['scope' => 'billing_invoice'])
+				],
+				'isUnique' => [
+					'isUniqueReferenceNumber',
+					'on' => ['create', 'update'],
+					'message' => $t('This number is already in use.', ['scope' => 'billing_invoice'])
+				]
+			];
+		}
 	}
 
 	public function positionsGroupedByTags($entity, array $order = [], array $entitiesOptions = []) {
@@ -289,11 +306,15 @@ class Invoices extends \base_core\models\Base {
 	}
 
 	// Generate a payment for each currency in the open positions.
-	public function payInFull($entity, array $data = []) {
+	public function payInFull($entity, $status = 'paid', array $data = []) {
 		if ($entity->isPaidInFull()) {
 			throw new Exception("Invoice is already paid in full.");
 		}
-
+		// Forwads Compatibility
+		if (is_array($status)) {
+			$data = $status;
+			$status = 'paid';
+		}
 		foreach ($entity->balance()->sum() as $currency => $money) {
 			$payment = Payments::create($data + [
 				'method' => 'user',
@@ -306,7 +327,7 @@ class Invoices extends \base_core\models\Base {
 			}
 		}
 		return $entity->save([
-			'status' => 'paid'
+			'status' => $status
 		], [
 			'whitelist' => ['status']
 		]);
@@ -620,7 +641,9 @@ Filters::apply(Invoices::class, 'save', function($params, $next) {
 
 	if (!$entity->exists()) {
 		$entity->user_id = $entity->user_id ?: $data['user_id'];
-		$user = $entity->user();
+		if (!$user = $entity->user()) {
+			return false;
+		}
 
 		$group = ClientGroups::registry(true)->first(function($item) use ($user) {
 			return $item->conditions($user);

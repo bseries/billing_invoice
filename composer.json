@@ -1,5 +1,5 @@
 {
-    "name": "atelierdisko/billing_invoice",
+    "name": "bseries/billing_invoice",
     "description": "Invoice functionality for Banque.",
     "homepage": "http://atelierdisko.de",
     "type": "lithium-library",
@@ -11,12 +11,12 @@
         }
     ],
     "require": {
-        "atelierdisko/base_address": "1.4.*",
-        "atelierdisko/base_core": "1.4.*",
-        "atelierdisko/base_document": "1.4.*",
-        "atelierdisko/base_tag": "1.4.*",
-        "atelierdisko/billing_core": "1.4.*",
-        "atelierdisko/billing_payment": "1.4.*",
+        "bseries/base_address": "1.4.*",
+        "bseries/base_core": "1.4.*",
+        "bseries/base_document": "1.4.*",
+        "bseries/base_tag": "1.4.*",
+        "bseries/billing_core": "1.4.*",
+        "bseries/billing_payment": "1.4.*",
         "atelierdisko/finance": "2.0.*",
         "atelierdisko/li3_flash_message": "1.0.*",
         "composer/installers": "1.*@stable",
@@ -24,7 +24,7 @@
         "unionofrad/lithium": "1.0.*@dev"
     },
     "suggest": {
-      "atelierdisko/ecommerce_core": "Enables product binding for invoice positions."
+      "bseries/ecommerce_core": "Enables product binding for invoice positions."
     },
     "repositories": [
       { "type": "vcs", "url": "git@code.atelierdisko:base_address" },

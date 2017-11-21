@@ -1,22 +1,15 @@
 {
-    "name": "atelierdisko/billing_invoice",
+    "name": "bseries/billing_invoice",
     "description": "Invoice functionality for Banque.",
-    "homepage": "https://atelierdisko.de",
     "type": "lithium-library",
     "license": "proprietary",
-    "authors": [
-        {
-          "name": "Atelier Disko",
-          "homepage": "https://atelierdisko.de"
-        }
-    ],
     "require": {
-        "atelierdisko/base_address": "1.5.*@dev",
-        "atelierdisko/base_core": "1.5.*@dev",
-        "atelierdisko/base_document": "1.5.*@dev",
-        "atelierdisko/base_tag": "1.5.*@dev",
-        "atelierdisko/billing_core": "1.5.*@dev",
-        "atelierdisko/billing_payment": "1.5.*@dev",
+        "bseries/base_address": "1.5.x-dev",
+        "bseries/base_core": "1.5.x-dev",
+        "bseries/base_document": "1.5.x-dev",
+        "bseries/base_tag": "1.5.x-dev",
+        "bseries/billing_core": "1.5.x-dev",
+        "bseries/billing_payment": "1.5.x-dev",
         "atelierdisko/finance": "2.0.*",
         "atelierdisko/li3_mailer": "^1.1@stable || 1.1.0@dev",
         "atelierdisko/li3_flash_message": "1.*",
@@ -29,10 +22,6 @@
       "atelierdisko/ecommerce_core": "Enables product binding for invoice positions."
     },
     "repositories": [
-      { "type": "vcs", "url": "git@code.atelierdisko:base_address" },
-      { "type": "vcs", "url": "git@code.atelierdisko:base_core" },
-      { "type": "vcs", "url": "git@code.atelierdisko:base_document" },
-      { "type": "vcs", "url": "git@code.atelierdisko:base_tag" },
       { "type": "vcs", "url": "git@code.atelierdisko:billing_core" },
       { "type": "vcs", "url": "git@code.atelierdisko:billing_payment" },
       { "type": "vcs", "url": "git@code.atelierdisko:finance" }

@@ -22,8 +22,8 @@
       "bseries/ecommerce_core": "Enables product binding for invoice positions."
     },
     "repositories": [
-      { "type": "vcs", "url": "git@code.atelierdisko:billing_core" },
-      { "type": "vcs", "url": "git@code.atelierdisko:billing_payment" },
-      { "type": "vcs", "url": "git@code.atelierdisko:finance" }
+      { "type": "vcs", "url": "git@code.disko.io:billing_core" },
+      { "type": "vcs", "url": "git@code.disko.io:billing_payment" },
+      { "type": "vcs", "url": "git@code.disko.io:finance" }
     ]
 }

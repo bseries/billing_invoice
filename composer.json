@@ -24,6 +24,6 @@
     "repositories": [
       { "type": "vcs", "url": "git@code.disko.io:billing_core" },
       { "type": "vcs", "url": "git@code.disko.io:billing_payment" },
-      { "type": "vcs", "url": "git@code.disko.io:finance" }
+      { "type": "vcs", "url": "git@github.com:atelierdisko/finance" }
     ]
 }

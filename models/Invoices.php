@@ -75,6 +75,7 @@ class Invoices extends \base_core\models\Base {
 				'number',
 				'status',
 				'date',
+				'site',
 				'address_recipient',
 				'address_organization'
 			]

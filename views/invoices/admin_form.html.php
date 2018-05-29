@@ -43,6 +43,21 @@ $this->set([
 				</div>
 			</div>
 		<?php endif ?>
+		<?php if ($useSites): ?>
+			<div class="grid-row">
+				<h1><?= $t('Sites') ?></h1>
+
+				<div class="grid-column-left"></div>
+				<div class="grid-column-right">
+					<?= $this->form->field('site', [
+						'type' => 'select',
+						'label' => $t('Site'),
+						'list' => $sites
+					]) ?>
+				</div>
+			</div>
+		<?php endif ?>
+
 
 		<div class="grid-row">
 			<div class="grid-column-left">

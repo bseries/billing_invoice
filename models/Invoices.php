@@ -637,7 +637,7 @@ class Invoices extends \base_core\models\Base {
 
 	/* Statistics */
 
-	public static function totalInvoiced() {
+	public static function totalInvoiced($year) {
 		$invoiced = new Prices();
 
 		$positions = InvoicePositions::find('all', [
@@ -648,7 +648,8 @@ class Invoices extends \base_core\models\Base {
 				// their worth is more straigtforward than doing the same inside the data
 				// soucre. We exclude these invoices here and add them later.
 				'Invoice.deposit' => null,
-				'Invoice.finalizes' => null
+				'Invoice.finalizes' => null,
+				'YEAR(date)' => $year
 			],
 			'fields' => [
 				'amount_currency',
@@ -670,6 +671,7 @@ class Invoices extends \base_core\models\Base {
 		// Here we add the invoices back again.
 		$depositInvoices = static::find('all', [
 			'conditions' => [
+				'YEAR(date)' => $year,
 				'status' => ['!=' => ['draft', 'cancelled']],
 				'OR' => [
 					'deposit' => ['IS NOT' => null],

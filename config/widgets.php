@@ -24,7 +24,6 @@ use billing_invoice\models\InvoicePositions;
 use billing_invoice\models\Invoices;
 use lithium\core\Environment;
 use lithium\g11n\Message;
-use lithium\util\Set;
 
 extract(Message::aliases());
 

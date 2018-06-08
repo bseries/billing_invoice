@@ -34,8 +34,14 @@ Widgets::register('invoices', function() use ($t) {
 	return [
 		'title' => $t('Invoices', ['scope' => 'billing_invoice']),
 		'data' => [
-			$t('total (this year, ongoing)', ['scope' => 'billing_invoice']) => $formatter->format(Invoices::totalInvoiced(date('Y'))->getNet()),
-			$t('total (previous year)', ['scope' => 'billing_invoice']) => $formatter->format(Invoices::totalInvoiced(date('Y') - 1)->getNet()),
+			$t('total ({:year}, ongoing)', [
+				'scope' => 'billing_invoice',
+				'year' => date('Y')
+			]) => $formatter->format(Invoices::totalInvoiced(date('Y'))->getNet()),
+			$t('total ({:year})', [
+				'scope' => 'billing_invoice',
+				'year' => date('Y') - 1
+			]) => $formatter->format(Invoices::totalInvoiced(date('Y') - 1)->getNet()),
 			$t('pending', ['scope' => 'billing_invoice']) => Invoices::countPending(),
 			$t('paid', ['scope' => 'billing_invoice']) => round(Invoices::paidRate(), 0) . '%',
 		],

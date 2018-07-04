@@ -38,16 +38,9 @@ class InvoicesController extends \base_core\controllers\BaseController {
 				'id' => $this->request->id
 			]
 		]);
-		$stream = $item->exportAsPdf();
 
-		$this->_renderDownload(
-			$this->_downloadBasename(
-				null,
-				'invoice',
-				$item->number . '.pdf'
-			),
-			$stream
-		);
+		$stream = $item->exportAsPdf();
+		$this->_renderDownload($stream, 'application/pdf');
 		fclose($stream);
 	}
 

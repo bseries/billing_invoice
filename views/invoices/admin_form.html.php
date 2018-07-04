@@ -492,11 +492,9 @@ $this->set([
 						'controller' => 'Invoices',
 						'id' => $item->id, 'action' => 'duplicate',
 					], ['class' => 'button large']) ?>
-
 					<?= $this->html->link($t('PDF'), [
-						'controller' => 'Invoices',
-						'id' => $item->id, 'action' => 'export_pdf',
-					], ['class' => 'button large']) ?>
+						'id' => $item->id, 'action' => 'export_pdf', 'library' => 'billing_invoice'
+					], ['class' => 'button large', 'download' => "invoice_{$item->number}.pdf"]) ?>
 				<?php endif ?>
 				<?php if (!$item->isPaidInFull()): ?>
 					<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button large']) ?>

@@ -92,8 +92,12 @@ $this->set([
 						<?php if (!$item->isPaidInFull()): ?>
 							<?= $this->html->link($t('pay in full'), ['id' => $item->id, 'action' => 'pay_in_full'], ['class' => 'button']) ?>
 						<?php endif ?>
-						<?= $this->html->link($t('PDF'), ['id' => $item->id, 'action' => 'export_pdf', 'library' => 'billing_invoice'], ['class' => 'button']) ?>
-						<?= $this->html->link($t('open'), ['id' => $item->id, 'action' => 'edit', 'library' => 'billing_invoice'], ['class' => 'button']) ?>
+						<?= $this->html->link($t('PDF'), [
+							'id' => $item->id, 'action' => 'export_pdf', 'library' => 'billing_invoice'
+						], ['class' => 'button', 'download' => "invoice_{$item->number}.pdf"]) ?>
+						<?= $this->html->link($t('open'), [
+							'id' => $item->id, 'action' => 'edit', 'library' => 'billing_invoice'
+						], ['class' => 'button']) ?>
 				<?php endforeach ?>
 			</tbody>
 		</table>

@@ -14,7 +14,7 @@ CREATE TABLE `billing_invoice_positions` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `billing_invoice_id` (`billing_invoice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB;
 
 -- Create syntax for TABLE 'billing_invoices'
 CREATE TABLE `billing_invoices` (
@@ -46,7 +46,7 @@ CREATE TABLE `billing_invoices` (
   UNIQUE KEY `number` (`number`),
   KEY `user` (`user_id`),
   KEY `status` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB;
 
 -- Augment other tables
 ALTER TABLE `users` ADD `is_auto_invoiced` TINYINT(1)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT 'billing' AFTER `is_notified`;

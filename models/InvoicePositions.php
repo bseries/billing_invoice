@@ -103,6 +103,43 @@ class InvoicePositions extends \base_core\models\Base {
 		]);
 	}
 
+	/* Statistics */
+
+	public static function topUnbilledUsers() {
+		$data = [];
+
+		$positions = InvoicePositions::find('all', [
+			'conditions' => [
+				'billing_invoice_id' => null
+			],
+			'fields' => [
+				'user_id',
+				'amount_currency',
+				'amount_type',
+				'amount_rate',
+				'ROUND(SUM(InvoicePositions.amount * InvoicePositions.quantity)) AS amount'
+			],
+			'group' => [
+				'user_id',
+				'amount_currency',
+				'amount_type',
+				'amount_rate'
+			],
+			'order' => [
+				// By using braces we prevent the data source to add `InvoicePositions.`
+				// thus sorting by the original amount, but we want to sort by the
+				// calculated summed up amount.
+				'(amount)' => 'DESC'
+			],
+			'limit' => 10,
+			'with' => ['User']
+		]);
+		foreach ($positions as $position) {
+			$data[$position->user()->title()] = $position->amount();
+		}
+		return $data;
+	}
+
 	/* Deprecated */
 
 	// Assumes format "Foobar (#12345)".

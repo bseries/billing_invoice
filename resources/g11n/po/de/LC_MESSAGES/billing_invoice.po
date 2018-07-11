@@ -322,7 +322,7 @@ msgstr "Brief"
 
 #: views/invoices/admin_form.html.php:130
 msgid "Leave empty to use default letter."
-msgstr "Freilassen, um den Standartbrief zu verwenden."
+msgstr "Freilassen, um den Standardbrief zu verwenden."
 
 #: views/invoices/admin_form.html.php:140
 msgid "Terms"
@@ -330,7 +330,7 @@ msgstr "Bedingungen"
 
 #: views/invoices/admin_form.html.php:141
 msgid "Leave empty to use default terms."
-msgstr "Freilassen, um die Standartbedingunen zu verwenden."
+msgstr "Freilassen, um die Standardbedingungen zu verwenden."
 
 #: views/invoices/admin_form.html.php:148
 msgid "Note"

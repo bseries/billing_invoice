@@ -286,9 +286,9 @@ msgstr "Status"
 
 #: views/invoices/admin_form.html.php:65
 msgid ""
-"The user will be notified by e-mail when the status is changed to `paid`."
+"The user will be notified by e-mail when the status is changed to “paid”."
 msgstr ""
-"Der Benutzer wird per E-Mail benachrichtigt, sobald der Status zu `bezahlt` "
+"Der Benutzer wird per E-Mail benachrichtigt, sobald der Status zu „bezahlt“ "
 "geändert wird."
 
 #: views/invoices/admin_form.html.php:70 views/invoices/admin_form.html.php:318
@@ -412,7 +412,7 @@ msgstr ""
 
 #: views/invoices/admin_form.html.php:420
 msgid "Finalizes these deposit invoices…"
-msgstr "Schließt folgende Anzahlungsrechnungen ab…"
+msgstr "Schließt folgende Anzahlungsrechnungen ab …"
 
 #: views/invoices/admin_form.html.php:425
 msgid "A selection of deposit invoices which this invoice finalizes."
@@ -515,7 +515,7 @@ msgstr "Wert (netto)"
 #~ "When the invoice is locked it cannot be changed anymore with the "
 #~ "exception of the outstanding amount."
 #~ msgstr ""
-#~ "Ist eine Rechnung gesperrt, kann sie nicht mehr verändert werden - mit "
+#~ "Ist eine Rechnung gesperrt, kann sie nicht mehr verändert werden – mit "
 #~ "Ausnahme des ausstehenden Betrags."
 
 #~ msgid "Line total (net)"

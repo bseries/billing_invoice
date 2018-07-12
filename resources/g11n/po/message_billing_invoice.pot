@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: billing_invoice 1.0\n"
 "Report-Msgid-Bugs-To: info@atelierdisko.de\n"
-"POT-Creation-Date: 2017-05-10 18:16+0200\n"
+"POT-Creation-Date: 2018-07-12 12:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: config/panes.php:26 config/widgets.php:87
+#: config/panes.php:26 config/widgets.php:34
 msgid "Invoices"
 msgstr ""
 
@@ -25,35 +25,39 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-#: config/widgets.php:89
-msgid "invoiced"
+#: config/widgets.php:36
+msgid "total ({:year}, ongoing)"
 msgstr ""
 
-#: config/widgets.php:90
+#: config/widgets.php:40
+msgid "total ({:year})"
+msgstr ""
+
+#: config/widgets.php:44
 msgid "pending"
 msgstr ""
 
-#: config/widgets.php:91
+#: config/widgets.php:45
 msgid "paid"
 msgstr ""
 
-#: config/widgets.php:157
+#: config/widgets.php:62
 msgid "Top unbilled users"
 msgstr ""
 
-#: controllers/InvoicesController.php:67
+#: controllers/InvoicesController.php:58
 msgid "Successfully paid invoice in full."
 msgstr ""
 
-#: controllers/InvoicesController.php:72
+#: controllers/InvoicesController.php:63
 msgid "Failed to pay invoice in full."
 msgstr ""
 
-#: controllers/InvoicesController.php:90
+#: controllers/InvoicesController.php:81
 msgid "Successfully duplicated."
 msgstr ""
 
-#: controllers/InvoicesController.php:95
+#: controllers/InvoicesController.php:86
 msgid "Failed to duplicate."
 msgstr ""
 
@@ -87,13 +91,13 @@ msgstr ""
 
 #: documents/Invoice.php:198 views/invoice_positions/admin_form.html.php:50
 #: views/invoice_positions/admin_index.html.php:37
-#: views/invoices/admin_form.html.php:184
-#: views/invoices/admin_form.html.php:240
+#: views/invoices/admin_form.html.php:203
+#: views/invoices/admin_form.html.php:259
 msgid "Description"
 msgstr ""
 
 #: documents/Invoice.php:205 views/invoice_positions/admin_form.html.php:68
-#: views/invoices/admin_form.html.php:161
+#: views/invoices/admin_form.html.php:180
 msgid "Quantity"
 msgstr ""
 
@@ -101,13 +105,13 @@ msgstr ""
 msgid "Unit Price"
 msgstr ""
 
-#: documents/Invoice.php:219 views/invoices/admin_form.html.php:398
+#: documents/Invoice.php:219 views/invoices/admin_form.html.php:417
 msgid "Total"
 msgstr ""
 
 #: documents/Invoice.php:282 views/invoice_positions/admin_index.html.php:38
-#: views/invoices/admin_form.html.php:166
-#: views/invoices/admin_form.html.php:294
+#: views/invoices/admin_form.html.php:185
+#: views/invoices/admin_form.html.php:313
 msgid "Total (net)"
 msgstr ""
 
@@ -125,19 +129,27 @@ msgid ""
 "signature."
 msgstr ""
 
-#: models/Invoices.php:342
+#: models/Invoices.php:149
+msgid "This field cannot be empty."
+msgstr ""
+
+#: models/Invoices.php:154
+msgid "This number is already in use."
+msgstr ""
+
+#: models/Invoices.php:365
 msgid "Invoice {:number} paid."
 msgstr ""
 
-#: models/Invoices.php:378
+#: models/Invoices.php:401
 msgid "Invoice {:number}"
 msgstr ""
 
-#: models/Invoices.php:385 views/invoice_positions/admin_form.html.php:33
+#: models/Invoices.php:408 views/invoice_positions/admin_form.html.php:33
 msgid "Invoice"
 msgstr ""
 
-#: models/Invoices.php:596
+#: models/Invoices.php:619
 msgid "Your invoice {:number}."
 msgstr ""
 
@@ -147,7 +159,7 @@ msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:28
 #: views/invoice_positions/admin_index.html.php:36
-#: views/invoices/admin_form.html.php:77 views/invoices/admin_index.html.php:40
+#: views/invoices/admin_form.html.php:96 views/invoices/admin_index.html.php:40
 msgid "Recipient"
 msgstr ""
 
@@ -156,63 +168,63 @@ msgid "not assigned to invoice"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:40
-#: views/invoices/admin_form.html.php:77 views/invoices/admin_form.html.php:91
+#: views/invoices/admin_form.html.php:96 views/invoices/admin_form.html.php:110
 msgid "User"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:57
-#: views/invoices/admin_form.html.php:191
-#: views/invoices/admin_form.html.php:246
+#: views/invoices/admin_form.html.php:210
+#: views/invoices/admin_form.html.php:265
 msgid "Tags"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:73
-#: views/invoices/admin_form.html.php:432
+#: views/invoices/admin_form.html.php:451
 msgid "Amount currency"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:79
-#: views/invoices/admin_form.html.php:438
+#: views/invoices/admin_form.html.php:457
 msgid "Amount type"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:81
-#: views/invoices/admin_form.html.php:213
-#: views/invoices/admin_form.html.php:268
-#: views/invoices/admin_form.html.php:440
+#: views/invoices/admin_form.html.php:232
+#: views/invoices/admin_form.html.php:287
+#: views/invoices/admin_form.html.php:459
 msgid "gross"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:81
-#: views/invoices/admin_form.html.php:213
-#: views/invoices/admin_form.html.php:268
-#: views/invoices/admin_form.html.php:440
+#: views/invoices/admin_form.html.php:232
+#: views/invoices/admin_form.html.php:287
+#: views/invoices/admin_form.html.php:459
 msgid "net"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:85
-#: views/invoices/admin_form.html.php:321
-#: views/invoices/admin_form.html.php:444
+#: views/invoices/admin_form.html.php:340
+#: views/invoices/admin_form.html.php:463
 msgid "Amount"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:91
-#: views/invoices/admin_form.html.php:165
-#: views/invoices/admin_form.html.php:455
+#: views/invoices/admin_form.html.php:184
+#: views/invoices/admin_form.html.php:474
 msgid "Tax rate (%)"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:102
-#: views/invoices/admin_form.html.php:233
-#: views/invoices/admin_form.html.php:286
-#: views/invoices/admin_form.html.php:362
-#: views/invoices/admin_form.html.php:390
-#: views/invoices/admin_form.html.php:465
+#: views/invoices/admin_form.html.php:252
+#: views/invoices/admin_form.html.php:305
+#: views/invoices/admin_form.html.php:381
+#: views/invoices/admin_form.html.php:409
+#: views/invoices/admin_form.html.php:484
 msgid "delete"
 msgstr ""
 
 #: views/invoice_positions/admin_form.html.php:108
-#: views/invoices/admin_form.html.php:485
+#: views/invoices/admin_form.html.php:502
 msgid "save"
 msgstr ""
 
@@ -230,17 +242,17 @@ msgid "Modified"
 msgstr ""
 
 #: views/invoice_positions/admin_index.html.php:44
-#: views/invoices/admin_index.html.php:51
+#: views/invoices/admin_index.html.php:54
 msgid "Filter"
 msgstr ""
 
 #: views/invoice_positions/admin_index.html.php:62
-#: views/invoices/admin_index.html.php:89
+#: views/invoices/admin_index.html.php:98
 msgid "open"
 msgstr ""
 
 #: views/invoice_positions/admin_index.html.php:67
-#: views/invoices/admin_index.html.php:94
+#: views/invoices/admin_index.html.php:105
 msgid "No items available, yet."
 msgstr ""
 
@@ -268,170 +280,184 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:51 views/invoices/admin_form.html.php:98
+#: views/invoices/admin_form.html.php:48
+msgid "Sites"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:54 views/invoices/admin_index.html.php:48
+msgid "Site"
+msgstr ""
+
+#: views/invoices/admin_form.html.php:66 views/invoices/admin_form.html.php:117
 #: views/invoices/admin_index.html.php:37
 msgid "Number"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:53
-msgid "Leave empty to autogenerate number."
+#: views/invoices/admin_form.html.php:68
+msgid "Will autogenerate number."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:60 views/invoices/admin_index.html.php:39
+#: views/invoices/admin_form.html.php:73
+msgid ""
+"The reference number uniquely identifies this item and is used especially in "
+"correspondence with clients and customers."
+msgstr ""
+
+#: views/invoices/admin_form.html.php:79 views/invoices/admin_index.html.php:39
 msgid "Status"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:65
+#: views/invoices/admin_form.html.php:84
 msgid ""
-"The user will be notified by e-mail when the status is changed to `paid`."
+"The user will be notified by e-mail when the status is changed to “paid”."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:70 views/invoices/admin_form.html.php:318
+#: views/invoices/admin_form.html.php:89 views/invoices/admin_form.html.php:337
 #: views/invoices/admin_index.html.php:36
 msgid "Date"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:81
+#: views/invoices/admin_form.html.php:100
 msgid "Receiving Address"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:84
+#: views/invoices/admin_form.html.php:103
 msgid "Automatically uses address assigned to user."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:103
+#: views/invoices/admin_form.html.php:122
 msgid "Name"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:108
+#: views/invoices/admin_form.html.php:127
 msgid "Email"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:114
+#: views/invoices/admin_form.html.php:133
 msgid "open user"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:128
+#: views/invoices/admin_form.html.php:147
 msgid "Letter"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:130
+#: views/invoices/admin_form.html.php:149
 msgid "Leave empty to use default letter."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:140
+#: views/invoices/admin_form.html.php:159
 msgid "Terms"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:141
+#: views/invoices/admin_form.html.php:160
 msgid "Leave empty to use default terms."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:148
+#: views/invoices/admin_form.html.php:167
 msgid "Note"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:150
+#: views/invoices/admin_form.html.php:169
 msgid "Visible to recipient."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:155
+#: views/invoices/admin_form.html.php:174
 msgid "Positions"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:162
-#: views/invoices/admin_form.html.php:320
+#: views/invoices/admin_form.html.php:181
+#: views/invoices/admin_form.html.php:339
 msgid "Currency"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:163
+#: views/invoices/admin_form.html.php:182
 msgid "Type"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:164
+#: views/invoices/admin_form.html.php:183
 msgid "Unit price"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:291
+#: views/invoices/admin_form.html.php:310
 msgid "add position"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:299
+#: views/invoices/admin_form.html.php:318
 msgid "Tax ({:rate}%)"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:304
+#: views/invoices/admin_form.html.php:323
 msgid "Total (gross)"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:313
+#: views/invoices/admin_form.html.php:332
 msgid "Payments"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:319
+#: views/invoices/admin_form.html.php:338
 msgid "Method"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:395
+#: views/invoices/admin_form.html.php:414
 msgid "add payment"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:401
+#: views/invoices/admin_form.html.php:420
 #: views/invoices/admin_index.html.php:42
 msgid "Balance"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:410
+#: views/invoices/admin_form.html.php:429
 msgid "Deposit"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:412
+#: views/invoices/admin_form.html.php:431
 msgid "Deposit invoices allow to split a larger invoice into smaller parts."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:413
+#: views/invoices/admin_form.html.php:432
 msgid ""
 "To turn this invoice into a deposit invoice, provide a deposit amount on the "
 "right side."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:414
+#: views/invoices/admin_form.html.php:433
 msgid ""
 "If this is the final invoice of previous deposit invoices, select these "
 "invoices on the left side."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:420
+#: views/invoices/admin_form.html.php:439
 msgid "Finalizes these deposit invoices…"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:425
+#: views/invoices/admin_form.html.php:444
 msgid "A selection of deposit invoices which this invoice finalizes."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:426
+#: views/invoices/admin_form.html.php:445
 msgid "Only applicable if this invoice is not a deposit invoice by itself."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:450
+#: views/invoices/admin_form.html.php:469
 msgid "Provide an amount to turn this invoice into a deposit invoice."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:451
+#: views/invoices/admin_form.html.php:470
 msgid "Remove the amount to turn it back into a regular invoice again."
 msgstr ""
 
-#: views/invoices/admin_form.html.php:472
+#: views/invoices/admin_form.html.php:491
 msgid "duplicate"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:477
-#: views/invoices/admin_index.html.php:88
+#: views/invoices/admin_form.html.php:495
+#: views/invoices/admin_index.html.php:95
 msgid "PDF"
 msgstr ""
 
-#: views/invoices/admin_form.html.php:483
-#: views/invoices/admin_index.html.php:86
+#: views/invoices/admin_form.html.php:500
+#: views/invoices/admin_index.html.php:93
 msgid "pay in full"
 msgstr ""
 

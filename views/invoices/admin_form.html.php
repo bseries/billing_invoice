@@ -81,7 +81,7 @@ $this->set([
 				]) ?>
 				<?php if (Settings::read('invoice.sendPaidMail')): ?>
 				<div class="help">
-					<?= $t('The user will be notified by e-mail when the status is changed to `paid`.') ?>
+					<?= $t('The user will be notified by e-mail when the status is changed to “paid”.') ?>
 				</div>
 				<?php endif ?>
 				<?= $this->form->field('date', [

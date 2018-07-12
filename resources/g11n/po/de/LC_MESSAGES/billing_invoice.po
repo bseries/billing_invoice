@@ -515,7 +515,7 @@ msgstr "Wert (netto)"
 #~ "When the invoice is locked it cannot be changed anymore with the "
 #~ "exception of the outstanding amount."
 #~ msgstr ""
-#~ "Ist eine Rechnung gesperrt, kann sie nicht mehr verändert werden – mit "
+#~ "Ist eine Rechnung gesperrt, kann sie nicht mehr verändert werden - mit "
 #~ "Ausnahme des ausstehenden Betrags."
 
 #~ msgid "Line total (net)"

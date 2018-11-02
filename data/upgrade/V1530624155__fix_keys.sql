@@ -1,2 +1,2 @@
-ALTER TABLE `billing_invoices` DROP INDEX `number`;
+ALTER TABLE `billing_invoices` DROP INDEX IF EXISTS `number`;
 

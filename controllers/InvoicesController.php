@@ -20,6 +20,7 @@ namespace billing_invoice\controllers;
 use billing_core\models\Currencies;
 use billing_core\billing\TaxTypes;
 use billing_invoice\models\Invoices;
+use billing_invoice\models\InvoicePositions;
 use li3_flash_message\extensions\storage\FlashMessage;
 use lithium\g11n\Message;
 
@@ -90,6 +91,35 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		return $this->redirect(['action' => 'index']);
 	}
 
+	public function admin_add_pending() {
+		extract(Message::aliases());
+
+		$model = $this->_model;
+		$model::pdo()->beginTransaction();
+
+		$item = $model::first($this->request->id);
+
+		$result = true;
+		foreach (InvoicePositions::pending($item->user()) as $position) {
+			$result = $result && $position->save([
+				'billing_invoice_id' => $item->id
+			], ['whitelist' => ['billing_invoice_id']]);
+		}
+
+		if ($result) {
+			$model::pdo()->commit();
+			FlashMessage::write($t('Successfully added pending positions.', ['scope' => 'billing_invoice']), [
+				'level' => 'success'
+			]);
+		} else {
+			$model::pdo()->rollback();
+			FlashMessage::write($t('Failed to add pending positions.', ['scope' => 'billing_invoice']), [
+				'level' => 'error'
+			]);
+		}
+		return $this->redirect($this->request->referer());
+	}
+
 	protected function _selects($item = null) {
 		$statuses = Invoices::enum('status');
 		$currencies = Currencies::find('list');
@@ -104,7 +134,9 @@ class InvoicesController extends \base_core\controllers\BaseController {
 					'id' => ['!=' => $item->id]
 				]
 			]);
-			return compact('currencies', 'statuses', 'users', 'taxTypes', 'deposits');
+			$pendingPositions = InvoicePositions::pending($item->user());
+
+			return compact('currencies', 'statuses', 'users', 'taxTypes', 'deposits', 'pendingPositions');
 		}
 		return compact('currencies', 'statuses');
 	}

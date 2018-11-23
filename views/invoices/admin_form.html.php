@@ -7,6 +7,13 @@ $t = function($message, array $options = []) {
 	return Message::translate($message, $options + ['scope' => 'billing_invoice', 'default' => $message]);
 };
 
+$tn = function($message1, $message2, $count, array $options = []) {
+	return Message::translate($message1, $options + compact('count') + [
+		'default' => $count === 1 ? $message1 : $message2,
+		'scope' => 'billing_invoice'
+	]);
+};
+
 $this->set([
 	'page' => [
 		'type' => 'single',
@@ -307,7 +314,16 @@ $this->set([
 					<tfoot>
 						<tr>
 							<td colspan="9" class="nested-add-action">
-								<?= $this->form->button($t('add position'), ['type' => 'button', 'class' => 'button add-nested']) ?>
+								<?= $this->form->button($t('add position'), [
+									'type' => 'button',
+									'class' => 'button add-nested'
+								]) ?>
+								<?php if ($pendingPositions->count()): ?>
+									<?= $this->html->link($tn('add {:count} pending position', 'add {:count} pending positions', $pendingPositions->count()),
+										['action' => 'add_pending', 'id' => $item->id],
+										['class' => 'button']
+									) ?>
+								<?php endif ?>
 						<?php if ($item->positions()->count()): ?>
 							<tr class="totals totals--subtotal">
 								<td colspan="6"><?= $t('Total (net)') ?>

@@ -1,6 +1,7 @@
 <?php
 
 use lithium\g11n\Message;
+use base_core\extensions\cms\Settings;
 
 $t = function($message, array $options = []) {
 	return Message::translate($message, $options + ['scope' => 'billing_invoice', 'default' => $message]);
@@ -35,6 +36,7 @@ $this->set([
 				<tr>
 					<td data-sort="date" class="date table-sort"><?= $t('Date') ?>
 					<td data-sort="number" class="emphasize number table-sort"><?= $t('Number') ?>
+					<td data-sort="is-overdue" class="flag is-overdue"><?= $t('overdue?') ?>
 					<td data-sort="is-split" class="flag is-split"><?= $t('split?') ?>
 					<td data-sort="status" class="status table-sort"><?= $t('Status') ?>
 					<td data-sort="User.number" class="user table-sort"><?= $t('Recipient') ?>
@@ -64,6 +66,10 @@ $this->set([
 							<?= $this->date->format($item->date, 'date') ?>
 						</time>
 					<td class="emphasize number"><?= $item->number ?: '–' ?>
+					<td class="flag">
+						<?php if ($item->isOverdue()): ?>
+							<i class="material-icons">alarm</i>
+						<?php endif ?>
 					<td class="flag">
 						<?php if ($item->isDeposit()): ?>
 							<i class="material-icons">donut_large</i>
@@ -107,4 +113,9 @@ $this->set([
 
 	<?=$this->_render('element', 'paging', compact('paginator'), ['library' => 'base_core']) ?>
 
+	<?php if ($overdue = Settings::read('invoice.overdueAfter')): ?>
+	<div class="bottom-help">
+		<?= $t('Invoices are considered overdue after their invoice date {:overdue}.', ['overdue' => $overdue]) ?>
+	</div>
+	<?php endif ?>
 </article>

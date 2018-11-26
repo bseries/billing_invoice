@@ -205,9 +205,15 @@ class Invoices extends \base_core\models\Base {
 		if (!$overdue = Settings::read('invoice.overdueAfter')) {
 			return false;
 		}
-		$date = DateTime::createFromFormat('Y-m-d H:i:s', $entity->date);
+		if ($entity->status !== 'sent') {
+			return false;
+		}
+		if ($entity->isPaidInFull()) {
+			return false;
+		}
+		$date = DateTime::createFromFormat('Y-m-d', $entity->date);
 
-		return $entity->total_gross_outstanding && $date->getTimestamp() > strtotime($overdue);
+		return time() > strtotime($overdue, $date->getTimestamp());
 	}
 
 	// Returns Prices.

@@ -652,7 +652,7 @@ class Invoices extends \base_core\models\Base {
 			$defaults['from'] = PROJECT_MAIL_FROM;
 		}
 
-		return Mailer::deliver('invoice_sent', $options + [
+		return Mailer::deliver('invoice_sent', $options + $defaults + [
 			'data' => [
 				'letter' => $options['letter']
 			],

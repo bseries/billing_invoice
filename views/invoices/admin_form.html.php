@@ -23,6 +23,7 @@ $this->set([
 	],
 	'meta' => [
 		'status' => $statuses[$item->status],
+		'overdue' => $item->isOverdue() ? $t('overdue') : null,
 		'deposit' => $item->isDeposit() ? $t('deposit') : null,
 		'final' => $item->isFinal() ? $t('final') : null
 	]

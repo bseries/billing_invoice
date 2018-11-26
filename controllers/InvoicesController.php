@@ -181,11 +181,11 @@ class InvoicesController extends \base_core\controllers\BaseController {
 
 		if ($this->request->data) {
 			$result = $item->send([
-				'to' => $this->request->data['to'],
-				'from' => $this->request->data['from'],
-				'cc' => $this->request->data['cc'],
-				'subject' => $this->request->data['subject'],
-				'letter' => $this->request->data['letter']
+				'to' => $to = $this->request->data['to'],
+				'from' => $from = $this->request->data['from'],
+				'cc' => $cc = $this->request->data['cc'],
+				'subject' => $subject = $this->request->data['subject'],
+				'letter' => $letter = $this->request->data['letter']
 			]);
 			if (!$result) {
 				FlashMessage::write($t('Failed to send invoice.', ['scope' => 'billing_invoice']), [

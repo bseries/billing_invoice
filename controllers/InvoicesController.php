@@ -17,10 +17,14 @@
 
 namespace billing_invoice\controllers;
 
-use billing_core\models\Currencies;
+use base_core\extensions\cms\Settings;
+use base_core\extensions\net\http\NotFoundException;
+use base_core\models\Mails;
+use base_core\security\Gate;
 use billing_core\billing\TaxTypes;
-use billing_invoice\models\Invoices;
+use billing_core\models\Currencies;
 use billing_invoice\models\InvoicePositions;
+use billing_invoice\models\Invoices;
 use li3_flash_message\extensions\storage\FlashMessage;
 use lithium\g11n\Message;
 
@@ -34,11 +38,16 @@ class InvoicesController extends \base_core\controllers\BaseController {
 	use \base_core\controllers\UsersTrait;
 
 	public function admin_export_pdf() {
-		$item = Invoices::find('first', [
+		$model = $this->_model;
+
+		$item = $model::find('first', [
 			'conditions' => [
 				'id' => $this->request->id
 			]
 		]);
+		if (!$item) {
+			throw new NotFoundException();
+		}
 
 		$stream = $item->exportAsPdf();
 		$this->_renderDownload($stream, 'application/pdf');
@@ -74,7 +83,14 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		$model = $this->_model;
 		$model::pdo()->beginTransaction();
 
-		$item = $model::first($this->request->id);
+		$item = $model::find('first', [
+			'conditions' => [
+				'id' => $this->request->id
+			]
+		]);
+		if (!$item) {
+			throw new NotFoundException();
+		}
 		$result = $item->duplicate();
 
 		if ($result) {
@@ -97,7 +113,14 @@ class InvoicesController extends \base_core\controllers\BaseController {
 		$model = $this->_model;
 		$model::pdo()->beginTransaction();
 
-		$item = $model::first($this->request->id);
+		$item = $model::find('first', [
+			'conditions' => [
+				'id' => $this->request->id
+			]
+		]);
+		if (!$item) {
+			throw new NotFoundException();
+		}
 
 		$result = true;
 		foreach (InvoicePositions::pending($item->user()) as $position) {
@@ -118,6 +141,65 @@ class InvoicesController extends \base_core\controllers\BaseController {
 			]);
 		}
 		return $this->redirect($this->request->referer());
+	}
+
+	public function admin_send() {
+		extract(Message::aliases());
+
+		$model = $this->_model;
+
+		$item = $model::find('first', [
+			'conditions' => [
+				'id' => $this->request->id
+			]
+		]);
+
+		if (!$item) {
+			throw new NotFoundException();
+		}
+		if (!$item->isSendable()) {
+			FlashMessage::write($t('Invoice cannot be sent.', ['scope' => 'billing_invoice']), [
+				'level' => 'error'
+			]);
+			return $this->redirect($this->request->referer());
+		}
+		$recipientUser = $item->user();
+		$senderUser = Gate::user(true);
+		$letter = Settings::read('invoice.letter');
+
+		$to = "{$recipientUser->name} <$recipientUser->email>";
+		$from = "{$senderUser['name']} <{$senderUser['email']}>";
+		$cc = null;
+		$bcc = Settings::read('invoice.bcc');
+
+		$subject = $t('Invoice {:number}', [
+			'number' => $item->number,
+			'scope' => 'billing_invoice',
+			'locale' => $recipientUser->locale
+		]);
+		$letter = !is_bool($letter) ? (is_callable($letter) ? $letter('mail', $recipientUser, $item) : $letter) : null;
+
+		if ($this->request->data) {
+			$result = $item->send([
+				'to' => $this->request->data['to'],
+				'from' => $this->request->data['from'],
+				'cc' => $this->request->data['cc'],
+				'subject' => $this->request->data['subject'],
+				'letter' => $this->request->data['letter']
+			]);
+			if (!$result) {
+				FlashMessage::write($t('Failed to send invoice.', ['scope' => 'billing_invoice']), [
+					'level' => 'error'
+				]);
+				return $this->redirect($this->request->referer());
+			} else {
+				FlashMessage::write($t('Invoice successfully sent.', ['scope' => 'billing_invoice']), [
+					'level' => 'success'
+				]);
+				return $this->redirect(['action' => 'edit', 'id' => $item->id]);
+			}
+		}
+		return compact('item', 'to', 'from', 'cc', 'bcc', 'subject', 'letter');
 	}
 
 	protected function _selects($item = null) {

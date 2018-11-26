@@ -599,36 +599,61 @@ class Invoices extends \base_core\models\Base {
 		], ['whitelist' => ['auto_invoiced']]);
 	}
 
-	public function send($entity) {
-		$user = $entity->user();
-
-		if (!$user->is_notified) {
-			return;
+	public function isSendable($entity) {
+		if (!$entity->user()->is_notified) {
+			return false;
 		}
-		$contact = Settings::read('contact.billing');
+		return in_array($entity->status, [
+			'created',
+			'draft',
+			'sent' // Allow forgotten invoices to be resent.
+		]);
+	}
+
+	// Sends out invoice mail, and marks invoice as "sent".
+	public function send($entity, array $options = []) {
+		extract(Message::aliases());
 
 		$result = $entity->save(['status' => 'sent'], [
 			'whitelist' => ['status'],
 			'validate' => false
 		]);
+		if (!$result) {
+			return false;
+		}
+		$recipientUser = $entity->user();
+		$billingContact = Settings::read('contact.billing');
 
-		return $result && Mailer::deliver('invoice_sent', [
-			'library' => 'billing_invoice',
-			'to' => $user->email,
-			'bcc' => $contact['email'],
-			'subject' => $t('Your invoice {:number}.', [
-				'locale' => $user->locale,
+		$defaults = [
+			'to' => "{$recipientUser->name} <$recipientUser->email>",
+			'cc' => null,
+			'bcc' => Settings::read('invoice.bcc'),
+			'subject' => $t('Invoice {:number}', [
+				'number' => $entity->number,
 				'scope' => 'billing_invoice',
-				'number' => $invoice->number
+				'locale' => $recipientUser->locale
 			]),
+			'letter' => null,
+			'library' => 'billing_invoice',
+		];
+		if ($billingContact) {
+			if (isset($billingContact['name'])) {
+				$defaults['from'] = "{$billingContact['name']} <{$billingContact['email']}>";
+			} else {
+				$defaults['from'] = "{$billingContact['organization']} <{$billingContact['email']}>";
+			}
+		} else {
+			$defaults['from'] = PROJECT_MAIL_FROM;
+		}
+
+		return Mailer::deliver('invoice_sent', $options + [
 			'data' => [
-				'user' => $user,
-				'item' => $entity
+				'letter' => $options['letter']
 			],
 			'attach' => [
 				[
 					'data' => $entity->exportAsPdf(),
-					'filename' => 'invoice_' . $entity->number . '.pdf',
+					'filename' => "invoice_{$entity->number}.pdf",
 					'content-type' => 'application/pdf'
 				]
 			]
@@ -756,7 +781,7 @@ Filters::apply(Invoices::class, 'save', function($params, $next) {
 			'tax_note' => $group->taxType()->note(),
 			'date' => date('Y-m-d'),
 			'status' => 'created',
-			'letter' => !is_bool($letter) ? (is_callable($letter) ? $letter($user) : $letter) : null,
+			'letter' => !is_bool($letter) ? (is_callable($letter) ? $letter('entity', $user, $entity) : $letter) : null,
 			'terms' => !is_bool($terms) ? (is_callable($terms) ? $terms($user) : $terms) : null
 		];
 		$data = $user->address('billing')->copy($data, 'address_');

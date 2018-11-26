@@ -30,7 +30,6 @@ $this->set([
 
 ?>
 <article>
-
 	<?=$this->form->create($item) ?>
 		<?php if ($item->exists()): ?>
 			<?= $this->form->field('id', ['type' => 'hidden']) ?>
@@ -504,6 +503,11 @@ $this->set([
 			</div>
 			<div class="bottom-actions__right">
 				<?php if ($item->exists()): ?>
+					<?php if ($item->isSendable()): ?>
+						<?= $this->html->link($item->status === 'sent' ? $t('prepare to resend e-mail') : $t('prepare e-mail'), [
+							'action' => 'send', 'id' => $item->id
+						], ['class' => 'button large']) ?>
+					<?php endif ?>
 					<?= $this->html->link($t('duplicate'), [
 						'controller' => 'Invoices',
 						'id' => $item->id, 'action' => 'duplicate',

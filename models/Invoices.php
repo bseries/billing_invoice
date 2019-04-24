@@ -788,7 +788,7 @@ Filters::apply(Invoices::class, 'save', function($params, $next) {
 			'date' => date('Y-m-d'),
 			'status' => 'created',
 			'letter' => !is_bool($letter) ? (is_callable($letter) ? $letter('entity', $user, $entity) : $letter) : null,
-			'terms' => !is_bool($terms) ? (is_callable($terms) ? $terms($user) : $terms) : null
+			'terms' => !is_bool($terms) ? (is_callable($terms) ? $terms($user, $entity) : $terms) : null
 		];
 		$data = $user->address('billing')->copy($data, 'address_');
 	} else {

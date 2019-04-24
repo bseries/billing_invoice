@@ -81,7 +81,7 @@ Settings::register('invoice.letter', function($context, $user, $invoice) {
 // ```
 // Settings::register('...', true);
 // Settings::register('...', 'foo');
-// Settings::register('...', function($user) { return 'foo'; }));
+// Settings::register('...', function($user, $invoice) { return 'foo'; }));
 // ```
 Settings::register('invoice.terms', false);
 

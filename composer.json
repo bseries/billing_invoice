@@ -6,7 +6,7 @@
     "require": {
         "atelierdisko/finance": "^2",
         "atelierdisko/li3_flash_message": "^1",
-        "atelierdisko/li3_mailer": "^1.1",
+        "atelierdisko/li3_mailer": "^1.3",
         "atelierdisko/li3_taggable": "^1.4",
         "bseries/base_address": "^1.5",
         "bseries/base_core": "^1.5",

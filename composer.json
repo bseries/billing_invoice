@@ -2,7 +2,7 @@
     "name": "bseries/billing_invoice",
     "description": "Invoice functionality for Banque.",
     "type": "lithium-library",
-    "license": "proprietary",
+    "license": ["BSD-3-Clause"],
     "require": {
         "atelierdisko/finance": "^2",
         "atelierdisko/li3_flash_message": "^1",
